@@ -9,12 +9,15 @@
 /* Begin PBXBuildFile section */
 		3621AD4125FA60BD00C3E456 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3621AD4025FA60BD00C3E456 /* AppDelegate.swift */; };
 		3621AD4325FA60BD00C3E456 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3621AD4225FA60BD00C3E456 /* SceneDelegate.swift */; };
-		3621AD4525FA60BD00C3E456 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3621AD4425FA60BD00C3E456 /* ViewController.swift */; };
 		3621AD4825FA60BD00C3E456 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3621AD4625FA60BD00C3E456 /* Main.storyboard */; };
 		3621AD4A25FA60BD00C3E456 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3621AD4925FA60BD00C3E456 /* Assets.xcassets */; };
 		3621AD4D25FA60BD00C3E456 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3621AD4B25FA60BD00C3E456 /* LaunchScreen.storyboard */; };
 		3621AD5825FA60BD00C3E456 /* SudokuTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3621AD5725FA60BD00C3E456 /* SudokuTests.swift */; };
 		3621AD6325FA60BD00C3E456 /* SudokuUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3621AD6225FA60BD00C3E456 /* SudokuUITests.swift */; };
+		366014862608BBE300BC8578 /* BMHANNAProOTF.otf in Resources */ = {isa = PBXBuildFile; fileRef = 366014852608BBD400BC8578 /* BMHANNAProOTF.otf */; };
+		3660148E2608C32900BC8578 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3660148D2608C32900BC8578 /* MainViewController.swift */; };
+		366014962608C54800BC8578 /* Today.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366014952608C54800BC8578 /* Today.swift */; };
+		366014A42608C66000BC8578 /* TodayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366014A32608C66000BC8578 /* TodayViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,7 +41,6 @@
 		3621AD3D25FA60BD00C3E456 /* Sudoku.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sudoku.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3621AD4025FA60BD00C3E456 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3621AD4225FA60BD00C3E456 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		3621AD4425FA60BD00C3E456 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		3621AD4725FA60BD00C3E456 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		3621AD4925FA60BD00C3E456 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3621AD4C25FA60BD00C3E456 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -49,6 +51,10 @@
 		3621AD5E25FA60BD00C3E456 /* SudokuUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SudokuUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3621AD6225FA60BD00C3E456 /* SudokuUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SudokuUITests.swift; sourceTree = "<group>"; };
 		3621AD6425FA60BD00C3E456 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		366014852608BBD400BC8578 /* BMHANNAProOTF.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = BMHANNAProOTF.otf; path = ../../BMHANNAProOTF.otf; sourceTree = "<group>"; };
+		3660148D2608C32900BC8578 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		366014952608C54800BC8578 /* Today.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Today.swift; sourceTree = "<group>"; };
+		366014A32608C66000BC8578 /* TodayViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,13 +105,16 @@
 		3621AD3F25FA60BD00C3E456 /* Sudoku */ = {
 			isa = PBXGroup;
 			children = (
+				366014942608C51800BC8578 /* Model */,
+				366014932608C50A00BC8578 /* ViewController */,
+				366014922608C50300BC8578 /* ViewModel */,
 				3621AD4025FA60BD00C3E456 /* AppDelegate.swift */,
 				3621AD4225FA60BD00C3E456 /* SceneDelegate.swift */,
-				3621AD4425FA60BD00C3E456 /* ViewController.swift */,
 				3621AD4625FA60BD00C3E456 /* Main.storyboard */,
 				3621AD4925FA60BD00C3E456 /* Assets.xcassets */,
 				3621AD4B25FA60BD00C3E456 /* LaunchScreen.storyboard */,
 				3621AD4E25FA60BD00C3E456 /* Info.plist */,
+				366014852608BBD400BC8578 /* BMHANNAProOTF.otf */,
 			);
 			path = Sudoku;
 			sourceTree = "<group>";
@@ -126,6 +135,30 @@
 				3621AD6425FA60BD00C3E456 /* Info.plist */,
 			);
 			path = SudokuUITests;
+			sourceTree = "<group>";
+		};
+		366014922608C50300BC8578 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				366014A32608C66000BC8578 /* TodayViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		366014932608C50A00BC8578 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				3660148D2608C32900BC8578 /* MainViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		366014942608C51800BC8578 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				366014952608C54800BC8578 /* Today.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -234,6 +267,7 @@
 				3621AD4D25FA60BD00C3E456 /* LaunchScreen.storyboard in Resources */,
 				3621AD4A25FA60BD00C3E456 /* Assets.xcassets in Resources */,
 				3621AD4825FA60BD00C3E456 /* Main.storyboard in Resources */,
+				366014862608BBE300BC8578 /* BMHANNAProOTF.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -258,9 +292,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3621AD4525FA60BD00C3E456 /* ViewController.swift in Sources */,
+				3660148E2608C32900BC8578 /* MainViewController.swift in Sources */,
 				3621AD4125FA60BD00C3E456 /* AppDelegate.swift in Sources */,
+				366014A42608C66000BC8578 /* TodayViewModel.swift in Sources */,
 				3621AD4325FA60BD00C3E456 /* SceneDelegate.swift in Sources */,
+				366014962608C54800BC8578 /* Today.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
