@@ -23,11 +23,11 @@ class TodayManager {
     }
     
     var numOfDaysInMonth: [Int] = [31, 30, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-    
+
     func getDate() -> String {
         return "\(todayYear)년 \(todayMonth)월 \(todayDay)일"
     }
-    
+
     func setupCalendar(_ currentYear: Int, _ currentMonth: Int) -> [Int]{
         let currentMonthIndex = currentMonth - 1 // month 리턴이 (1 ~ 12)라 1을 빼준다
 
@@ -37,10 +37,11 @@ class TodayManager {
         }
         
         var day: [Int] = []
-        let firstWeekDay = getDayOfWeek("\(currentYear)-\(currentMonth)") ?? 0
+        let firstWeekDay = getDayOfWeek("\(currentYear)-\(currentMonth)") ?? 1
         
         // 시작하는 요일 전에 남는 공간을 0으로 채워준다
-        for _ in 1...firstWeekDay{
+        
+        while day.count < firstWeekDay{
             day.append(0)
         }
         
@@ -51,7 +52,7 @@ class TodayManager {
         
         return day
     }
-    
+
     func getDayOfWeek(_ today:String) -> Int? {
         let formatter  = DateFormatter()
         formatter.dateFormat = "yyyy-MM"
@@ -61,4 +62,4 @@ class TodayManager {
         // Sun = 1, Mon = 2, Tue = 3 ...
         return weekDay - 1
     }
-}
+    }
