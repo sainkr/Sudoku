@@ -11,11 +11,18 @@ class GameViewController: UIViewController {
     
     @IBOutlet weak var levelLabel: UILabel!
     @IBOutlet weak var pauseButton: UIButton!
+    @IBOutlet weak var timerLabel: UILabel!
+    @IBOutlet weak var isPlayingButton: UIButton!
     
     @IBOutlet weak var numberCollectionView: UICollectionView!
     
     var sudokuViewController: SudokuViewController!
     var optionViewController: OptionViewController!
+    
+    var timer: Timer?
+    var count: Double = 0
+    
+    var isPlaying: Bool = true
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "sudoku"{
@@ -29,12 +36,54 @@ class GameViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        timerPlay()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(true)
+        timer?.invalidate()
+    }
+    
+    @IBAction func isPlayingButtonTapped(_ sender: Any) {
+        if isPlaying {
+            timerPasue()
+        } else {
+            timerPlay()
+        }
     }
 }
 
 extension GameViewController {
     @IBAction func backButtonTapped(_ sender: Any) {
         dismiss(animated: false, completion: nil)
+    }
+    
+    func timerPlay(){
+        isPlayingButton.setImage(UIImage(systemName: "pause.fill"), for: .normal)
+        isPlaying = true
+        // timeInterval : 간격, target : 동작될 View, selector : 실행할 함수, userInfo : 사용자 정보, repeates : 반복
+        timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(setTime), userInfo: nil, repeats: true)
+    }
+    
+    func timerPasue(){
+        isPlayingButton.setImage(UIImage(systemName: "play.fill"), for: .normal)
+        isPlaying = false
+        timer?.invalidate()
+    }
+    
+    @objc func setTime(){
+        timerLabel.text = secondsToString(sec: count)
+        count += 1
+    }
+    
+    func secondsToString(sec: Double) -> String {
+        guard sec != 0 else { return "00 : 00" }
+        let totalSeconds = Int(sec)
+        let min = totalSeconds / 60
+        let seconds = totalSeconds % 60
+        print("\(min) : \(seconds)")
+        return String(format: "%02d : %02d", min, seconds)
     }
 }
 

@@ -46,6 +46,18 @@ extension SudokuViewController: UICollectionViewDelegateFlowLayout{
 
 class SudokuCell: UICollectionViewCell{
  
+    @IBOutlet weak var memoLabel1: UILabel!
+    @IBOutlet weak var memoLabel2: UILabel!
+    @IBOutlet weak var memoLabel3: UILabel!
+    @IBOutlet weak var memoLabel4: UILabel!
+    @IBOutlet weak var memoLabel5: UILabel!
+    @IBOutlet weak var memoLabel6: UILabel!
+    @IBOutlet weak var memoLabel7: UILabel!
+    @IBOutlet weak var memoLabel8: UILabel!
+    @IBOutlet weak var memoLabel9: UILabel!
+    
+    var memoLabels: [UILabel] = []
+    
     @IBOutlet weak var numLabel: UILabel!
     @IBOutlet weak var view: UIView!
     
@@ -80,11 +92,14 @@ class SudokuCell: UICollectionViewCell{
         
         view.layer.addBorder(edgeArr)
     }
+    
+    func setMemoLabel(){
+        memoLabels = [memoLabel1, memoLabel2,memoLabel3, memoLabel4, memoLabel5, memoLabel6, memoLabel7, memoLabel8, memoLabel9]
+    }
 }
 
 extension CALayer {
     func addBorder(_ arr_edge: [Int]) {
-        print(arr_edge)
         
         let boldWidth: CGFloat = 2 // 테두리 두께 2
         let basicWidth: CGFloat = 1 // 테두리 두께 1
