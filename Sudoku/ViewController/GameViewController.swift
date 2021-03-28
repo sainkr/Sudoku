@@ -13,6 +13,7 @@ class GameViewController: UIViewController {
     @IBOutlet weak var pauseButton: UIButton!
     @IBOutlet weak var timerLabel: UILabel!
     @IBOutlet weak var isPlayingButton: UIButton!
+    @IBOutlet weak var pauseView: UIView!
     
     @IBOutlet weak var numberCollectionView: UICollectionView!
     
@@ -61,6 +62,7 @@ extension GameViewController {
     
     func timerPlay(){
         isPlayingButton.setImage(UIImage(systemName: "pause.fill"), for: .normal)
+        pauseView.isHidden = true
         isPlaying = true
         // timeInterval : 간격, target : 동작될 View, selector : 실행할 함수, userInfo : 사용자 정보, repeates : 반복
         timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(setTime), userInfo: nil, repeats: true)
@@ -68,6 +70,8 @@ extension GameViewController {
     
     func timerPasue(){
         isPlayingButton.setImage(UIImage(systemName: "play.fill"), for: .normal)
+        pauseView.isHidden = false
+        
         isPlaying = false
         timer?.invalidate()
     }

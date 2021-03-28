@@ -10,8 +10,55 @@ import UIKit
 class SudokuViewController: UIViewController {
     @IBOutlet weak var collectionView: UICollectionView!
     
+    var sudokuViewModel = PBSudokuViewModel()
+    
+    var isSelected: [Bool] = [false,false,false,false,false,false,false,false,false,
+                              false,false,false,false,false,false,false,false,false,
+                              false,false,false,false,false,false,false,false,false,
+                              false,false,false,false,false,false,false,false,false,
+                              false,false,false,false,false,false,false,false,false,
+                              false,false,false,false,false,false,false,false,false,
+                              false,false,false,false,false,false,false,false,false,
+                              false,false,false,false,false,false,false,false,false,
+                              false,false,false,false,false,false,false,false,false,]
+                               
+    var first: Bool = true
+    
     override func viewDidLoad() {
+        
         super.viewDidLoad()
+        
+        sudokuViewModel.setLevel(level: 1)
+        // print(sudokuViewModel.game_sudoku)
+    }
+}
+
+extension SudokuViewController{
+    func resetisSelected(){
+        for i in 0..<81{
+            isSelected[i] = false
+        }
+    }
+    
+    func setisSelected(_ index: Int){
+        resetisSelected()
+        
+        let start_x = (index / 9) * 9
+        let end_x = start_x + 8
+        var y = index % 9
+        
+        for i in start_x...end_x{
+            isSelected[i] = true
+        }
+        
+        while y < 81 {
+            isSelected[y] = true
+            y += 9
+        }
+        
+        first = false
+        collectionView.reloadData()
+        // print(sudokuViewModel.game_sudoku)
     }
 }
 
@@ -23,8 +70,12 @@ extension SudokuViewController: UICollectionViewDataSource{
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SudokuCell", for: indexPath) as? SudokuCell else { return UICollectionViewCell() }
         
-        cell.updateUI(indexPath.item)
-        
+        if first {
+            cell.updateFirstUI(indexPath.item, sudokuViewModel.game_sudoku[indexPath.item / 9][indexPath.item % 9])
+        } else {
+            cell.updateUI(indexPath.item, sudokuViewModel.game_sudoku[indexPath.item / 9][indexPath.item % 9], isSelected[indexPath.item])
+        }
+        print(indexPath.item)
         return cell
     }
     
@@ -33,6 +84,7 @@ extension SudokuViewController: UICollectionViewDataSource{
 
 extension SudokuViewController: UICollectionViewDelegate{
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        setisSelected(indexPath.item)
     }
 }
 
@@ -61,8 +113,31 @@ class SudokuCell: UICollectionViewCell{
     @IBOutlet weak var numLabel: UILabel!
     @IBOutlet weak var view: UIView!
     
-    func updateUI(_ i : Int){
-        numLabel.text = String(i % 10)
+    func updateFirstUI(_ i : Int, _ sudokuNum: Int){
+        if sudokuNum > 0 {
+            numLabel.text = String(sudokuNum)
+        }
+        setEdge(i)
+    }
+    
+    func updateUI(_ i : Int,_ sudokuNum: Int, _ isSelect: Bool){
+        print(sudokuNum)
+        view.layer.sublayers = nil
+        if sudokuNum > 0 {
+            numLabel.text = String(sudokuNum)
+        }
+        setEdge(i)
+    }
+    
+    func setSelect(_ isSelect: Bool){
+        if isSelect{
+            view.backgroundColor = #colorLiteral(red: 0.9516713023, green: 0.3511439562, blue: 0.1586719155, alpha: 0.4391209609)
+        }else {
+            view.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        }
+    }
+    
+    func setEdge(_ i: Int){
         // 행 비교
         var edgeArr: [Int] = [0,0,0,0]
         // top bottom left right 순

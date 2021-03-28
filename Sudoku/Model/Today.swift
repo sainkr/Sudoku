@@ -62,4 +62,4 @@ class TodayManager {
         // Sun = 1, Mon = 2, Tue = 3 ...
         return weekDay - 1
     }
-    }
+}
