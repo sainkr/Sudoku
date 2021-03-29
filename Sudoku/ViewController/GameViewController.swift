@@ -24,6 +24,15 @@ class GameViewController: UIViewController {
     var count: Double = 0
     
     var isPlaying: Bool = true
+    
+    var cellisHidden: [Int] = [0,0,0,0,0,0,0,0,0]
+    
+    var sudokuViewModel = PBSudokuViewModel()
+    
+    var difficulty: Int = -1
+    
+    let ClickNumberNotification: Notification.Name = Notification.Name("ClickNumberNotification")
+    let CheckNumCountNotification: Notification.Name = Notification.Name("CheckNumCountNotification")
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "sudoku"{
@@ -38,13 +47,36 @@ class GameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        NotificationCenter.default.addObserver(self, selector: #selector(setNumberHidden(_:)), name: CheckNumCountNotification, object: nil)
+        
         timerPlay()
+        
+        for i in 1...9{
+            if sudokuViewModel.numCount[i] == 9 {
+                cellisHidden[i-1] = 1
+            }
+        }
+        
+        numberCollectionView.reloadData()
+        
+        if difficulty == 0 {
+            levelLabel.text = "쉬움"
+        } else if difficulty == 1 {
+            levelLabel.text = "보통"
+        } else {
+            levelLabel.text = "어려움"
+        }
+        
+        sudokuViewModel.setLevel(level: difficulty)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)
         timer?.invalidate()
     }
+}
+
+extension GameViewController {
     
     @IBAction func isPlayingButtonTapped(_ sender: Any) {
         if isPlaying {
@@ -53,9 +85,7 @@ class GameViewController: UIViewController {
             timerPlay()
         }
     }
-}
-
-extension GameViewController {
+    
     @IBAction func backButtonTapped(_ sender: Any) {
         dismiss(animated: false, completion: nil)
     }
@@ -86,8 +116,27 @@ extension GameViewController {
         let totalSeconds = Int(sec)
         let min = totalSeconds / 60
         let seconds = totalSeconds % 60
-        print("\(min) : \(seconds)")
         return String(format: "%02d : %02d", min, seconds)
+    }
+    
+    // 숫자 다썼으면 hidden 해주기
+    @objc func setNumberHidden(_ noti: Notification){
+        guard let num = noti.userInfo?["num"] as? Int else { return }
+        
+        cellisHidden[num-1] = 1
+        
+        var cnt = 0
+        for i in cellisHidden{
+            if i == 1 {
+                cnt += 1
+            }
+        }
+        
+        if cnt == 9 {
+            timerPasue()
+        }
+        
+        numberCollectionView.reloadData()
     }
 }
 
@@ -98,14 +147,26 @@ extension GameViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = numberCollectionView.dequeueReusableCell(withReuseIdentifier: "NumberCell", for: indexPath) as? NumberCell else { return UICollectionViewCell() }
-        cell.updateUI(indexPath.item + 1)
+        
+        if cellisHidden[indexPath.item] == 1 {
+            cell.updateHidden()
+        } else {
+            cell.updateUI(indexPath.item + 1)
+        }
+        
+        cell.clickButtonTapHandler = {
+            if self.cellisHidden[indexPath.item] == 0{
+                NotificationCenter.default.post(name: self.ClickNumberNotification, object: nil, userInfo: ["num" : indexPath.item + 1])
+            }
+        }
         
         return cell
     }
 }
 
 extension GameViewController: UICollectionViewDelegate{
-    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    }
 }
 
 extension GameViewController: UICollectionViewDelegateFlowLayout{
@@ -121,7 +182,17 @@ extension GameViewController: UICollectionViewDelegateFlowLayout{
 class NumberCell: UICollectionViewCell{
     @IBOutlet weak var numberButton: UIButton!
     
+    var clickButtonTapHandler: (() -> Void)?
+    
+    func updateHidden(){
+        numberButton.isHidden = true
+    }
+    
     func updateUI(_ num: Int){
         numberButton.setTitle(String(num), for: .normal)
+    }
+    
+    @IBAction func clickButtonTapped(_ sender: Any) {
+        clickButtonTapHandler?()
     }
 }

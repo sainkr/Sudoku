@@ -96,11 +96,32 @@ extension MainViewController {
     
     // 새 게임 버튼
     @IBAction func newGameButtonTapped(_ sender: Any) {
+        
         let gameStoryboard = UIStoryboard.init(name: "Game", bundle: nil)
         guard let gameVC = gameStoryboard.instantiateViewController(identifier: "GameViewController") as? GameViewController else { return }
         gameVC.modalPresentationStyle = .fullScreen
         
-        present(gameVC, animated: false, completion: nil)
+        let actionsheetConroller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        
+        let easy = UIAlertAction(title: "쉬움", style: .default) { action in
+            gameVC.difficulty = 0
+            self.present(gameVC, animated: true, completion: nil)
+        }
+        let medium = UIAlertAction(title: "보통", style: .default) { action in
+            gameVC.difficulty = 1
+            self.present(gameVC, animated: true, completion: nil)
+        }
+        let hard = UIAlertAction(title: "어려움", style: .default) { action in
+            gameVC.difficulty = 2
+            self.present(gameVC, animated: true, completion: nil)
+        }
+        
+        actionsheetConroller.addAction(easy)
+        actionsheetConroller.addAction(medium)
+        actionsheetConroller.addAction(hard)
+        
+        present(actionsheetConroller, animated: true)
+        
     }
     
     // 랭킹 버튼
@@ -131,7 +152,6 @@ extension MainViewController: UICollectionViewDataSource{
 
 extension MainViewController: UICollectionViewDelegate{
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
     }
 }
 

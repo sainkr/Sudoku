@@ -11,6 +11,9 @@ class OptionViewController: UIViewController {
 
     @IBOutlet weak var collectionView: UICollectionView!
     
+    let OptionNotification: Notification.Name = Notification.Name("OptionNotification")
+    var memoSelect = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -24,7 +27,7 @@ extension OptionViewController: UICollectionViewDataSource{
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "OptionCell", for: indexPath) as? OptionCell else { return UICollectionViewCell() }
         
-        cell.updateUI(indexPath.item)
+        cell.updateUI(indexPath.item, memoSelect)
         
         return cell
     }
@@ -32,7 +35,16 @@ extension OptionViewController: UICollectionViewDataSource{
 
 extension OptionViewController: UICollectionViewDelegate{
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if indexPath.item == 2 {
+            if memoSelect {
+                memoSelect = false
+            } else {
+                memoSelect = true
+            }
+            collectionView.reloadData()
+        }
         
+        NotificationCenter.default.post(name: OptionNotification, object: nil, userInfo: ["optionNum":indexPath.item])
     }
 }
 
@@ -52,8 +64,13 @@ class OptionCell: UICollectionViewCell{
     let optionImage: [String] = ["arrow.counterclockwise","trash", "highlighter", "lightbulb"]
     let optionLabel: [String] = ["실행 취소", "지우기", "메모", "힌트"]
     
-    func updateUI(_ i: Int){
+    func updateUI(_ i: Int, _ memoSelect: Bool){
         imageView.image = UIImage(systemName: optionImage[i])
+        if i == 2 && memoSelect{
+            imageView.tintColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
+        } else {
+            imageView.tintColor = #colorLiteral(red: 0.9516713023, green: 0.3511439562, blue: 0.1586719155, alpha: 1)
+        }
         label.text = optionLabel[i]
         
         // imageView.tintColor =
