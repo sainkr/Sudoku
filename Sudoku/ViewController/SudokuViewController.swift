@@ -11,21 +11,12 @@ class SudokuViewController: UIViewController {
     @IBOutlet weak var collectionView: UICollectionView!
     
     var sudokuViewModel = PBSudokuViewModel()
+    var myGameViewModel = MyGameViewModel()
     
     let ClickNumberNotification: Notification.Name = Notification.Name("ClickNumberNotification")
     let OptionNotification: Notification.Name = Notification.Name("OptionNotification")
     let CheckNumCountNotification: Notification.Name = Notification.Name("CheckNumCountNotification")
     
-    var isSelected: [Bool] = [false,false,false,false,false,false,false,false,false,
-                              false,false,false,false,false,false,false,false,false,
-                              false,false,false,false,false,false,false,false,false,
-                              false,false,false,false,false,false,false,false,false,
-                              false,false,false,false,false,false,false,false,false,
-                              false,false,false,false,false,false,false,false,false,
-                              false,false,false,false,false,false,false,false,false,
-                              false,false,false,false,false,false,false,false,false,
-                              false,false,false,false,false,false,false,false,false,]
-    var memoArr: [[Int]] = []
     var isMemoSelected = false
     var memoNum = -1
     
@@ -37,17 +28,14 @@ class SudokuViewController: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.clickNumberNotification(_:)), name: ClickNumberNotification , object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.optionNotification(_:)), name: OptionNotification, object: nil)
-        // sudokuViewModel.setLevel(level: 1)
-        for _ in 0...80{
-            memoArr.append([0,0,0,0,0,0,0,0,0])
-        }
+        
     }
 }
 
 extension SudokuViewController{
     func resetisSelected(){
         for i in 0..<81{
-            isSelected[i] = false
+            sudokuViewModel.setisSelcted(i, false)
         }
     }
     
@@ -79,18 +67,18 @@ extension SudokuViewController{
 
         for i in rectX...(rectX+2){
             for j in 0..<3{
-                isSelected[9 * i + rectY + j] = true
+                sudokuViewModel.setisSelcted(9 * i + rectY + j, true)
             }
         }
         
         // 행
         for i in start_x...end_x{
-            isSelected[i] = true
+            sudokuViewModel.setisSelcted(i, true)
         }
         
         // 열
         while y < 81 {
-            isSelected[y] = true
+            sudokuViewModel.setisSelcted(y, true)
             y += 9
         }
         
@@ -107,7 +95,7 @@ extension SudokuViewController{
         if isMemoSelected{
             if sudokuViewModel.game_sudoku[clickIndex[0]][clickIndex[1]] != sudokuViewModel.original_sudoku[clickIndex[0]][clickIndex[1]]{
                 if sudokuViewModel.game_sudoku[clickIndex[0]][clickIndex[1]] == 0 {
-                    memoArr[clickIndex[2]][num - 1] = 1
+                    sudokuViewModel.setMemoArr(clickIndex[2], num - 1, 1)
                     memoNum = num - 1
                 }
             }
@@ -119,7 +107,7 @@ extension SudokuViewController{
                     if num == sudokuViewModel.original_sudoku[clickIndex[0]][clickIndex[1]]{
                         sudokuViewModel.setNumCount(num)
                         if sudokuViewModel.numCount[num] == 9 {
-                            NotificationCenter.default.post(name: CheckNumCountNotification, object: nil, userInfo: ["num": num])
+                            NotificationCenter.default.post(name: CheckNumCountNotification, object: nil, userInfo: nil)
                         }
                     }
                 }
@@ -139,7 +127,7 @@ extension SudokuViewController{
             if optionNum == 0 { // 실행 취소
                 if isMemoSelected{
                     if memoNum > 0 {
-                        memoArr[clickIndex[2]][memoNum] = 0
+                        sudokuViewModel.setMemoArr(clickIndex[2], memoNum, 0)
                     }
                 } else {
                     if sudokuViewModel.game_sudoku[clickIndex[0]][clickIndex[1]] != sudokuViewModel.original_sudoku[clickIndex[0]][clickIndex[1]]{
@@ -150,7 +138,7 @@ extension SudokuViewController{
                 }
             } else if optionNum == 1{ // 지우기
                 if isMemoSelected{
-                    memoArr[clickIndex[2]] = [0,0,0,0,0,0,0,0,0]
+                    sudokuViewModel.setMemoArr(clickIndex[2], [0,0,0,0,0,0,0,0,0])
                 } else {
                     if sudokuViewModel.game_sudoku[clickIndex[0]][clickIndex[1]] != sudokuViewModel.original_sudoku[clickIndex[0]][clickIndex[1]]{
                         if sudokuViewModel.game_sudoku[clickIndex[0]][clickIndex[1]] != 0 {
@@ -169,8 +157,9 @@ extension SudokuViewController{
                 if sudokuViewModel.game_sudoku[clickIndex[0]][clickIndex[1]] != sudokuViewModel.original_sudoku[clickIndex[0]][clickIndex[1]]{
                     sudokuViewModel.setGameSudoku(sudokuViewModel.original_sudoku[clickIndex[0]][clickIndex[1]], clickIndex[0], clickIndex[1])
                     sudokuViewModel.setNumCount(sudokuViewModel.original_sudoku[clickIndex[0]][clickIndex[1]])
+                    
                     if sudokuViewModel.numCount[sudokuViewModel.original_sudoku[clickIndex[0]][clickIndex[1]]] == 9 {
-                        NotificationCenter.default.post(name: CheckNumCountNotification, object: nil, userInfo: ["num": sudokuViewModel.original_sudoku[clickIndex[0]][clickIndex[1]]])
+                        NotificationCenter.default.post(name: CheckNumCountNotification, object: nil, userInfo: nil)
                     }
                 }
             }
@@ -191,7 +180,7 @@ extension SudokuViewController: UICollectionViewDataSource{
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SudokuCell", for: indexPath) as? SudokuCell else { return UICollectionViewCell() }
         
         
-        cell.updateMemoUI(memoArr[indexPath.item])
+        cell.updateMemoUI(sudokuViewModel.memoArr[indexPath.item])
     
         var textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         if sudokuViewModel.game_sudoku[indexPath.item / 9][indexPath.item % 9] != sudokuViewModel.original_sudoku[indexPath.item / 9][indexPath.item % 9]{
@@ -199,7 +188,7 @@ extension SudokuViewController: UICollectionViewDataSource{
                 textColor = UIColor.red
             }
         }
-        cell.updateUI(indexPath.item, sudokuViewModel.game_sudoku[indexPath.item / 9][indexPath.item % 9], isSelected[indexPath.item], textColor)
+        cell.updateUI(indexPath.item, sudokuViewModel.game_sudoku[indexPath.item / 9][indexPath.item % 9], sudokuViewModel.isSeleted[indexPath.item], textColor)
         
         
         return cell

@@ -10,16 +10,16 @@ import Foundation
 class TodayViewModel {
     private let manager = TodayManager.shared
     
-    var todayYear: Int {
-        return manager.todayYear
+    var yearOfToday: Int {
+        return manager.yearOfToday
     }
     
-    var todayMonth: Int {
-        return manager.todayMonth
+    var monthOfToday: Int {
+        return manager.monthOfToday
     }
     
-    var todayDay: Int {
-        return manager.todayDay
+    var dayOfToday: Int {
+        return manager.dayOfToday
     }
 
     func getDate() -> String {

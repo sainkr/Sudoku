@@ -19,6 +19,9 @@ class MainViewController: UIViewController {
     @IBOutlet weak var nextMonthButton: UIButton!
     
     var todayViewModel = TodayViewModel()
+    var myGameViewModel = MyGameViewModel()
+    var sudokuViewModel = PBSudokuViewModel()
+    
     var currentYear: Int = 0
     var currentMonth: Int = 0
     var currentDay: Int = 0
@@ -27,11 +30,20 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setCurrentCalendar(todayViewModel.todayYear, todayViewModel.todayMonth)
+        setCurrentCalendar(todayViewModel.yearOfToday, todayViewModel.monthOfToday)
         
         setView()
+        
+        myGameViewModel.retriveMyGame()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        
+        if myGameViewModel.myGame.level != -1 {
+            myGameViewModel.retriveMyGame()
+        }
+    }
     func setView(){
         // 오늘 날짜 설정
         todayDateLabel.text = todayViewModel.getDate()
@@ -58,9 +70,9 @@ class MainViewController: UIViewController {
             currentMonth = month
         }
         
-        if year == todayViewModel.todayYear && month == todayViewModel.todayMonth{
+        if year == todayViewModel.yearOfToday && month == todayViewModel.monthOfToday{
             nextMonthButton.isHidden = true
-            currentDay = todayViewModel.todayDay
+            currentDay = todayViewModel.dayOfToday
         }else {
             nextMonthButton.isHidden = false
             currentDay = 32
@@ -91,37 +103,16 @@ extension MainViewController {
     
     // 이어하기 버튼
     @IBAction func continueButtonTapped(_ sender: Any) {
-        
+        if myGameViewModel.myGame.level > -1 {
+            continueGame()
+        } else {
+            newGame()
+        }
     }
     
     // 새 게임 버튼
     @IBAction func newGameButtonTapped(_ sender: Any) {
-        
-        let gameStoryboard = UIStoryboard.init(name: "Game", bundle: nil)
-        guard let gameVC = gameStoryboard.instantiateViewController(identifier: "GameViewController") as? GameViewController else { return }
-        gameVC.modalPresentationStyle = .fullScreen
-        
-        let actionsheetConroller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        
-        let easy = UIAlertAction(title: "쉬움", style: .default) { action in
-            gameVC.difficulty = 0
-            self.present(gameVC, animated: true, completion: nil)
-        }
-        let medium = UIAlertAction(title: "보통", style: .default) { action in
-            gameVC.difficulty = 1
-            self.present(gameVC, animated: true, completion: nil)
-        }
-        let hard = UIAlertAction(title: "어려움", style: .default) { action in
-            gameVC.difficulty = 2
-            self.present(gameVC, animated: true, completion: nil)
-        }
-        
-        actionsheetConroller.addAction(easy)
-        actionsheetConroller.addAction(medium)
-        actionsheetConroller.addAction(hard)
-        
-        present(actionsheetConroller, animated: true)
-        
+        newGame()
     }
     
     // 랭킹 버튼
@@ -132,6 +123,44 @@ extension MainViewController {
     // 환경설정 버튼
     @IBAction func setupButtonTapped(_ sender: Any) {
         
+    }
+    
+    func continueGame(){
+        sudokuViewModel.setSudoku(myGameViewModel.myGame)
+        let gameStoryboard = UIStoryboard.init(name: "Game", bundle: nil)
+        guard let gameVC = gameStoryboard.instantiateViewController(identifier: "GameViewController") as? GameViewController else { return }
+        gameVC.modalPresentationStyle = .fullScreen
+        self.present(gameVC, animated: true, completion: nil)
+    }
+    
+    func newGame(){
+        
+        let gameStoryboard = UIStoryboard.init(name: "Game", bundle: nil)
+        guard let gameVC = gameStoryboard.instantiateViewController(identifier: "GameViewController") as? GameViewController else { return }
+        gameVC.modalPresentationStyle = .fullScreen
+        
+        let actionsheetConroller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        
+        let easy = UIAlertAction(title: "쉬움", style: .default) { action in
+            self.sudokuViewModel.setLevel(level: 0)
+            self.present(gameVC, animated: true, completion: nil)
+        }
+        let medium = UIAlertAction(title: "보통", style: .default) { action in
+            self.sudokuViewModel.setLevel(level: 1)
+            self.present(gameVC, animated: true, completion: nil)
+        }
+        let hard = UIAlertAction(title: "어려움", style: .default) { action in
+            self.sudokuViewModel.setLevel(level: 2)
+            self.present(gameVC, animated: true, completion: nil)
+        }
+        let actionCancel = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+        
+        actionsheetConroller.addAction(easy)
+        actionsheetConroller.addAction(medium)
+        actionsheetConroller.addAction(hard)
+        actionsheetConroller.addAction(actionCancel)
+        
+        present(actionsheetConroller, animated: true)
     }
 }
 

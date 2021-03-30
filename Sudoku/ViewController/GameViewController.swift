@@ -21,15 +21,12 @@ class GameViewController: UIViewController {
     var optionViewController: OptionViewController!
     
     var timer: Timer?
-    var count: Double = 0
+    var timeCount: Double = 0
     
     var isPlaying: Bool = true
     
-    var cellisHidden: [Int] = [0,0,0,0,0,0,0,0,0]
-    
     var sudokuViewModel = PBSudokuViewModel()
-    
-    var difficulty: Int = -1
+    var myGameViewModel = MyGameViewModel()
     
     let ClickNumberNotification: Notification.Name = Notification.Name("ClickNumberNotification")
     let CheckNumCountNotification: Notification.Name = Notification.Name("CheckNumCountNotification")
@@ -51,28 +48,22 @@ class GameViewController: UIViewController {
         
         timerPlay()
         
-        for i in 1...9{
-            if sudokuViewModel.numCount[i] == 9 {
-                cellisHidden[i-1] = 1
-            }
-        }
-        
         numberCollectionView.reloadData()
         
-        if difficulty == 0 {
+        if sudokuViewModel.level == 0 {
             levelLabel.text = "쉬움"
-        } else if difficulty == 1 {
+        } else if sudokuViewModel.level == 1 {
             levelLabel.text = "보통"
         } else {
             levelLabel.text = "어려움"
         }
-        
-        sudokuViewModel.setLevel(level: difficulty)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)
         timer?.invalidate()
+        // 저장
+        myGameViewModel.saveMyGame(MyGame(level: sudokuViewModel.level, game_sudoku: sudokuViewModel.game_sudoku, original_sudoku: sudokuViewModel.original_sudoku, time: timeCount, isSelected: sudokuViewModel.isSeleted, memoArr: sudokuViewModel.memoArr, numCount: sudokuViewModel.numCount))
     }
 }
 
@@ -81,8 +72,10 @@ extension GameViewController {
     @IBAction func isPlayingButtonTapped(_ sender: Any) {
         if isPlaying {
             timerPasue()
+            pauseView.isHidden = true
         } else {
             timerPlay()
+            pauseView.isHidden = false
         }
     }
     
@@ -92,7 +85,6 @@ extension GameViewController {
     
     func timerPlay(){
         isPlayingButton.setImage(UIImage(systemName: "pause.fill"), for: .normal)
-        pauseView.isHidden = true
         isPlaying = true
         // timeInterval : 간격, target : 동작될 View, selector : 실행할 함수, userInfo : 사용자 정보, repeates : 반복
         timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(setTime), userInfo: nil, repeats: true)
@@ -100,15 +92,14 @@ extension GameViewController {
     
     func timerPasue(){
         isPlayingButton.setImage(UIImage(systemName: "play.fill"), for: .normal)
-        pauseView.isHidden = false
         
         isPlaying = false
         timer?.invalidate()
     }
     
     @objc func setTime(){
-        timerLabel.text = secondsToString(sec: count)
-        count += 1
+        timerLabel.text = secondsToString(sec: timeCount)
+        timeCount += 1
     }
     
     func secondsToString(sec: Double) -> String {
@@ -121,22 +112,17 @@ extension GameViewController {
     
     // 숫자 다썼으면 hidden 해주기
     @objc func setNumberHidden(_ noti: Notification){
-        guard let num = noti.userInfo?["num"] as? Int else { return }
-        
-        cellisHidden[num-1] = 1
-        
-        var cnt = 0
-        for i in cellisHidden{
-            if i == 1 {
-                cnt += 1
+        numberCollectionView.reloadData()
+        for i in sudokuViewModel.numCount{
+            if i < 9 {
+                return
             }
         }
-        
-        if cnt == 9 {
-            timerPasue()
-        }
-        
-        numberCollectionView.reloadData()
+        timerPasue()
+    }
+    
+    func saveGame(){
+      
     }
 }
 
@@ -148,14 +134,14 @@ extension GameViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = numberCollectionView.dequeueReusableCell(withReuseIdentifier: "NumberCell", for: indexPath) as? NumberCell else { return UICollectionViewCell() }
         
-        if cellisHidden[indexPath.item] == 1 {
+        if sudokuViewModel.numCount[indexPath.item + 1] == 1 {
             cell.updateHidden()
         } else {
             cell.updateUI(indexPath.item + 1)
         }
         
         cell.clickButtonTapHandler = {
-            if self.cellisHidden[indexPath.item] == 0{
+            if self.sudokuViewModel.numCount[indexPath.item + 1] < 9{
                 NotificationCenter.default.post(name: self.ClickNumberNotification, object: nil, userInfo: ["num" : indexPath.item + 1])
             }
         }

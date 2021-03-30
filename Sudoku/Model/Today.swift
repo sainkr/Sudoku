@@ -10,22 +10,22 @@ import Foundation
 class TodayManager {
     static let shared = TodayManager()
     
-    var todayYear: Int {
+    var yearOfToday: Int {
         return Calendar.current.component(.year, from: Date())
     }
     
-    var todayMonth: Int {
+    var monthOfToday: Int {
         return Calendar.current.component(.month, from: Date())
     }
     
-    var todayDay: Int {
+    var dayOfToday: Int {
         return Calendar.current.component(.day, from: Date())
     }
     
     var numOfDaysInMonth: [Int] = [31, 30, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
     func getDate() -> String {
-        return "\(todayYear)년 \(todayMonth)월 \(todayDay)일"
+        return "\(yearOfToday)년 \(monthOfToday)월 \(dayOfToday)일"
     }
 
     func setupCalendar(_ currentYear: Int, _ currentMonth: Int) -> [Int]{
