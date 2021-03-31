@@ -211,6 +211,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="beforeMonthButton" destination="ohC-Oj-q4C" id="JIS-hi-H0D"/>
                         <outlet property="calendarView" destination="jrA-MS-i5h" id="h2Q-X0-Hkb"/>
                         <outlet property="collectionView" destination="5m3-36-iWv" id="HAs-Dt-5kd"/>
                         <outlet property="continueButton" destination="amk-KS-zS7" id="Tjb-1h-lRb"/>

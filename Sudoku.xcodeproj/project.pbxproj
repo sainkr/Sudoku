@@ -14,10 +14,8 @@
 		3621AD4D25FA60BD00C3E456 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3621AD4B25FA60BD00C3E456 /* LaunchScreen.storyboard */; };
 		3621AD5825FA60BD00C3E456 /* SudokuTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3621AD5725FA60BD00C3E456 /* SudokuTests.swift */; };
 		3621AD6325FA60BD00C3E456 /* SudokuUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3621AD6225FA60BD00C3E456 /* SudokuUITests.swift */; };
-		363D4B0626133210005A6E45 /* TodayGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363D4B0526133210005A6E45 /* TodayGame.swift */; };
 		363D4B0B26133217005A6E45 /* MyGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363D4B0A26133217005A6E45 /* MyGame.swift */; };
 		363D4B1026133419005A6E45 /* MyGameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363D4B0F26133419005A6E45 /* MyGameViewModel.swift */; };
-		363D4B152613360F005A6E45 /* TodayGameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363D4B142613360F005A6E45 /* TodayGameViewModel.swift */; };
 		3650D5FC2612F78000D88421 /* InnerDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3650D5FB2612F78000D88421 /* InnerDB.swift */; };
 		3660148E2608C32900BC8578 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3660148D2608C32900BC8578 /* MainViewController.swift */; };
 		366014962608C54800BC8578 /* Today.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366014952608C54800BC8578 /* Today.swift */; };
@@ -28,6 +26,8 @@
 		36DF6CE62610BFB3000B9D49 /* PBSudoku.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36DF6CE42610BFB3000B9D49 /* PBSudoku.swift */; };
 		36DF6CE72610BFB3000B9D49 /* PBSudokuManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36DF6CE52610BFB3000B9D49 /* PBSudokuManager.swift */; };
 		36DF6CF42610C0C5000B9D49 /* PBSudokuViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36DF6CF32610C0C5000B9D49 /* PBSudokuViewModel.swift */; };
+		36F46BF62614A79900DDFA82 /* TodayGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36F46BF52614A79900DDFA82 /* TodayGame.swift */; };
+		36F46BFB2614A7CD00DDFA82 /* TodayGameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36F46BFA2614A7CD00DDFA82 /* TodayGameViewModel.swift */; };
 		36F4E75A260C710F00987174 /* OptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36F4E759260C710F00987174 /* OptionViewController.swift */; };
 		36F4E75F260C711600987174 /* SudokuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36F4E75E260C711600987174 /* SudokuViewController.swift */; };
 /* End PBXBuildFile section */
@@ -63,10 +63,8 @@
 		3621AD5E25FA60BD00C3E456 /* SudokuUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SudokuUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3621AD6225FA60BD00C3E456 /* SudokuUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SudokuUITests.swift; sourceTree = "<group>"; };
 		3621AD6425FA60BD00C3E456 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		363D4B0526133210005A6E45 /* TodayGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayGame.swift; sourceTree = "<group>"; };
 		363D4B0A26133217005A6E45 /* MyGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyGame.swift; sourceTree = "<group>"; };
 		363D4B0F26133419005A6E45 /* MyGameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyGameViewModel.swift; sourceTree = "<group>"; };
-		363D4B142613360F005A6E45 /* TodayGameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayGameViewModel.swift; sourceTree = "<group>"; };
 		3650D5FB2612F78000D88421 /* InnerDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InnerDB.swift; sourceTree = "<group>"; };
 		366014852608BBD400BC8578 /* BMHANNAProOTF.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = BMHANNAProOTF.otf; path = ../../BMHANNAProOTF.otf; sourceTree = "<group>"; };
 		3660148D2608C32900BC8578 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
@@ -77,6 +75,8 @@
 		36DF6CE42610BFB3000B9D49 /* PBSudoku.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PBSudoku.swift; path = ../../../../PBSudoku/PBSudoku/Classes/PBSudoku.swift; sourceTree = "<group>"; };
 		36DF6CE52610BFB3000B9D49 /* PBSudokuManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PBSudokuManager.swift; path = ../../../../PBSudoku/PBSudoku/Classes/PBSudokuManager.swift; sourceTree = "<group>"; };
 		36DF6CF32610C0C5000B9D49 /* PBSudokuViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PBSudokuViewModel.swift; sourceTree = "<group>"; };
+		36F46BF52614A79900DDFA82 /* TodayGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayGame.swift; sourceTree = "<group>"; };
+		36F46BFA2614A7CD00DDFA82 /* TodayGameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayGameViewModel.swift; sourceTree = "<group>"; };
 		36F4E759260C710F00987174 /* OptionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionViewController.swift; sourceTree = "<group>"; };
 		36F4E75E260C711600987174 /* SudokuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SudokuViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -168,7 +168,7 @@
 				366014A32608C66000BC8578 /* TodayViewModel.swift */,
 				36DF6CF32610C0C5000B9D49 /* PBSudokuViewModel.swift */,
 				363D4B0F26133419005A6E45 /* MyGameViewModel.swift */,
-				363D4B142613360F005A6E45 /* TodayGameViewModel.swift */,
+				36F46BFA2614A7CD00DDFA82 /* TodayGameViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -188,8 +188,8 @@
 			isa = PBXGroup;
 			children = (
 				366014952608C54800BC8578 /* Today.swift */,
-				363D4B0526133210005A6E45 /* TodayGame.swift */,
 				363D4B0A26133217005A6E45 /* MyGame.swift */,
+				36F46BF52614A79900DDFA82 /* TodayGame.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -348,14 +348,14 @@
 				36DF6CE72610BFB3000B9D49 /* PBSudokuManager.swift in Sources */,
 				363D4B0B26133217005A6E45 /* MyGame.swift in Sources */,
 				3660148E2608C32900BC8578 /* MainViewController.swift in Sources */,
-				363D4B0626133210005A6E45 /* TodayGame.swift in Sources */,
 				3650D5FC2612F78000D88421 /* InnerDB.swift in Sources */,
 				3621AD4125FA60BD00C3E456 /* AppDelegate.swift in Sources */,
 				366014A42608C66000BC8578 /* TodayViewModel.swift in Sources */,
 				3621AD4325FA60BD00C3E456 /* SceneDelegate.swift in Sources */,
 				363D4B1026133419005A6E45 /* MyGameViewModel.swift in Sources */,
+				36F46BF62614A79900DDFA82 /* TodayGame.swift in Sources */,
 				36F4E75A260C710F00987174 /* OptionViewController.swift in Sources */,
-				363D4B152613360F005A6E45 /* TodayGameViewModel.swift in Sources */,
+				36F46BFB2614A7CD00DDFA82 /* TodayGameViewModel.swift in Sources */,
 				36B0FE332609DE7000A458FE /* GameViewController.swift in Sources */,
 				36DF6CF42610C0C5000B9D49 /* PBSudokuViewModel.swift in Sources */,
 				366014962608C54800BC8578 /* Today.swift in Sources */,

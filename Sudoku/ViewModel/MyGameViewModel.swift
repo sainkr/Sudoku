@@ -15,10 +15,14 @@ class MyGameViewModel{
     }
     
     public func saveMyGame(_ myGame: MyGame){
-        return manager.saveMyGame(myGame)
+        manager.saveMyGame(myGame)
     }
     
     public func retriveMyGame(){
-        return manager.retriveMyGame()
+        manager.retriveMyGame()
+    }
+    
+    public func clearMyGame(){
+        manager.clearMyGame()
     }
 }

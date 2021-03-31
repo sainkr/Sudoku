@@ -25,11 +25,14 @@ class PBSudokuViewModel{
     var blankCount: Int {
         return manager.blankCount
     }
-    var isSeleted: [Bool]{
+    var isSeleted: [Int]{
         return manager.isSelected
     }
     var memoArr: [[Int]]{
         return manager.memoArr
+    }
+    var missCount: Int{
+        return manager.missCount
     }
     
     func setLevel(level : Int){
@@ -40,16 +43,20 @@ class PBSudokuViewModel{
         manager.setGameSudoku(num, x, y)
     }
     
-    func setNumCount(_ i: Int){
-        manager.setNumCount(i)
+    func setNumCount(){
+        manager.setNumCount()
     }
     
     func setBlankCount(){
         manager.setBlankCount()
     }
     
-    func setisSelcted(_ i: Int, _ value: Bool){
-        manager.setisSelcted(i, value)
+    func resetisSelected(){
+        manager.resetisSelected()
+    }
+    
+    func setisSelcted(_ i: Int, _ value: Int){
+        manager.setisSelected(i, value)
     }
     
     func setMemoArr(_ i: Int, _ j: Int,_  value: Int){
@@ -62,5 +69,9 @@ class PBSudokuViewModel{
     
     func setSudoku(_ myGame: MyGame){
         manager.setSudoku(myGame)
+    }
+    
+    func setMissCount(){
+        manager.setMissCount()
     }
 }

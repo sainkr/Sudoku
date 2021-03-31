@@ -17,10 +17,12 @@ class MainViewController: UIViewController {
     @IBOutlet weak var continueButton: UIButton!
     @IBOutlet weak var newGameButton: UIButton!
     @IBOutlet weak var nextMonthButton: UIButton!
+    @IBOutlet weak var beforeMonthButton: UIButton!
     
     var todayViewModel = TodayViewModel()
     var myGameViewModel = MyGameViewModel()
     var sudokuViewModel = PBSudokuViewModel()
+    var todayGameViewModel = TodayGameViewModel()
     
     var currentYear: Int = 0
     var currentMonth: Int = 0
@@ -35,14 +37,16 @@ class MainViewController: UIViewController {
         setView()
         
         myGameViewModel.retriveMyGame()
+        todayGameViewModel.retriveTodayGame()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
-        if myGameViewModel.myGame.level != -1 {
-            myGameViewModel.retriveMyGame()
-        }
+        myGameViewModel = MyGameViewModel()
+        
+        myGameViewModel.retriveMyGame()
+        
     }
     func setView(){
         // 오늘 날짜 설정
@@ -58,6 +62,7 @@ class MainViewController: UIViewController {
     }
     
     func setCurrentCalendar(_ year : Int, _ month: Int){
+        
         if month == 0 {
             currentYear = year - 1
             currentMonth = 12
@@ -70,12 +75,19 @@ class MainViewController: UIViewController {
             currentMonth = month
         }
         
+        // 이번년도만
         if year == todayViewModel.yearOfToday && month == todayViewModel.monthOfToday{
             nextMonthButton.isHidden = true
             currentDay = todayViewModel.dayOfToday
         }else {
             nextMonthButton.isHidden = false
             currentDay = 32
+        }
+        
+        if month == 1{
+            beforeMonthButton.isHidden = true
+        }else{
+            beforeMonthButton.isHidden = false
         }
         
         currentCalendarDay = todayViewModel.getCalendar(currentYear, currentMonth)
@@ -98,12 +110,25 @@ extension MainViewController {
     
     // 오늘의 게임 버튼
     @IBAction func todayGameButtonTapped(_ sender: Any) {
+        let todayDate = "\(todayViewModel.yearOfToday)\(todayViewModel.monthOfToday)\(todayViewModel.dayOfToday)"
+    
+        if todayGameViewModel.todayGame.today == todayDate {
+            if todayGameViewModel.todayGame.level > -1 && todayGameViewModel.todayGame.missCount < 3 {
+                sudokuViewModel.setSudoku(MyGame(level: todayGameViewModel.todayGame.level, game_sudoku: todayGameViewModel.todayGame.game_sudoku, original_sudoku: todayGameViewModel.todayGame.original_sudoku, time: todayGameViewModel.todayGame.time , memoArr: todayGameViewModel.todayGame.memoArr, numCount: todayGameViewModel.todayGame.numCount, missCount: todayGameViewModel.todayGame.missCount))
+               todayGame()
+            }
+        }else {
+            todayGameViewModel.setToday(todayDate)
+            self.sudokuViewModel.setLevel(level: Int(arc4random_uniform(3)))
+            todayGame()
+        }
         
     }
     
     // 이어하기 버튼
     @IBAction func continueButtonTapped(_ sender: Any) {
-        if myGameViewModel.myGame.level > -1 {
+        print("---> \(myGameViewModel.myGame)")
+        if myGameViewModel.myGame.level > -1 && myGameViewModel.myGame.missCount < 3{
             continueGame()
         } else {
             newGame()
@@ -125,6 +150,14 @@ extension MainViewController {
         
     }
     
+    func todayGame(){
+        let gameStoryboard = UIStoryboard.init(name: "Game", bundle: nil)
+        guard let gameVC = gameStoryboard.instantiateViewController(identifier: "GameViewController") as? GameViewController else { return }
+        gameVC.modalPresentationStyle = .fullScreen
+        gameVC.gameType = 1
+        self.present(gameVC, animated: true, completion: nil)
+    }
+    
     func continueGame(){
         sudokuViewModel.setSudoku(myGameViewModel.myGame)
         let gameStoryboard = UIStoryboard.init(name: "Game", bundle: nil)
@@ -134,7 +167,6 @@ extension MainViewController {
     }
     
     func newGame(){
-        
         let gameStoryboard = UIStoryboard.init(name: "Game", bundle: nil)
         guard let gameVC = gameStoryboard.instantiateViewController(identifier: "GameViewController") as? GameViewController else { return }
         gameVC.modalPresentationStyle = .fullScreen
@@ -173,7 +205,11 @@ extension MainViewController: UICollectionViewDataSource{
         
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CalendarCell", for: indexPath) as? CalendarCell else { return UICollectionViewCell() }
         
-        cell.updateUI(currentCalendarDay[indexPath.item], currentDay)
+        var isToday = false
+        if currentMonth == todayViewModel.monthOfToday && currentDay == currentCalendarDay[indexPath.item]{
+            isToday = true
+        }
+        cell.updateUI(currentCalendarDay[indexPath.item], currentDay, isToday)
         
         return cell
     }
@@ -197,7 +233,7 @@ class CalendarCell: UICollectionViewCell{
     @IBOutlet weak var dayLabel: UILabel!
     @IBOutlet weak var view: UIView!
     
-    func updateUI(_ day: Int, _ currentDay: Int){
+    func updateUI(_ day: Int, _ currentDay: Int, _ isToday: Bool){
         if day > 0 {
             dayLabel.text = "\(day)"
         }else {
@@ -209,6 +245,12 @@ class CalendarCell: UICollectionViewCell{
         }
         else {
             dayLabel.textColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
+        }
+        
+        if isToday{
+            updateBackground()
+        }else {
+            view.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         }
     }
     

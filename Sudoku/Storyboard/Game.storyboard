@@ -38,6 +38,15 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="실수 0 / 3" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sI8-ax-Pee">
+                                <rect key="frame" x="167.66666666666666" y="104" width="92.666666666666657" height="22"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="92.666666666666657" id="FU7-RM-hog"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="BMHANNAProOTF" family="BM HANNA Pro OTF" pointSize="22"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00 : 00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gG0-ln-Hn3">
                                 <rect key="frame" x="299" y="103" width="80" height="23"/>
                                 <constraints>
@@ -147,6 +156,7 @@
                         <constraints>
                             <constraint firstItem="xPk-hJ-kMg" firstAttribute="leading" secondItem="qWu-Gf-bWN" secondAttribute="leading" id="8eg-0c-Xqd"/>
                             <constraint firstItem="dcJ-7c-xdL" firstAttribute="top" secondItem="9Hv-0G-o5i" secondAttribute="top" constant="10" id="EI2-pJ-R7S"/>
+                            <constraint firstItem="sI8-ax-Pee" firstAttribute="centerX" secondItem="9Hv-0G-o5i" secondAttribute="centerX" id="EZd-Eq-xMo"/>
                             <constraint firstItem="qWu-Gf-bWN" firstAttribute="top" secondItem="sr4-6i-A3f" secondAttribute="bottom" constant="10" id="HjQ-om-KUi"/>
                             <constraint firstItem="qwL-dN-kv3" firstAttribute="leading" secondItem="9Hv-0G-o5i" secondAttribute="leading" constant="5" id="JOa-Ee-1fb"/>
                             <constraint firstItem="bLN-Cb-b5L" firstAttribute="leading" secondItem="9Hv-0G-o5i" secondAttribute="leading" constant="5" id="Jde-rP-L5q"/>
@@ -162,6 +172,7 @@
                             <constraint firstItem="xPk-hJ-kMg" firstAttribute="trailing" secondItem="qWu-Gf-bWN" secondAttribute="trailing" id="lgI-4t-pVM"/>
                             <constraint firstItem="9Hv-0G-o5i" firstAttribute="trailing" secondItem="bLN-Cb-b5L" secondAttribute="trailing" constant="5" id="o2N-hu-4Ew"/>
                             <constraint firstItem="qwL-dN-kv3" firstAttribute="top" secondItem="bLN-Cb-b5L" secondAttribute="bottom" constant="30" id="oGq-nI-778"/>
+                            <constraint firstItem="xPk-hJ-kMg" firstAttribute="top" secondItem="sI8-ax-Pee" secondAttribute="bottom" constant="10" id="se4-3s-zI7"/>
                             <constraint firstItem="qWu-Gf-bWN" firstAttribute="top" secondItem="gG0-ln-Hn3" secondAttribute="bottom" constant="10" id="uuQ-9r-dwm"/>
                             <constraint firstItem="dcJ-7c-xdL" firstAttribute="leading" secondItem="9Hv-0G-o5i" secondAttribute="leading" constant="20" id="vKn-PW-NFd"/>
                             <constraint firstItem="9Hv-0G-o5i" firstAttribute="trailing" secondItem="n2d-UZ-7kT" secondAttribute="trailing" constant="20" id="vaL-ti-Do7"/>
@@ -171,6 +182,7 @@
                     <connections>
                         <outlet property="isPlayingButton" destination="n2d-UZ-7kT" id="y7B-V9-LBD"/>
                         <outlet property="levelLabel" destination="sr4-6i-A3f" id="KuD-Xo-MP7"/>
+                        <outlet property="missCountLabel" destination="sI8-ax-Pee" id="t4P-bS-h07"/>
                         <outlet property="numberCollectionView" destination="qwL-dN-kv3" id="d7G-lW-RIv"/>
                         <outlet property="pauseButton" destination="n2d-UZ-7kT" id="oVm-Ft-w70"/>
                         <outlet property="pauseView" destination="xPk-hJ-kMg" id="4rc-yS-gIo"/>

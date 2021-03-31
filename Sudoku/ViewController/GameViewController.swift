@@ -14,6 +14,7 @@ class GameViewController: UIViewController {
     @IBOutlet weak var timerLabel: UILabel!
     @IBOutlet weak var isPlayingButton: UIButton!
     @IBOutlet weak var pauseView: UIView!
+    @IBOutlet weak var missCountLabel: UILabel!
     
     @IBOutlet weak var numberCollectionView: UICollectionView!
     
@@ -27,9 +28,12 @@ class GameViewController: UIViewController {
     
     var sudokuViewModel = PBSudokuViewModel()
     var myGameViewModel = MyGameViewModel()
+    var todayGameViewModel = TodayGameViewModel()
     
     let ClickNumberNotification: Notification.Name = Notification.Name("ClickNumberNotification")
     let CheckNumCountNotification: Notification.Name = Notification.Name("CheckNumCountNotification")
+    
+    var gameType = 0
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "sudoku"{
@@ -44,8 +48,12 @@ class GameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.missCountLabel.text = "실수 \(self.sudokuViewModel.missCount) / 3"
+        
+        print(sudokuViewModel.missCount)
         NotificationCenter.default.addObserver(self, selector: #selector(setNumberHidden(_:)), name: CheckNumCountNotification, object: nil)
         
+        timeCount = myGameViewModel.myGame.time
         timerPlay()
         
         numberCollectionView.reloadData()
@@ -62,13 +70,17 @@ class GameViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)
         timer?.invalidate()
-        // 저장
-        myGameViewModel.saveMyGame(MyGame(level: sudokuViewModel.level, game_sudoku: sudokuViewModel.game_sudoku, original_sudoku: sudokuViewModel.original_sudoku, time: timeCount, isSelected: sudokuViewModel.isSeleted, memoArr: sudokuViewModel.memoArr, numCount: sudokuViewModel.numCount))
+        saveSudoku()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(true)
+        timer?.invalidate()
+        saveSudoku()
     }
 }
 
 extension GameViewController {
-    
     @IBAction func isPlayingButtonTapped(_ sender: Any) {
         if isPlaying {
             timerPasue()
@@ -110,19 +122,28 @@ extension GameViewController {
         return String(format: "%02d : %02d", min, seconds)
     }
     
-    // 숫자 다썼으면 hidden 해주기
+    // 숫자 다썼으면 hidden 해주기, 다 채웠으면 끝내기
     @objc func setNumberHidden(_ noti: Notification){
         numberCollectionView.reloadData()
-        for i in sudokuViewModel.numCount{
-            if i < 9 {
+        for i in 1...9{
+            if sudokuViewModel.numCount[i] < 9 {
                 return
             }
         }
         timerPasue()
+        myGameViewModel.clearMyGame()
+    
+        dismiss(animated: true, completion: nil)
     }
     
-    func saveGame(){
-      
+    func saveSudoku(){
+        // 저장
+        sudokuViewModel.resetisSelected()
+        if gameType == 0{
+            myGameViewModel.saveMyGame(MyGame(level: sudokuViewModel.level, game_sudoku: sudokuViewModel.game_sudoku, original_sudoku: sudokuViewModel.original_sudoku, time: timeCount, memoArr: sudokuViewModel.memoArr, numCount: sudokuViewModel.numCount, missCount: sudokuViewModel.missCount))
+        }else {
+            todayGameViewModel.saveTodayGame(TodayGame(today: todayGameViewModel.todayGame.today, todayGameCalendar: todayGameViewModel.todayGame.todayGameCalendar, level: sudokuViewModel.level, game_sudoku: sudokuViewModel.game_sudoku, original_sudoku: sudokuViewModel.original_sudoku, time: timeCount, memoArr: sudokuViewModel.memoArr, numCount: sudokuViewModel.numCount, missCount: sudokuViewModel.missCount))
+        }
     }
 }
 
@@ -134,15 +155,18 @@ extension GameViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = numberCollectionView.dequeueReusableCell(withReuseIdentifier: "NumberCell", for: indexPath) as? NumberCell else { return UICollectionViewCell() }
         
-        if sudokuViewModel.numCount[indexPath.item + 1] == 1 {
-            cell.updateHidden()
-        } else {
-            cell.updateUI(indexPath.item + 1)
-        }
+        cell.updateUI(indexPath.item + 1, sudokuViewModel.numCount[indexPath.item + 1])
+        
         
         cell.clickButtonTapHandler = {
-            if self.sudokuViewModel.numCount[indexPath.item + 1] < 9{
-                NotificationCenter.default.post(name: self.ClickNumberNotification, object: nil, userInfo: ["num" : indexPath.item + 1])
+            print("handler")
+            NotificationCenter.default.post(name: self.ClickNumberNotification, object: nil, userInfo: ["num" : indexPath.item + 1])
+            
+            self.missCountLabel.text = "실수 \(self.sudokuViewModel.missCount) / 3"
+            // 실수 세번했을 때
+            if self.sudokuViewModel.missCount >=  3{
+                self.myGameViewModel.clearMyGame()
+                self.dismiss(animated: true, completion: nil)
             }
         }
         
@@ -170,12 +194,13 @@ class NumberCell: UICollectionViewCell{
     
     var clickButtonTapHandler: (() -> Void)?
     
-    func updateHidden(){
-        numberButton.isHidden = true
-    }
-    
-    func updateUI(_ num: Int){
+    func updateUI(_ num: Int, _ numCount: Int){
         numberButton.setTitle(String(num), for: .normal)
+        if numCount == 9 {
+            numberButton.isHidden = true
+        }else {
+            numberButton.isHidden = false
+        }
     }
     
     @IBAction func clickButtonTapped(_ sender: Any) {

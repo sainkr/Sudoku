@@ -20,7 +20,7 @@ class SudokuViewController: UIViewController {
     var isMemoSelected = false
     var memoNum = -1
     
-    var clickIndex: [Int] = [-1, -1, -1]
+    var clickIndex: [Int] = [-1, -1, -1, -1]
     
     override func viewDidLoad() {
         
@@ -33,19 +33,19 @@ class SudokuViewController: UIViewController {
 }
 
 extension SudokuViewController{
-    func resetisSelected(){
-        for i in 0..<81{
-            sudokuViewModel.setisSelcted(i, false)
-        }
-    }
-    
     func setisSelected(_ index: Int){
-        resetisSelected()
+        sudokuViewModel.resetisSelected()
+        
+        clickIndex[0] = index / 9
+        clickIndex[1] = index % 9
+        clickIndex[2] = index
+        clickIndex[3] = sudokuViewModel.game_sudoku[clickIndex[0]][clickIndex[1]]
         
         let start_x = (index / 9) * 9
         let end_x = start_x + 8
         var y = index % 9
         
+        // isSeleted = 1 : 행, 열, 사각형
         // 사각형
         var rectX = index / 9
         var rectY = y
@@ -67,24 +67,33 @@ extension SudokuViewController{
 
         for i in rectX...(rectX+2){
             for j in 0..<3{
-                sudokuViewModel.setisSelcted(9 * i + rectY + j, true)
+                sudokuViewModel.setisSelcted(9 * i + rectY + j, 1)
             }
         }
         
         // 행
         for i in start_x...end_x{
-            sudokuViewModel.setisSelcted(i, true)
+            sudokuViewModel.setisSelcted(i, 1)
         }
         
         // 열
         while y < 81 {
-            sudokuViewModel.setisSelcted(y, true)
+            sudokuViewModel.setisSelcted(y, 1)
             y += 9
         }
         
-        clickIndex[0] = index / 9
-        clickIndex[1] = index % 9
-        clickIndex[2] = index
+        // isSeleted = 2 : 같은 숫자
+        for i in 0...8{
+            for j in 0...8{
+                if clickIndex[3] != 0 && clickIndex[3] == sudokuViewModel.game_sudoku[i][j]{
+                    sudokuViewModel.setisSelcted(i * 9 + j, 2)
+                }
+            }
+        }
+        
+        // isSelected = 3 : 현재 선택된 숫자
+        sudokuViewModel.setisSelcted(index, 3)
+        
         collectionView.reloadData()
     }
     
@@ -102,14 +111,20 @@ extension SudokuViewController{
         } else {
             if clickIndex[0] != -1 && clickIndex[1] != -1 {
                 if sudokuViewModel.game_sudoku[clickIndex[0]][clickIndex[1]] != sudokuViewModel.original_sudoku[clickIndex[0]][clickIndex[1]]{
+                    sudokuViewModel.setMemoArr(clickIndex[2], [0,0,0,0,0,0,0,0,0]) // 일단 메모 다 지우기
                     sudokuViewModel.setGameSudoku(num, clickIndex[0], clickIndex[1])
-                
+                    
                     if num == sudokuViewModel.original_sudoku[clickIndex[0]][clickIndex[1]]{
-                        sudokuViewModel.setNumCount(num)
+                        sudokuViewModel.setNumCount()
                         if sudokuViewModel.numCount[num] == 9 {
                             NotificationCenter.default.post(name: CheckNumCountNotification, object: nil, userInfo: nil)
                         }
+                    } else {
+                        print("--? 진입")
+                        sudokuViewModel.setMissCount()
                     }
+                    
+                    setisSelected(clickIndex[2])
                 }
             }
         }
@@ -125,27 +140,24 @@ extension SudokuViewController{
         
         if clickIndex[0] != -1 && clickIndex[1] != -1 {
             if optionNum == 0 { // 실행 취소
-                if isMemoSelected{
-                    if memoNum > 0 {
-                        sudokuViewModel.setMemoArr(clickIndex[2], memoNum, 0)
-                    }
-                } else {
-                    if sudokuViewModel.game_sudoku[clickIndex[0]][clickIndex[1]] != sudokuViewModel.original_sudoku[clickIndex[0]][clickIndex[1]]{
-                        if sudokuViewModel.game_sudoku[clickIndex[0]][clickIndex[1]] != 0 {
-                            sudokuViewModel.setGameSudoku(0, clickIndex[0], clickIndex[1])
-                        }
+                if memoNum > 0 {
+                    sudokuViewModel.setMemoArr(clickIndex[2], memoNum, 0)
+                }
+            
+                if sudokuViewModel.game_sudoku[clickIndex[0]][clickIndex[1]] != sudokuViewModel.original_sudoku[clickIndex[0]][clickIndex[1]]{
+                    if sudokuViewModel.game_sudoku[clickIndex[0]][clickIndex[1]] != 0 {
+                        sudokuViewModel.setGameSudoku(0, clickIndex[0], clickIndex[1])
                     }
                 }
             } else if optionNum == 1{ // 지우기
-                if isMemoSelected{
-                    sudokuViewModel.setMemoArr(clickIndex[2], [0,0,0,0,0,0,0,0,0])
-                } else {
+                if !isMemoSelected{
                     if sudokuViewModel.game_sudoku[clickIndex[0]][clickIndex[1]] != sudokuViewModel.original_sudoku[clickIndex[0]][clickIndex[1]]{
                         if sudokuViewModel.game_sudoku[clickIndex[0]][clickIndex[1]] != 0 {
                             sudokuViewModel.setGameSudoku(0, clickIndex[0], clickIndex[1])
                         }
                     }
                 }
+                sudokuViewModel.setMemoArr(clickIndex[2], [0,0,0,0,0,0,0,0,0])
             } else if optionNum == 2 { // 메모
                 if isMemoSelected{
                     isMemoSelected = false
@@ -156,11 +168,13 @@ extension SudokuViewController{
             } else { // 힌트
                 if sudokuViewModel.game_sudoku[clickIndex[0]][clickIndex[1]] != sudokuViewModel.original_sudoku[clickIndex[0]][clickIndex[1]]{
                     sudokuViewModel.setGameSudoku(sudokuViewModel.original_sudoku[clickIndex[0]][clickIndex[1]], clickIndex[0], clickIndex[1])
-                    sudokuViewModel.setNumCount(sudokuViewModel.original_sudoku[clickIndex[0]][clickIndex[1]])
+                    sudokuViewModel.setNumCount()
                     
                     if sudokuViewModel.numCount[sudokuViewModel.original_sudoku[clickIndex[0]][clickIndex[1]]] == 9 {
                         NotificationCenter.default.post(name: CheckNumCountNotification, object: nil, userInfo: nil)
                     }
+                    
+                    setisSelected(clickIndex[2])
                 }
             }
             
@@ -182,13 +196,14 @@ extension SudokuViewController: UICollectionViewDataSource{
         
         cell.updateMemoUI(sudokuViewModel.memoArr[indexPath.item])
     
-        var textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-        if sudokuViewModel.game_sudoku[indexPath.item / 9][indexPath.item % 9] != sudokuViewModel.original_sudoku[indexPath.item / 9][indexPath.item % 9]{
-            if sudokuViewModel.game_sudoku[indexPath.item / 9][indexPath.item % 9] != 0 {
-                textColor = UIColor.red
-            }
-        }
-        cell.updateUI(indexPath.item, sudokuViewModel.game_sudoku[indexPath.item / 9][indexPath.item % 9], sudokuViewModel.isSeleted[indexPath.item], textColor)
+        // i : setEdge , sudokuNum : 숫자, isSeleted: 행, 열, 사각형 isCorrect : 오답, checkIndex : 현재 위치 색, 같은 숫자 색
+        let i = indexPath.item
+        let gameSudokuNum = sudokuViewModel.game_sudoku[indexPath.item / 9][indexPath.item % 9]
+        let originSudokuNum = sudokuViewModel.original_sudoku[indexPath.item / 9][indexPath.item % 9]
+        let isSelected = sudokuViewModel.isSeleted[indexPath.item]
+        let isCorrect =  gameSudokuNum != originSudokuNum && gameSudokuNum != 0 ? false : true
+
+        cell.updateUI( i, gameSudokuNum , isSelected , isCorrect)
         
         
         return cell
@@ -237,22 +252,34 @@ class SudokuCell: UICollectionViewCell{
         }
     }
     
-    func updateUI(_ i : Int,_ sudokuNum: Int, _ isSelect: Bool, _ textColor: UIColor){
+    func updateUI(_ i : Int,_ sudokuNum: Int, _ isSelect: Int, _ isCorrect: Bool){
         if sudokuNum == 0 {
             numLabel.text = ""
         } else {
             numLabel.text = String(sudokuNum)
         }
-        numLabel.textColor = textColor
         setEdge(i)
-        setSelect(isSelect)
+        setTextColor(isCorrect)
+        setBackGroundColor(isSelect)
     }
     
-    func setSelect(_ isSelect: Bool){
-        if isSelect{
-            view.backgroundColor = #colorLiteral(red: 1, green: 0.4607823897, blue: 0.08191460459, alpha: 0.4498033588)
-        }else {
+    func setTextColor(_ isCorrect: Bool){
+        if isCorrect{
+            numLabel.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+        }else{
+            numLabel.textColor = UIColor.red
+        }
+    }
+    
+    func setBackGroundColor(_ isSelect: Int){
+        if isSelect == 0{
             view.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        }else if isSelect == 1{ // 선택된 행, 열, 사각형
+            view.backgroundColor = #colorLiteral(red: 1, green: 0.4607823897, blue: 0.08191460459, alpha: 0.4498033588)
+        } else if isSelect == 2{ // 선택된 숫자와 같은 숫자
+            view.backgroundColor = #colorLiteral(red: 0.9372549057, green: 0.3490196168, blue: 0.1921568662, alpha: 0.5745907738)
+        } else{ // 현재 선택된 숫자
+            view.backgroundColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 0.3357780612)
         }
     }
     
