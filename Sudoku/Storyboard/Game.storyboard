@@ -38,15 +38,6 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="실수 0 / 3" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sI8-ax-Pee">
-                                <rect key="frame" x="167.66666666666666" y="104" width="92.666666666666657" height="22"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="92.666666666666657" id="FU7-RM-hog"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="BMHANNAProOTF" family="BM HANNA Pro OTF" pointSize="22"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00 : 00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gG0-ln-Hn3">
                                 <rect key="frame" x="299" y="103" width="80" height="23"/>
                                 <constraints>
@@ -156,7 +147,6 @@
                         <constraints>
                             <constraint firstItem="xPk-hJ-kMg" firstAttribute="leading" secondItem="qWu-Gf-bWN" secondAttribute="leading" id="8eg-0c-Xqd"/>
                             <constraint firstItem="dcJ-7c-xdL" firstAttribute="top" secondItem="9Hv-0G-o5i" secondAttribute="top" constant="10" id="EI2-pJ-R7S"/>
-                            <constraint firstItem="sI8-ax-Pee" firstAttribute="centerX" secondItem="9Hv-0G-o5i" secondAttribute="centerX" id="EZd-Eq-xMo"/>
                             <constraint firstItem="qWu-Gf-bWN" firstAttribute="top" secondItem="sr4-6i-A3f" secondAttribute="bottom" constant="10" id="HjQ-om-KUi"/>
                             <constraint firstItem="qwL-dN-kv3" firstAttribute="leading" secondItem="9Hv-0G-o5i" secondAttribute="leading" constant="5" id="JOa-Ee-1fb"/>
                             <constraint firstItem="bLN-Cb-b5L" firstAttribute="leading" secondItem="9Hv-0G-o5i" secondAttribute="leading" constant="5" id="Jde-rP-L5q"/>
@@ -172,7 +162,6 @@
                             <constraint firstItem="xPk-hJ-kMg" firstAttribute="trailing" secondItem="qWu-Gf-bWN" secondAttribute="trailing" id="lgI-4t-pVM"/>
                             <constraint firstItem="9Hv-0G-o5i" firstAttribute="trailing" secondItem="bLN-Cb-b5L" secondAttribute="trailing" constant="5" id="o2N-hu-4Ew"/>
                             <constraint firstItem="qwL-dN-kv3" firstAttribute="top" secondItem="bLN-Cb-b5L" secondAttribute="bottom" constant="30" id="oGq-nI-778"/>
-                            <constraint firstItem="xPk-hJ-kMg" firstAttribute="top" secondItem="sI8-ax-Pee" secondAttribute="bottom" constant="10" id="se4-3s-zI7"/>
                             <constraint firstItem="qWu-Gf-bWN" firstAttribute="top" secondItem="gG0-ln-Hn3" secondAttribute="bottom" constant="10" id="uuQ-9r-dwm"/>
                             <constraint firstItem="dcJ-7c-xdL" firstAttribute="leading" secondItem="9Hv-0G-o5i" secondAttribute="leading" constant="20" id="vKn-PW-NFd"/>
                             <constraint firstItem="9Hv-0G-o5i" firstAttribute="trailing" secondItem="n2d-UZ-7kT" secondAttribute="trailing" constant="20" id="vaL-ti-Do7"/>
@@ -182,7 +171,6 @@
                     <connections>
                         <outlet property="isPlayingButton" destination="n2d-UZ-7kT" id="y7B-V9-LBD"/>
                         <outlet property="levelLabel" destination="sr4-6i-A3f" id="KuD-Xo-MP7"/>
-                        <outlet property="missCountLabel" destination="sI8-ax-Pee" id="t4P-bS-h07"/>
                         <outlet property="numberCollectionView" destination="qwL-dN-kv3" id="d7G-lW-RIv"/>
                         <outlet property="pauseButton" destination="n2d-UZ-7kT" id="oVm-Ft-w70"/>
                         <outlet property="pauseView" destination="xPk-hJ-kMg" id="4rc-yS-gIo"/>
@@ -451,62 +439,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bCM-n3-saY" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-2952" y="-1821"/>
-        </scene>
-        <!--View Controller-->
-        <scene sceneID="9xu-xC-yMx">
-            <objects>
-                <viewController id="qEo-H0-6jp" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="hGX-8K-qSv">
-                        <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="실행 취소" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L5f-86-XBd">
-                                <rect key="frame" x="30" y="287" width="86" height="53"/>
-                                <fontDescription key="fontDescription" name="BMHANNAProOTF" family="BM HANNA Pro OTF" pointSize="23"/>
-                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="힌트" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M7W-k6-fws">
-                                <rect key="frame" x="336" y="287" width="40" height="53"/>
-                                <fontDescription key="fontDescription" name="BMHANNAProOTF" family="BM HANNA Pro OTF" pointSize="23"/>
-                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="지우기" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fJO-8H-TpV">
-                                <rect key="frame" x="144" y="287" width="56" height="53"/>
-                                <fontDescription key="fontDescription" name="BMHANNAProOTF" family="BM HANNA Pro OTF" pointSize="23"/>
-                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="메모" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cDg-df-BRs">
-                                <rect key="frame" x="245" y="287" width="40.666666666666629" height="53"/>
-                                <fontDescription key="fontDescription" name="BMHANNAProOTF" family="BM HANNA Pro OTF" pointSize="23"/>
-                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <viewLayoutGuide key="safeArea" id="G9L-34-mis"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <constraints>
-                            <constraint firstItem="G9L-34-mis" firstAttribute="trailing" secondItem="M7W-k6-fws" secondAttribute="trailing" constant="52" id="1Fu-qU-yJL"/>
-                            <constraint firstItem="fJO-8H-TpV" firstAttribute="leading" relation="lessThanOrEqual" secondItem="L5f-86-XBd" secondAttribute="trailing" constant="29" id="74s-F3-xbo"/>
-                            <constraint firstItem="fJO-8H-TpV" firstAttribute="top" secondItem="G9L-34-mis" secondAttribute="top" constant="243" id="7TM-4G-BXc"/>
-                            <constraint firstItem="L5f-86-XBd" firstAttribute="top" secondItem="G9L-34-mis" secondAttribute="top" constant="243" id="9LW-de-Buh"/>
-                            <constraint firstItem="cDg-df-BRs" firstAttribute="top" secondItem="G9L-34-mis" secondAttribute="top" constant="243" id="CtR-uc-Rba"/>
-                            <constraint firstItem="G9L-34-mis" firstAttribute="bottom" secondItem="L5f-86-XBd" secondAttribute="bottom" constant="552" id="GIg-20-VzP"/>
-                            <constraint firstItem="cDg-df-BRs" firstAttribute="leading" relation="lessThanOrEqual" secondItem="fJO-8H-TpV" secondAttribute="trailing" constant="45" id="K5Y-mK-Nqa"/>
-                            <constraint firstItem="G9L-34-mis" firstAttribute="bottom" secondItem="fJO-8H-TpV" secondAttribute="bottom" constant="552" id="RUP-t9-Eqa"/>
-                            <constraint firstItem="G9L-34-mis" firstAttribute="bottom" secondItem="cDg-df-BRs" secondAttribute="bottom" constant="552" id="Yim-Hd-dMW"/>
-                            <constraint firstItem="L5f-86-XBd" firstAttribute="leading" secondItem="G9L-34-mis" secondAttribute="leading" constant="30" id="ZHA-YC-pgE"/>
-                            <constraint firstItem="G9L-34-mis" firstAttribute="bottom" secondItem="M7W-k6-fws" secondAttribute="bottom" constant="552" id="bey-aE-4M2"/>
-                            <constraint firstItem="M7W-k6-fws" firstAttribute="top" secondItem="G9L-34-mis" secondAttribute="top" constant="243" id="iOi-2m-kc7"/>
-                            <constraint firstItem="M7W-k6-fws" firstAttribute="leading" relation="lessThanOrEqual" secondItem="cDg-df-BRs" secondAttribute="trailing" constant="52.329999999999998" id="tIV-by-fHd"/>
-                        </constraints>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="q68-zb-qaA" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-3771.0144927536235" y="-1310.4910714285713"/>
         </scene>
     </scenes>
     <resources>

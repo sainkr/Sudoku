@@ -23,6 +23,7 @@ class MainViewController: UIViewController {
     var myGameViewModel = MyGameViewModel()
     var sudokuViewModel = PBSudokuViewModel()
     var todayGameViewModel = TodayGameViewModel()
+    var rankViewModel = RankViewModel()
     
     var currentYear: Int = 0
     var currentMonth: Int = 0
@@ -34,20 +35,26 @@ class MainViewController: UIViewController {
         
         setCurrentCalendar(todayViewModel.yearOfToday, todayViewModel.monthOfToday)
         
+        
+        myGameViewModel.clearMyGame()
         setView()
         
-        myGameViewModel.retriveMyGame()
-        todayGameViewModel.retriveTodayGame()
+        retriveGame()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
         myGameViewModel = MyGameViewModel()
+        todayGameViewModel = TodayGameViewModel()
+
+        retriveGame()
         
-        myGameViewModel.retriveMyGame()
-        
+        collectionView.reloadData()
     }
+}
+
+extension MainViewController{
     func setView(){
         // 오늘 날짜 설정
         todayDateLabel.text = todayViewModel.getDate()
@@ -95,60 +102,6 @@ class MainViewController: UIViewController {
         monthLabel.text = "\(currentMonth)월"
         collectionView.reloadData()
     }
-}
-
-extension MainViewController {
-    // 저번달 버튼
-    @IBAction func backCalendarButtonTapped(_ sender: Any) {
-        setCurrentCalendar(currentYear, currentMonth - 1)
-    }
-    
-    // 다음달 버튼
-    @IBAction func nextCalendarButtonTapped(_ sender: Any) {
-        setCurrentCalendar(currentYear, currentMonth + 1)
-    }
-    
-    // 오늘의 게임 버튼
-    @IBAction func todayGameButtonTapped(_ sender: Any) {
-        let todayDate = "\(todayViewModel.yearOfToday)\(todayViewModel.monthOfToday)\(todayViewModel.dayOfToday)"
-    
-        if todayGameViewModel.todayGame.today == todayDate {
-            if todayGameViewModel.todayGame.level > -1 && todayGameViewModel.todayGame.missCount < 3 {
-                sudokuViewModel.setSudoku(MyGame(level: todayGameViewModel.todayGame.level, game_sudoku: todayGameViewModel.todayGame.game_sudoku, original_sudoku: todayGameViewModel.todayGame.original_sudoku, time: todayGameViewModel.todayGame.time , memoArr: todayGameViewModel.todayGame.memoArr, numCount: todayGameViewModel.todayGame.numCount, missCount: todayGameViewModel.todayGame.missCount))
-               todayGame()
-            }
-        }else {
-            todayGameViewModel.setToday(todayDate)
-            self.sudokuViewModel.setLevel(level: Int(arc4random_uniform(3)))
-            todayGame()
-        }
-        
-    }
-    
-    // 이어하기 버튼
-    @IBAction func continueButtonTapped(_ sender: Any) {
-        print("---> \(myGameViewModel.myGame)")
-        if myGameViewModel.myGame.level > -1 && myGameViewModel.myGame.missCount < 3{
-            continueGame()
-        } else {
-            newGame()
-        }
-    }
-    
-    // 새 게임 버튼
-    @IBAction func newGameButtonTapped(_ sender: Any) {
-        newGame()
-    }
-    
-    // 랭킹 버튼
-    @IBAction func rankingButtonTapped(_ sender: Any) {
-        
-    }
-    
-    // 환경설정 버튼
-    @IBAction func setupButtonTapped(_ sender: Any) {
-        
-    }
     
     func todayGame(){
         let gameStoryboard = UIStoryboard.init(name: "Game", bundle: nil)
@@ -194,6 +147,66 @@ extension MainViewController {
         
         present(actionsheetConroller, animated: true)
     }
+    
+    func retriveGame(){
+        myGameViewModel.retriveMyGame()
+        todayGameViewModel.retriveTodayGame()
+        rankViewModel.loadData()
+    }
+}
+extension MainViewController {
+    // 저번달 버튼
+    @IBAction func backCalendarButtonTapped(_ sender: Any) {
+        setCurrentCalendar(currentYear, currentMonth - 1)
+    }
+    
+    // 다음달 버튼
+    @IBAction func nextCalendarButtonTapped(_ sender: Any) {
+        setCurrentCalendar(currentYear, currentMonth + 1)
+    }
+    
+    // 오늘의 게임 버튼
+    @IBAction func todayGameButtonTapped(_ sender: Any) {
+        let todayDate = "\(todayViewModel.yearOfToday)\(todayViewModel.monthOfToday)\(todayViewModel.dayOfToday)"
+        if todayGameViewModel.todayGame.today == todayDate {
+            if todayGameViewModel.todayGame.numCount.count > 0 && todayGameViewModel.todayGame.numCount[0] > 0 {
+                sudokuViewModel.setSudoku(MyGame(level: todayGameViewModel.todayGame.level, game_sudoku: todayGameViewModel.todayGame.game_sudoku, original_sudoku: todayGameViewModel.todayGame.original_sudoku, time: todayGameViewModel.todayGame.time , memoArr: todayGameViewModel.todayGame.memoArr, numCount: todayGameViewModel.todayGame.numCount))
+                todayGame()
+            }
+        }else {
+            todayGameViewModel.setToday(todayViewModel.yearOfToday, todayViewModel.monthOfToday, todayViewModel.dayOfToday )
+            self.sudokuViewModel.setLevel(level: Int(arc4random_uniform(3)))
+            todayGame()
+        }
+    }
+    
+    // 이어하기 버튼
+    @IBAction func continueButtonTapped(_ sender: Any) {
+        print("---> \(myGameViewModel.myGame)")
+        if myGameViewModel.myGame.numCount.count > 0 && myGameViewModel.myGame.numCount[0] > 0 {
+            continueGame()
+        } else {
+            newGame()
+        }
+    }
+    
+    // 새 게임 버튼
+    @IBAction func newGameButtonTapped(_ sender: Any) {
+        newGame()
+    }
+    
+    // 랭킹 버튼
+    @IBAction func rankingButtonTapped(_ sender: Any) {
+        let rankStoryboard = UIStoryboard.init(name: "Rank", bundle: nil)
+        guard let rankVC = rankStoryboard.instantiateViewController(identifier: "RankViewConroller") as? RankViewController else { return }
+        rankVC.modalPresentationStyle = .fullScreen
+        present(rankVC, animated: true, completion: nil)
+    }
+    
+    // 환경설정 버튼
+    @IBAction func setupButtonTapped(_ sender: Any) {
+        
+    }
 }
 
 extension MainViewController: UICollectionViewDataSource{
@@ -205,11 +218,13 @@ extension MainViewController: UICollectionViewDataSource{
         
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CalendarCell", for: indexPath) as? CalendarCell else { return UICollectionViewCell() }
         
-        var isToday = false
-        if currentMonth == todayViewModel.monthOfToday && currentDay == currentCalendarDay[indexPath.item]{
-            isToday = true
+        var success = false
+        if todayGameViewModel.todayGame.todayGameCalendar[currentMonth-1].contains(currentCalendarDay[indexPath.item]) {
+            success = true
+        }else{
+            success = false
         }
-        cell.updateUI(currentCalendarDay[indexPath.item], currentDay, isToday)
+        cell.updateUI(currentCalendarDay[indexPath.item], currentDay, success)
         
         return cell
     }
@@ -233,7 +248,7 @@ class CalendarCell: UICollectionViewCell{
     @IBOutlet weak var dayLabel: UILabel!
     @IBOutlet weak var view: UIView!
     
-    func updateUI(_ day: Int, _ currentDay: Int, _ isToday: Bool){
+    func updateUI(_ day: Int, _ currentDay: Int, _ success: Bool){
         if day > 0 {
             dayLabel.text = "\(day)"
         }else {
@@ -247,7 +262,7 @@ class CalendarCell: UICollectionViewCell{
             dayLabel.textColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
         }
         
-        if isToday{
+        if success{
             updateBackground()
         }else {
             view.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)

@@ -119,9 +119,6 @@ extension SudokuViewController{
                         if sudokuViewModel.numCount[num] == 9 {
                             NotificationCenter.default.post(name: CheckNumCountNotification, object: nil, userInfo: nil)
                         }
-                    } else {
-                        print("--? 진입")
-                        sudokuViewModel.setMissCount()
                     }
                     
                     setisSelected(clickIndex[2])

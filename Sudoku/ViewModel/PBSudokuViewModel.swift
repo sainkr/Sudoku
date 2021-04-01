@@ -31,9 +31,6 @@ class PBSudokuViewModel{
     var memoArr: [[Int]]{
         return manager.memoArr
     }
-    var missCount: Int{
-        return manager.missCount
-    }
     
     func setLevel(level : Int){
         manager.setLevel(level: level)
@@ -69,9 +66,5 @@ class PBSudokuViewModel{
     
     func setSudoku(_ myGame: MyGame){
         manager.setSudoku(myGame)
-    }
-    
-    func setMissCount(){
-        manager.setMissCount()
     }
 }

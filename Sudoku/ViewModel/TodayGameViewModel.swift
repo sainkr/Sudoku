@@ -22,8 +22,12 @@ class TodayGameViewModel{
         manager.retriveTodayGame()
     }
     
-    public func setToday(_ todayDate: String){
-        manager.setToday(todayDate)
+    public func setToday(_ year: Int, _ month: Int, _ day: Int){
+        manager.setToday(year,month,day)
+    }
+    
+    public func addTodayGameCalendar(){
+        manager.addTodayGameCalendar()
     }
 }
 

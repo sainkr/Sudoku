@@ -14,13 +14,12 @@ struct MyGame: Codable{
     var time: Double
     var memoArr: [[Int]]
     var numCount: [Int]
-    var missCount: Int
 }
 
 class MyGameManager{
     static let shared = MyGameManager()
     
-    var myGame: MyGame = MyGame(level: -1, game_sudoku: [[]], original_sudoku: [[]], time: 0, memoArr: [], numCount: [], missCount: 0)
+    var myGame: MyGame = MyGame(level: -1, game_sudoku: [[]], original_sudoku: [[]], time: 0, memoArr: [], numCount: [])
     
     func saveMyGame(_ myGame: MyGame){
         self.myGame = myGame
@@ -34,7 +33,7 @@ class MyGameManager{
     }
     
     func clearMyGame(){
-        self.myGame = MyGame(level: -1, game_sudoku: [[]], original_sudoku: [[]], time: 0, memoArr: [], numCount: [], missCount: 0)
+        self.myGame = MyGame(level: -1, game_sudoku: [[]], original_sudoku: [[]], time: 0, memoArr: [], numCount: [])
         InnerDB.clear(.documents)
     }
 }
