@@ -4,10 +4,38 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>SudokuWidgetExtension.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>14</integer>
+		</dict>
 		<key>Sudoku.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>12</integer>
+		</dict>
+		<key>SudokuWidgetExtension.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>13</integer>
+		</dict>
+	</dict>
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>3621AD3C25FA60BD00C3E456</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>3621AD5225FA60BD00C3E456</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>3621AD5D25FA60BD00C3E456</key>
+		<dict>
+			<key>primary</key>
+			<true/>
 		</dict>
 	</dict>
 </dict>

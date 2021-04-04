@@ -18,8 +18,8 @@ class TodayGameViewModel{
         manager.saveTodayGame(todayGame)
     }
     
-    public func retriveTodayGame(){
-        manager.retriveTodayGame()
+    public func loadTodayGame(){
+        manager.loadTodayGame()
     }
     
     public func setToday(_ year: Int, _ month: Int, _ day: Int){

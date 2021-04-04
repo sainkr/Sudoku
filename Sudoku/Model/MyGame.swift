@@ -26,7 +26,7 @@ class MyGameManager{
         InnerDB.store(myGame, to: .documents, as: "mygame.json")
     }
     
-    func retriveMyGame(){
+    func loadMyGame(){
         guard let myGame: MyGame = InnerDB.retrive("mygame.json", from: .documents, as: MyGame.self) else { return }
         // print("--> myGame : \(myGame)")
         self.myGame = myGame

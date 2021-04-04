@@ -24,13 +24,13 @@ class TodayGameManager{
     var monthOfToday: Int = 0
     var dayOfToday: Int = 0
     
-    var todayGame: TodayGame = TodayGame(today: "", todayDate: [], todayGameCalendar: [[],[],[],[],[],[],[],[],[],[],[],[]], level: -1, game_sudoku: [], original_sudoku: [], time: 0, memoArr: [], numCount: [])
+    var todayGame: TodayGame = TodayGame(today: "", todayDate: [], todayGameCalendar: [[],[],[],[1,3,4],[],[],[],[],[],[],[],[]], level: -1, game_sudoku: [], original_sudoku: [], time: 0, memoArr: [], numCount: [])
     
     func saveTodayGame(_ todayGame: TodayGame){
         InnerDB.store(todayGame, to: .documents, as: "todaygame.json")
     }
     
-    func retriveTodayGame(){
+    func loadTodayGame(){
         guard let todayGame = InnerDB.retrive("todaygame.json", from: .documents, as: TodayGame.self) else { return }
         self.todayGame = todayGame
     }

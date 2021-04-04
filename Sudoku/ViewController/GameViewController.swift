@@ -50,18 +50,7 @@ class GameViewController: UIViewController {
         super.viewDidLoad()
         NotificationCenter.default.addObserver(self, selector: #selector(setNumberHidden(_:)), name: CheckNumCountNotification, object: nil)
         
-        timeCount = myGameViewModel.myGame.time
-        timerPlay()
-        
-        numberCollectionView.reloadData()
-        
-        if sudokuViewModel.level == 0 {
-            levelLabel.text = "쉬움"
-        } else if sudokuViewModel.level == 1 {
-            levelLabel.text = "보통"
-        } else {
-            levelLabel.text = "어려움"
-        }
+        setView()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -75,16 +64,35 @@ class GameViewController: UIViewController {
         timer?.invalidate()
         saveSudoku()
     }
+    
+    func setView(){
+        if gameType == 0{
+            timeCount = myGameViewModel.myGame.time
+        } else {
+            timeCount = todayGameViewModel.todayGame.time
+        }
+        timerPlay()
+        
+        numberCollectionView.reloadData()
+        
+        if sudokuViewModel.level == 0 {
+            levelLabel.text = "쉬움"
+        } else if sudokuViewModel.level == 1 {
+            levelLabel.text = "보통"
+        } else {
+            levelLabel.text = "어려움"
+        }
+    }
 }
 
 extension GameViewController {
     @IBAction func isPlayingButtonTapped(_ sender: Any) {
         if isPlaying {
             timerPasue()
-            pauseView.isHidden = true
+            pauseView.isHidden = false
         } else {
             timerPlay()
-            pauseView.isHidden = false
+            pauseView.isHidden = true
         }
     }
     
@@ -132,28 +140,11 @@ extension GameViewController {
         timerPasue()
         if gameType == 0{
             myGameViewModel.clearMyGame()
-            dismiss(animated: true, completion: nil)
+            
         }else{
             todayGameViewModel.addTodayGameCalendar()
-           
-            let alert = UIAlertController(title: "랭킹", message: "랭킹에 추가 할 이름을 입력하세요.", preferredStyle: .alert)
-            let ok = UIAlertAction(title: "확인", style: .default){ (ok) in
-                if alert.textFields != nil{
-                    self.rankViewModel.addRank( alert.textFields![0].text ?? "-", self.timeCount, self.todayGameViewModel.todayGame.today)
-                    self.dismiss(animated: true, completion: nil)
-                }
-            }
-            let cancle = UIAlertAction(title: "취소", style: .cancel){ (cancle) in
-                self.dismiss(animated: true, completion: nil)
-            }
-            
-            alert.addAction(cancle)
-            alert.addAction(ok)
-            alert.addTextField()
-            
-            present(alert, animated: true, completion: nil)
         }
-
+        dismiss(animated: true, completion: nil)
     }
     
     func saveSudoku(){

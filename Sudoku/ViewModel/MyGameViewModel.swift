@@ -18,8 +18,8 @@ class MyGameViewModel{
         manager.saveMyGame(myGame)
     }
     
-    public func retriveMyGame(){
-        manager.retriveMyGame()
+    public func loadMyGame(){
+        manager.loadMyGame()
     }
     
     public func clearMyGame(){

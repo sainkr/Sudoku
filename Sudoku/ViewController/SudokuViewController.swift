@@ -20,7 +20,7 @@ class SudokuViewController: UIViewController {
     var isMemoSelected = false
     var memoNum = -1
     
-    var clickIndex: [Int] = [-1, -1, -1, -1]
+    var clickIndex: [[Int]] = []
     
     override func viewDidLoad() {
         
@@ -33,13 +33,30 @@ class SudokuViewController: UIViewController {
 }
 
 extension SudokuViewController{
+    
+    func resetClickIndex(){
+        var i = 0
+        while i < clickIndex.count{
+            if sudokuViewModel.game_sudoku[clickIndex[i][0]][clickIndex[i][1]] == 0 || sudokuViewModel.game_sudoku[clickIndex[i][0]][clickIndex[i][1]] == sudokuViewModel.original_sudoku[clickIndex[i][0]][clickIndex[i][1]]{
+                clickIndex.remove(at: i)
+            }else{
+                i += 1
+            }
+        }
+    }
+    
+    func setClickIndex(_ index: Int){
+        var arr: [Int] = []
+        arr.append(index / 9)
+        arr.append(index % 9)
+        arr.append(index)
+        arr.append(sudokuViewModel.game_sudoku[arr[0]][arr[1]])
+        
+        clickIndex.append(arr)
+    }
+    
     func setisSelected(_ index: Int){
         sudokuViewModel.resetisSelected()
-        
-        clickIndex[0] = index / 9
-        clickIndex[1] = index % 9
-        clickIndex[2] = index
-        clickIndex[3] = sudokuViewModel.game_sudoku[clickIndex[0]][clickIndex[1]]
         
         let start_x = (index / 9) * 9
         let end_x = start_x + 8
@@ -85,7 +102,7 @@ extension SudokuViewController{
         // isSeleted = 2 : 같은 숫자
         for i in 0...8{
             for j in 0...8{
-                if clickIndex[3] != 0 && clickIndex[3] == sudokuViewModel.game_sudoku[i][j]{
+                if clickIndex[clickIndex.count-1][3] != 0 && clickIndex[clickIndex.count-1][3] == sudokuViewModel.game_sudoku[i][j]{
                     sudokuViewModel.setisSelcted(i * 9 + j, 2)
                 }
             }
@@ -101,33 +118,37 @@ extension SudokuViewController{
     @objc func clickNumberNotification(_ noti: Notification){
         guard let num = noti.userInfo?["num"] as? Int else { return }
         
-        if isMemoSelected{
-            if sudokuViewModel.game_sudoku[clickIndex[0]][clickIndex[1]] != sudokuViewModel.original_sudoku[clickIndex[0]][clickIndex[1]]{
-                if sudokuViewModel.game_sudoku[clickIndex[0]][clickIndex[1]] == 0 {
-                    sudokuViewModel.setMemoArr(clickIndex[2], num - 1, 1)
-                    memoNum = num - 1
-                }
-            }
-        } else {
-            if clickIndex[0] != -1 && clickIndex[1] != -1 {
-                if sudokuViewModel.game_sudoku[clickIndex[0]][clickIndex[1]] != sudokuViewModel.original_sudoku[clickIndex[0]][clickIndex[1]]{
-                    sudokuViewModel.setMemoArr(clickIndex[2], [0,0,0,0,0,0,0,0,0]) // 일단 메모 다 지우기
-                    sudokuViewModel.setGameSudoku(num, clickIndex[0], clickIndex[1])
-                    
-                    if num == sudokuViewModel.original_sudoku[clickIndex[0]][clickIndex[1]]{
-                        sudokuViewModel.setNumCount()
-                        if sudokuViewModel.numCount[num] == 9 {
-                            NotificationCenter.default.post(name: CheckNumCountNotification, object: nil, userInfo: nil)
-                        }
+        if clickIndex.count > 0 {
+            let i = clickIndex[clickIndex.count-1][0]
+            let j = clickIndex[clickIndex.count-1][1]
+            let index = clickIndex[clickIndex.count-1][2]
+            if isMemoSelected{
+                if sudokuViewModel.game_sudoku[i][j] != sudokuViewModel.original_sudoku[i][j]{
+                    if sudokuViewModel.game_sudoku[i][j] == 0 {
+                        sudokuViewModel.setMemoArr(index, num - 1, 1)
+                        memoNum = num - 1
                     }
-                    
-                    setisSelected(clickIndex[2])
+                }
+            } else {
+                if i != -1 && j != -1 {
+                    if sudokuViewModel.game_sudoku[i][j] != sudokuViewModel.original_sudoku[i][j]{
+                        sudokuViewModel.setMemoArr(index, [0,0,0,0,0,0,0,0,0]) // 일단 메모 다 지우기
+                        sudokuViewModel.setGameSudoku(num, i, j)
+                        
+                        if num == sudokuViewModel.original_sudoku[i][j]{
+                            sudokuViewModel.setNumCount()
+                            if sudokuViewModel.numCount[num] == 9 {
+                                NotificationCenter.default.post(name: CheckNumCountNotification, object: nil, userInfo: nil)
+                            }
+                        }
+                        
+                        setisSelected(index)
+                    }
                 }
             }
-        }
-        
-        DispatchQueue.main.async {
-            self.collectionView.reloadData()
+            DispatchQueue.main.async {
+                self.collectionView.reloadData()
+            }
         }
     }
     
@@ -135,48 +156,59 @@ extension SudokuViewController{
     @objc func optionNotification(_ noti: Notification){
         guard let optionNum = noti.userInfo?["optionNum"] as? Int else { return }
         
-        if clickIndex[0] != -1 && clickIndex[1] != -1 {
-            if optionNum == 0 { // 실행 취소
-                if memoNum > 0 {
-                    sudokuViewModel.setMemoArr(clickIndex[2], memoNum, 0)
-                }
+        if clickIndex.count > 0 {
+            let i = clickIndex[clickIndex.count-1][0]
+            let j = clickIndex[clickIndex.count-1][1]
+            let index = clickIndex[clickIndex.count-1][2]
             
-                if sudokuViewModel.game_sudoku[clickIndex[0]][clickIndex[1]] != sudokuViewModel.original_sudoku[clickIndex[0]][clickIndex[1]]{
-                    if sudokuViewModel.game_sudoku[clickIndex[0]][clickIndex[1]] != 0 {
-                        sudokuViewModel.setGameSudoku(0, clickIndex[0], clickIndex[1])
+            if i != -1 && j != -1 {
+                if optionNum == 0 { // 실행 취소
+                    if memoNum > 0 {
+                        sudokuViewModel.setMemoArr(index, memoNum, 0)
                     }
-                }
-            } else if optionNum == 1{ // 지우기
-                if !isMemoSelected{
-                    if sudokuViewModel.game_sudoku[clickIndex[0]][clickIndex[1]] != sudokuViewModel.original_sudoku[clickIndex[0]][clickIndex[1]]{
-                        if sudokuViewModel.game_sudoku[clickIndex[0]][clickIndex[1]] != 0 {
-                            sudokuViewModel.setGameSudoku(0, clickIndex[0], clickIndex[1])
+                    if sudokuViewModel.game_sudoku[i][j] != sudokuViewModel.original_sudoku[i][j]{
+                        if sudokuViewModel.game_sudoku[i][j] != 0 {
+                            sudokuViewModel.setGameSudoku(0, i, j)
+                            
+                            setisSelected(index)
+                            
+                            if clickIndex.count > 0 {
+                                clickIndex.removeLast()
+                            }
                         }
                     }
-                }
-                sudokuViewModel.setMemoArr(clickIndex[2], [0,0,0,0,0,0,0,0,0])
-            } else if optionNum == 2 { // 메모
-                if isMemoSelected{
-                    isMemoSelected = false
-                } else {
-                    isMemoSelected = true
-                }
-                print(isMemoSelected)
-            } else { // 힌트
-                if sudokuViewModel.game_sudoku[clickIndex[0]][clickIndex[1]] != sudokuViewModel.original_sudoku[clickIndex[0]][clickIndex[1]]{
-                    sudokuViewModel.setGameSudoku(sudokuViewModel.original_sudoku[clickIndex[0]][clickIndex[1]], clickIndex[0], clickIndex[1])
-                    sudokuViewModel.setNumCount()
-                    
-                    if sudokuViewModel.numCount[sudokuViewModel.original_sudoku[clickIndex[0]][clickIndex[1]]] == 9 {
-                        NotificationCenter.default.post(name: CheckNumCountNotification, object: nil, userInfo: nil)
+                } else if optionNum == 1{ // 지우기
+                    if !isMemoSelected{
+                        if sudokuViewModel.game_sudoku[i][j] != sudokuViewModel.original_sudoku[i][j]{
+                            if sudokuViewModel.game_sudoku[i][j] != 0 {
+                                sudokuViewModel.setGameSudoku(0, i, j)
+                            }
+                        }
                     }
-                    
-                    setisSelected(clickIndex[2])
+                    sudokuViewModel.setMemoArr(index, [0,0,0,0,0,0,0,0,0])
+                } else if optionNum == 2 { // 메모
+                    if isMemoSelected{
+                        isMemoSelected = false
+                    } else {
+                        isMemoSelected = true
+                    }
+                    print(isMemoSelected)
+                } else { // 힌트
+                    if sudokuViewModel.game_sudoku[i][j] != sudokuViewModel.original_sudoku[i][j]{
+                        sudokuViewModel.setGameSudoku(sudokuViewModel.original_sudoku[i][j], i, j)
+                        sudokuViewModel.setNumCount()
+                        
+                        if sudokuViewModel.numCount[sudokuViewModel.original_sudoku[i][j]] == 9 {
+                            NotificationCenter.default.post(name: CheckNumCountNotification, object: nil, userInfo: nil)
+                        }
+                        
+                        setisSelected(index)
+                    }
                 }
-            }
-            
-            DispatchQueue.main.async {
-                self.collectionView.reloadData()
+                
+                DispatchQueue.main.async {
+                    self.collectionView.reloadData()
+                }
             }
         }
     }
@@ -209,7 +241,9 @@ extension SudokuViewController: UICollectionViewDataSource{
 
 extension SudokuViewController: UICollectionViewDelegate{
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        setClickIndex(indexPath.item)
         setisSelected(indexPath.item)
+        resetClickIndex()
     }
 }
 

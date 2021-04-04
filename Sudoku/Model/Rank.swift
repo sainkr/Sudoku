@@ -9,39 +9,41 @@ import Foundation
 
 struct RankInfo{
     var name: String
-    var time: Double
+    var clearCnt: Int
 }
 struct Rank: Codable {
-    var rank: [String: Double]
+    var rank: [String: Int]
 }
 
 class RankManager{
     static let shared = RankManager()
     
-    var rank: [String: Double] = [:]
+    var rank: [String: Int] = [:]
+    var rankInfo: [RankInfo] = []
+    
     func setData(_ today: String){
-        DataBaseManager.shared.setData(today, rank)
+        DataBaseManager.shared.setData(today, ["SA" : 4, "JH": 3, "JW" : 1, "LU" : 2])
     }
     
     func loadData(){
         DataBaseManager.shared.loadData()
     }
     
-    func addRank(_ name: String, _ time: Double, _ today: String){
-        rank[name] = time
+    func addRank(_ name: String, _ clearCnt: Int, _ today: String){
+        rank[name] = clearCnt
         setData(today)
     }
     
-    func getSortRank() -> [RankInfo]{
-        let sortRank = rank.sorted{$0.value < $1.value}
-        var rankInfo: [RankInfo] = []
+    func getSortRank(){
+        let sortRank = rank.sorted{$0.value > $1.value}
+        rankInfo = []
         for i in sortRank{
-            rankInfo.append(RankInfo(name: i.key, time: i.value))
+            rankInfo.append(RankInfo(name: i.key, clearCnt: Int(i.value)))
         }
-        return rankInfo
     }
     
-    func setRank(_ rank : [String: Double]){
+    func setRank(_ rank : [String: Int]){
         self.rank = rank
+        getSortRank()
     }
 }

@@ -24,6 +24,7 @@ class MainViewController: UIViewController {
     var sudokuViewModel = PBSudokuViewModel()
     var todayGameViewModel = TodayGameViewModel()
     var rankViewModel = RankViewModel()
+    var profileViewModel = ProfileViewModel()
     
     var currentYear: Int = 0
     var currentMonth: Int = 0
@@ -34,12 +35,10 @@ class MainViewController: UIViewController {
         super.viewDidLoad()
         
         setCurrentCalendar(todayViewModel.yearOfToday, todayViewModel.monthOfToday)
-        
-        
+       
+        // 클리어 ----> 
         myGameViewModel.clearMyGame()
         setView()
-        
-        retriveGame()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -48,7 +47,7 @@ class MainViewController: UIViewController {
         myGameViewModel = MyGameViewModel()
         todayGameViewModel = TodayGameViewModel()
 
-        retriveGame()
+        loadGame()
         
         collectionView.reloadData()
     }
@@ -148,10 +147,27 @@ extension MainViewController{
         present(actionsheetConroller, animated: true)
     }
     
-    func retriveGame(){
-        myGameViewModel.retriveMyGame()
-        todayGameViewModel.retriveTodayGame()
+    func loadGame(){
+        myGameViewModel.loadMyGame()
+        todayGameViewModel.loadTodayGame()
         rankViewModel.loadData()
+        profileViewModel.loadProfile()
+    }
+    
+    func presentRank(){
+        let rankStoryboard = UIStoryboard.init(name: "Rank", bundle: nil)
+        guard let rankVC = rankStoryboard.instantiateViewController(identifier: "RankViewConroller") as? RankViewController else { return }
+        rankVC.modalPresentationStyle = .fullScreen
+        self.present(rankVC, animated: true, completion: nil)
+    }
+    
+    func setAlert(_ msg: String){
+        let nameAlert = UIAlertController(title: nil, message: msg, preferredStyle: .alert)
+        let nameOK = UIAlertAction(title: "확인", style: .default ){ (ok) in
+            self.dismiss(animated: true, completion: nil)
+        }
+        nameAlert.addAction(nameOK)
+        self.present(nameAlert, animated: true, completion: nil)
     }
 }
 extension MainViewController {
@@ -197,10 +213,43 @@ extension MainViewController {
     
     // 랭킹 버튼
     @IBAction func rankingButtonTapped(_ sender: Any) {
-        let rankStoryboard = UIStoryboard.init(name: "Rank", bundle: nil)
-        guard let rankVC = rankStoryboard.instantiateViewController(identifier: "RankViewConroller") as? RankViewController else { return }
-        rankVC.modalPresentationStyle = .fullScreen
-        present(rankVC, animated: true, completion: nil)
+        if profileViewModel.profile.name == "-"{ // 닉네임이 등록되어있지 않으면
+            let alert = UIAlertController(title: nil, message: "랭킹을 확인하려면 닉네임을 입력하세요.", preferredStyle: .alert)
+            let ok = UIAlertAction(title: "확인", style: .default){ (ok) in
+                if let name = alert.textFields?[0].text {
+                    if name != ""{
+                        if self.rankViewModel.rank[name] == nil{ // 닉네임 중복 여부 체크
+                            self.profileViewModel.saveProfile(Profile(name: name))
+                            let clearCnt = self.todayGameViewModel.todayGame.todayGameCalendar[self.todayViewModel.monthOfToday - 1].count
+                            let todayDate = "\(self.todayViewModel.yearOfToday)\(self.todayViewModel.monthOfToday)"
+                            if clearCnt > 0 {
+                                self.rankViewModel.addRank(alert.textFields?[0].text ?? "-", clearCnt, todayDate)
+                            }
+                            self.dismiss(animated: true, completion: nil)
+                            self.presentRank()
+                        }else{ // 존재하면
+                            self.setAlert("이미 존재하는 닉네임입니다. 다시 입력해주세요.")
+                        }
+                    }
+                    else{ // 그냥 빈칸이면 !!
+                        self.setAlert("닉네임을 입력해주세요.")
+                    }
+                }
+            }
+            
+            let cancle = UIAlertAction(title: "취소", style: .cancel){ (cancle) in
+                self.dismiss(animated: true, completion: nil)
+            }
+
+            alert.addAction(cancle)
+            alert.addAction(ok)
+            alert.addTextField()
+
+            present(alert, animated: true, completion: nil)
+        } else{
+            presentRank()
+        }
+        rankViewModel.loadData()
     }
     
     // 환경설정 버튼

@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		2812DF3434BFFEDC2F564C80 /* Pods_Sudoku.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C5393113314BE756A029FD8 /* Pods_Sudoku.framework */; };
+		360177392619E060005224C7 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 360177382619E060005224C7 /* Profile.swift */; };
+		3601773E2619E1D3005224C7 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3601773D2619E1D3005224C7 /* ProfileViewModel.swift */; };
 		3621AD4125FA60BD00C3E456 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3621AD4025FA60BD00C3E456 /* AppDelegate.swift */; };
 		3621AD4325FA60BD00C3E456 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3621AD4225FA60BD00C3E456 /* SceneDelegate.swift */; };
 		3621AD4825FA60BD00C3E456 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3621AD4625FA60BD00C3E456 /* Main.storyboard */; };
@@ -58,7 +60,24 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		3620AF6E2619788300A47C28 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		360177382619E060005224C7 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
+		3601773D2619E1D3005224C7 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
+		3620AF5E2619788300A47C28 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		3620AF602619788300A47C28 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		3621AD3D25FA60BD00C3E456 /* Sudoku.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sudoku.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3621AD4025FA60BD00C3E456 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3621AD4225FA60BD00C3E456 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -209,6 +228,7 @@
 				363D4B0F26133419005A6E45 /* MyGameViewModel.swift */,
 				36F46BFA2614A7CD00DDFA82 /* TodayGameViewModel.swift */,
 				365ACFAB2615BA4000C3BC88 /* RankViewModel.swift */,
+				3601773D2619E1D3005224C7 /* ProfileViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -232,6 +252,7 @@
 				363D4B0A26133217005A6E45 /* MyGame.swift */,
 				36F46BF52614A79900DDFA82 /* TodayGame.swift */,
 				365ACFA62615B5F200C3BC88 /* Rank.swift */,
+				360177382619E060005224C7 /* Profile.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -275,6 +296,8 @@
 				3C5393113314BE756A029FD8 /* Pods_Sudoku.framework */,
 				E4ADF725D144599AE69CEB93 /* Pods_Sudoku_SudokuUITests.framework */,
 				DAB63BB8F24AB078D850C72B /* Pods_SudokuTests.framework */,
+				3620AF5E2619788300A47C28 /* WidgetKit.framework */,
+				3620AF602619788300A47C28 /* SwiftUI.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -291,6 +314,7 @@
 				3621AD3A25FA60BD00C3E456 /* Frameworks */,
 				3621AD3B25FA60BD00C3E456 /* Resources */,
 				EEB5EFEB45EF5EDE02003826 /* [CP] Embed Pods Frameworks */,
+				3620AF6E2619788300A47C28 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
@@ -531,6 +555,7 @@
 				366014A42608C66000BC8578 /* TodayViewModel.swift in Sources */,
 				365ACF4E2615961F00C3BC88 /* ExternelDB.swift in Sources */,
 				3621AD4325FA60BD00C3E456 /* SceneDelegate.swift in Sources */,
+				360177392619E060005224C7 /* Profile.swift in Sources */,
 				363D4B1026133419005A6E45 /* MyGameViewModel.swift in Sources */,
 				36F46BF62614A79900DDFA82 /* TodayGame.swift in Sources */,
 				36F4E75A260C710F00987174 /* OptionViewController.swift in Sources */,
@@ -538,6 +563,7 @@
 				36F46BFB2614A7CD00DDFA82 /* TodayGameViewModel.swift in Sources */,
 				36B0FE332609DE7000A458FE /* GameViewController.swift in Sources */,
 				36DF6CF42610C0C5000B9D49 /* PBSudokuViewModel.swift in Sources */,
+				3601773E2619E1D3005224C7 /* ProfileViewModel.swift in Sources */,
 				366014962608C54800BC8578 /* Today.swift in Sources */,
 				36DF6CE62610BFB3000B9D49 /* PBSudoku.swift in Sources */,
 				36F4E75F260C711600987174 /* SudokuViewController.swift in Sources */,

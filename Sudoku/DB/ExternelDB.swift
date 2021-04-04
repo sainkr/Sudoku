@@ -12,8 +12,8 @@ class DataBaseManager {
     
     let db =  Database.database().reference().child("Rank")
     
-    func setData(_ date: String ,_ rank: [String: Double]){
-        print("---> rank : \(rank)")
+    func setData(_ date: String , _ rank: [String: Int]){
+        
         db.child(date).setValue(["rank":rank])
     }
     

@@ -10,25 +10,22 @@ import UIKit
 class RankViewController: UIViewController {
 
     @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var rankingLabel: UILabel!
     
     var rankViewModel = RankViewModel()
+    var profileViewModel = ProfileViewModel()
+    var todayViewModel = TodayViewModel()
+    
     var rankInfo: [RankInfo] = []
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        rankInfo = rankViewModel.getSortRank()
+        
+        rankInfo = rankViewModel.rankInfo
+        rankingLabel.text = "\(todayViewModel.monthOfToday)월의 랭킹 🏅"
     }
     
     @IBAction func backButtonTapped(_ sender: Any) {
         dismiss(animated: true, completion: nil)
-    }
-    
-    func secondsToString(sec: Double) -> String {
-        guard sec != 0 else { return "00 : 00" }
-        let totalSeconds = Int(sec)
-        let min = totalSeconds / 60
-        let seconds = totalSeconds % 60
-        return String(format: "%02d : %02d", min, seconds)
     }
 }
 
@@ -39,8 +36,12 @@ extension RankViewController: UICollectionViewDataSource{
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RankCell", for: indexPath) as? RankCell else { return UICollectionViewCell() }
-        
-        cell.updateUI(indexPath.item + 1, rankInfo[indexPath.item].name, secondsToString(sec: rankInfo[indexPath.item].time))
+        let name = rankInfo[indexPath.item].name
+        var myScore: Bool = false
+        if name == profileViewModel.profile.name{
+            myScore = true
+        }
+        cell.updateUI(indexPath.item + 1, name, rankInfo[indexPath.item].clearCnt, myScore)
         
         return cell
     }
@@ -58,10 +59,28 @@ class RankCell: UICollectionViewCell{
     @IBOutlet weak var rankLabel: UILabel!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var timeLabel: UILabel!
+    @IBOutlet weak var view: UIView!
     
-    func updateUI(_ rank: Int, _ name: String, _ time: String){
-        rankLabel.text = "\(rank)."
+    func updateUI(_ rank: Int, _ name: String, _ clearCnt: Int,_ myScore: Bool){
+        var rankText = ""
+        if rank == 1{
+            rankText = "🥇"
+        }else if rank == 2{
+            rankText = "🥈"
+        }else if rank == 3{
+            rankText = "🥉"
+        }else {
+            rankText = "\(rank)."
+        }
+        
+        if myScore{
+            view.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 0.5)
+            view.layer.cornerRadius = 20
+        } else{
+            view.backgroundColor = UIColor.clear
+        }
+        rankLabel.text = rankText
         nameLabel.text = name
-        timeLabel.text = time
+        timeLabel.text = "\(clearCnt)"
     }
 }
