@@ -18,7 +18,6 @@ class SudokuViewController: UIViewController {
     let CheckNumCountNotification: Notification.Name = Notification.Name("CheckNumCountNotification")
     
     var isMemoSelected = false
-    var memoNum = -1
     
     var clickIndex: [[Int]] = []
     
@@ -36,21 +35,45 @@ extension SudokuViewController{
     
     func resetClickIndex(){
         var i = 0
-        while i < clickIndex.count{
-            if sudokuViewModel.game_sudoku[clickIndex[i][0]][clickIndex[i][1]] == 0 || sudokuViewModel.game_sudoku[clickIndex[i][0]][clickIndex[i][1]] == sudokuViewModel.original_sudoku[clickIndex[i][0]][clickIndex[i][1]]{
-                clickIndex.remove(at: i)
-            }else{
-                i += 1
+        print("---> 실행 전 : \(clickIndex)")
+        let game_sudoku = sudokuViewModel.game_sudoku[clickIndex[clickIndex.count - 1][0]][clickIndex[clickIndex.count - 1][1]]
+        let origin_sudoku = sudokuViewModel.original_sudoku[clickIndex[clickIndex.count - 1][0]][clickIndex[clickIndex.count - 1][1]]
+    
+        if game_sudoku == origin_sudoku { // 이미 정답인 부분을 클릭했을 때
+            while i < clickIndex.count{ // 클릭한 부분은 실행 취소가 불가 하므로 삭제 해준다.
+                if clickIndex[i][4] < 0 { // memo일 때는 삭제 하지 말자
+                    if game_sudoku == 0 || game_sudoku == origin_sudoku{ // game_sudoku == 0 -> 빈칸, game == origin -> 정답 처리 된 것
+                        clickIndex.remove(at: i)
+                    }else{
+                        i += 1
+                    }
+                }else{
+                    i += 1
+                }
+            }
+        } else {
+            while i < clickIndex.count - 1{ // 정답인 부분이 아닐 때
+                if clickIndex[i][4] < 0 {
+                    if game_sudoku == 0 || game_sudoku == origin_sudoku{
+                        clickIndex.remove(at: i)
+                    }else{
+                        i += 1
+                    }
+                } else{
+                    i += 1
+                }
             }
         }
+        print("---> 실행 후 : \(clickIndex)")
     }
     
-    func setClickIndex(_ index: Int){
+    func setClickIndex(_ index: Int, _ memoNum: Int){
         var arr: [Int] = []
         arr.append(index / 9)
         arr.append(index % 9)
         arr.append(index)
         arr.append(sudokuViewModel.game_sudoku[arr[0]][arr[1]])
+        arr.append(memoNum)
         
         clickIndex.append(arr)
     }
@@ -117,33 +140,35 @@ extension SudokuViewController{
     // 숫자 클릭했을 때 notifi
     @objc func clickNumberNotification(_ noti: Notification){
         guard let num = noti.userInfo?["num"] as? Int else { return }
-        
+
         if clickIndex.count > 0 {
             let i = clickIndex[clickIndex.count-1][0]
             let j = clickIndex[clickIndex.count-1][1]
             let index = clickIndex[clickIndex.count-1][2]
+            clickIndex[clickIndex.count-1][3] = num
+           
             if isMemoSelected{
                 if sudokuViewModel.game_sudoku[i][j] != sudokuViewModel.original_sudoku[i][j]{
                     if sudokuViewModel.game_sudoku[i][j] == 0 {
                         sudokuViewModel.setMemoArr(index, num - 1, 1)
-                        memoNum = num - 1
+                        // memoNum = num - 1
+                        print("---> memoNum : \(num)")
+                        setClickIndex(index, num - 1) // memoNum을 넣어줌
                     }
                 }
             } else {
-                if i != -1 && j != -1 {
-                    if sudokuViewModel.game_sudoku[i][j] != sudokuViewModel.original_sudoku[i][j]{
-                        sudokuViewModel.setMemoArr(index, [0,0,0,0,0,0,0,0,0]) // 일단 메모 다 지우기
-                        sudokuViewModel.setGameSudoku(num, i, j)
-                        
-                        if num == sudokuViewModel.original_sudoku[i][j]{
-                            sudokuViewModel.setNumCount()
-                            if sudokuViewModel.numCount[num] == 9 {
-                                NotificationCenter.default.post(name: CheckNumCountNotification, object: nil, userInfo: nil)
-                            }
+                if sudokuViewModel.game_sudoku[i][j] != sudokuViewModel.original_sudoku[i][j]{
+                    sudokuViewModel.setMemoArr(index, [0,0,0,0,0,0,0,0,0]) // 일단 메모 다 지우기
+                    sudokuViewModel.setGameSudoku(num, i, j)
+                    
+                    if num == sudokuViewModel.original_sudoku[i][j]{
+                        sudokuViewModel.setNumCount()
+                        if sudokuViewModel.numCount[num] == 9 {
+                            NotificationCenter.default.post(name: CheckNumCountNotification, object: nil, userInfo: nil)
                         }
-                        
-                        setisSelected(index)
                     }
+                    setisSelected(index)
+                    resetClickIndex()
                 }
             }
             DispatchQueue.main.async {
@@ -160,22 +185,21 @@ extension SudokuViewController{
             let i = clickIndex[clickIndex.count-1][0]
             let j = clickIndex[clickIndex.count-1][1]
             let index = clickIndex[clickIndex.count-1][2]
+            let memoNum = clickIndex[clickIndex.count-1][4]
             
             if i != -1 && j != -1 {
                 if optionNum == 0 { // 실행 취소
                     if memoNum > 0 {
                         sudokuViewModel.setMemoArr(index, memoNum, 0)
+                        clickIndex[clickIndex.count-1][4] = -1
                     }
                     if sudokuViewModel.game_sudoku[i][j] != sudokuViewModel.original_sudoku[i][j]{
-                        if sudokuViewModel.game_sudoku[i][j] != 0 {
-                            sudokuViewModel.setGameSudoku(0, i, j)
-                            
-                            setisSelected(index)
-                            
-                            if clickIndex.count > 0 {
-                                clickIndex.removeLast()
-                            }
-                        }
+                        clickIndex[clickIndex.count-1][3] = 0
+                        setisSelected(index) // 커서 이동
+                        sudokuViewModel.setGameSudoku(0, i, j) // 실행 취소한 부분 0 처리
+                    }
+                    if clickIndex.count > 1 {
+                        clickIndex.removeLast()
                     }
                 } else if optionNum == 1{ // 지우기
                     if !isMemoSelected{
@@ -241,7 +265,7 @@ extension SudokuViewController: UICollectionViewDataSource{
 
 extension SudokuViewController: UICollectionViewDelegate{
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        setClickIndex(indexPath.item)
+        setClickIndex(indexPath.item, -1)
         setisSelected(indexPath.item)
         resetClickIndex()
     }
