@@ -14,7 +14,7 @@ struct Profile: Codable{
 class ProfileManager{
     static let shared = ProfileManager()
     
-    var profile: Profile = Profile(name: "-")
+    var profile: Profile = Profile(name: "SA")
     
     func saveProfile(_ profile: Profile){
         self.profile = profile

@@ -228,10 +228,10 @@
         </scene>
     </scenes>
     <resources>
-        <image name="chevron.left" catalog="system" width="96" height="128"/>
-        <image name="chevron.right" catalog="system" width="96" height="128"/>
-        <image name="crown.fill" catalog="system" width="128" height="92"/>
-        <image name="gearshape.fill" catalog="system" width="128" height="121"/>
+        <image name="chevron.left" catalog="system" width="32" height="32"/>
+        <image name="chevron.right" catalog="system" width="32" height="32"/>
+        <image name="crown.fill" catalog="system" width="32" height="32"/>
+        <image name="gearshape.fill" catalog="system" width="32" height="32"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

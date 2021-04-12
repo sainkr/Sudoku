@@ -148,15 +148,16 @@ extension SudokuViewController{
             clickIndex[clickIndex.count-1][3] = num
            
             if isMemoSelected{
+                print("----> 메모")
                 if sudokuViewModel.game_sudoku[i][j] != sudokuViewModel.original_sudoku[i][j]{
                     if sudokuViewModel.game_sudoku[i][j] == 0 {
                         sudokuViewModel.setMemoArr(index, num - 1, 1)
-                        // memoNum = num - 1
                         print("---> memoNum : \(num)")
                         setClickIndex(index, num - 1) // memoNum을 넣어줌
                     }
                 }
             } else {
+                print("----> 메모 아니야")
                 if sudokuViewModel.game_sudoku[i][j] != sudokuViewModel.original_sudoku[i][j]{
                     sudokuViewModel.setMemoArr(index, [0,0,0,0,0,0,0,0,0]) // 일단 메모 다 지우기
                     sudokuViewModel.setGameSudoku(num, i, j)
@@ -192,20 +193,30 @@ extension SudokuViewController{
                     if memoNum > 0 {
                         sudokuViewModel.setMemoArr(index, memoNum, 0)
                         clickIndex[clickIndex.count-1][4] = -1
+                        if clickIndex.count > 1 {
+                            clickIndex.removeLast()
+                        }
                     }
                     if sudokuViewModel.game_sudoku[i][j] != sudokuViewModel.original_sudoku[i][j]{
                         clickIndex[clickIndex.count-1][3] = 0
                         setisSelected(index) // 커서 이동
                         sudokuViewModel.setGameSudoku(0, i, j) // 실행 취소한 부분 0 처리
+                        if clickIndex.count > 1 {
+                            clickIndex.removeLast()
+                        }
                     }
-                    if clickIndex.count > 1 {
-                        clickIndex.removeLast()
-                    }
+                    
+                    print("---> 실행 취소 후 : \(clickIndex)")
+ 
                 } else if optionNum == 1{ // 지우기
                     if !isMemoSelected{
                         if sudokuViewModel.game_sudoku[i][j] != sudokuViewModel.original_sudoku[i][j]{
                             if sudokuViewModel.game_sudoku[i][j] != 0 {
                                 sudokuViewModel.setGameSudoku(0, i, j)
+                                setisSelected(index) // 커서 이동
+                                if clickIndex.count > 1 {
+                                    clickIndex.removeLast()
+                                }
                             }
                         }
                     }

@@ -75,7 +75,7 @@ class RankCell: UICollectionViewCell{
         
         if myScore{
             view.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 0.5)
-            view.layer.cornerRadius = 20
+            view.layer.cornerRadius = 15
         } else{
             view.backgroundColor = UIColor.clear
         }

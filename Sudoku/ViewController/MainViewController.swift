@@ -37,7 +37,7 @@ class MainViewController: UIViewController {
         setCurrentCalendar(todayViewModel.yearOfToday, todayViewModel.monthOfToday)
        
         // 클리어 ----> 
-        myGameViewModel.clearMyGame()
+        // myGameViewModel.clearMyGame()
         setView()
     }
     
