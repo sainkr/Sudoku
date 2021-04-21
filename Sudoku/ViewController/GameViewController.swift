@@ -26,7 +26,7 @@ class GameViewController: UIViewController {
     
     var isPlaying: Bool = true
     
-    var sudokuViewModel = PBSudokuViewModel()
+    var sudokuViewModel = SudokuViewModel()
     var myGameViewModel = MyGameViewModel()
     var todayGameViewModel = TodayGameViewModel()
     var rankViewModel = RankViewModel()
@@ -34,7 +34,7 @@ class GameViewController: UIViewController {
     let ClickNumberNotification: Notification.Name = Notification.Name("ClickNumberNotification")
     let CheckNumCountNotification: Notification.Name = Notification.Name("CheckNumCountNotification")
     
-    var gameType = 0
+    var gameType = -1
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "sudoku"{
@@ -68,7 +68,7 @@ class GameViewController: UIViewController {
     func setView(){
         if gameType == 0{
             timeCount = myGameViewModel.myGame.time
-        } else {
+        } else if gameType == 1 {
             timeCount = todayGameViewModel.todayGame.time
         }
         timerPlay()
@@ -141,7 +141,7 @@ extension GameViewController {
         if gameType == 0{
             myGameViewModel.clearMyGame()
             
-        }else{
+        }else if gameType == 1{
             todayGameViewModel.addTodayGameCalendar()
         }
         dismiss(animated: true, completion: nil)
@@ -151,9 +151,9 @@ extension GameViewController {
         // 저장
         print("----> 저장")
         sudokuViewModel.resetisSelected()
-        if gameType == 0{
+        if gameType == 0 || gameType == -1{
             myGameViewModel.saveMyGame(MyGame(level: sudokuViewModel.level, game_sudoku: sudokuViewModel.game_sudoku, original_sudoku: sudokuViewModel.original_sudoku, time: timeCount, memoArr: sudokuViewModel.memoArr, numCount: sudokuViewModel.numCount))
-        }else {
+        }else if gameType == 1{
             todayGameViewModel.saveTodayGame(TodayGame(today: todayGameViewModel.todayGame.today, todayDate:todayGameViewModel.todayGame.todayDate, todayGameCalendar: todayGameViewModel.todayGame.todayGameCalendar, level: sudokuViewModel.level, game_sudoku: sudokuViewModel.game_sudoku, original_sudoku: sudokuViewModel.original_sudoku, time: timeCount, memoArr: sudokuViewModel.memoArr, numCount: sudokuViewModel.numCount))
         }
     }

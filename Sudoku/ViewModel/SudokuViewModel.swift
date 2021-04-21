@@ -7,8 +7,8 @@
 
 import Foundation
 
-class PBSudokuViewModel{
-    private let manager = PBSudokuManager.shared
+class SudokuViewModel{
+    private let manager = SudokuManager.shared
     
     var level: Int{
         return manager.level

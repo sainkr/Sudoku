@@ -6,7 +6,7 @@
 //
 
 import UIKit
-
+import PBSudoku
 class MainViewController: UIViewController {
 
     @IBOutlet weak var todayDateLabel: UILabel!
@@ -21,7 +21,7 @@ class MainViewController: UIViewController {
     
     var todayViewModel = TodayViewModel()
     var myGameViewModel = MyGameViewModel()
-    var sudokuViewModel = PBSudokuViewModel()
+    var sudokuViewModel = SudokuViewModel()
     var todayGameViewModel = TodayGameViewModel()
     var rankViewModel = RankViewModel()
     var profileViewModel = ProfileViewModel()
@@ -115,6 +115,7 @@ extension MainViewController{
         let gameStoryboard = UIStoryboard.init(name: "Game", bundle: nil)
         guard let gameVC = gameStoryboard.instantiateViewController(identifier: "GameViewController") as? GameViewController else { return }
         gameVC.modalPresentationStyle = .fullScreen
+        gameVC.gameType = 0
         self.present(gameVC, animated: true, completion: nil)
     }
     

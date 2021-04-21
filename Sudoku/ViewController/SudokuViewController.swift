@@ -10,7 +10,7 @@ import UIKit
 class SudokuViewController: UIViewController {
     @IBOutlet weak var collectionView: UICollectionView!
     
-    var sudokuViewModel = PBSudokuViewModel()
+    var sudokuViewModel = SudokuViewModel()
     var myGameViewModel = MyGameViewModel()
     
     let ClickNumberNotification: Notification.Name = Notification.Name("ClickNumberNotification")
