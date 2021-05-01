@@ -22,12 +22,20 @@ class SudokuViewController: UIViewController {
     var clickIndex: [[Int]] = []
     
     override func viewDidLoad() {
-        
         super.viewDidLoad()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.clickNumberNotification(_:)), name: ClickNumberNotification , object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.optionNotification(_:)), name: OptionNotification, object: nil)
+    }
         
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(true)
+        
+        NotificationCenter.default.removeObserver(self)
     }
 }
 
@@ -35,7 +43,6 @@ extension SudokuViewController{
     
     func resetClickIndex(){
         var i = 0
-        print("---> 실행 전 : \(clickIndex)")
         let game_sudoku = sudokuViewModel.game_sudoku[clickIndex[clickIndex.count - 1][0]][clickIndex[clickIndex.count - 1][1]]
         let origin_sudoku = sudokuViewModel.original_sudoku[clickIndex[clickIndex.count - 1][0]][clickIndex[clickIndex.count - 1][1]]
     
@@ -64,7 +71,6 @@ extension SudokuViewController{
                 }
             }
         }
-        print("---> 실행 후 : \(clickIndex)")
     }
     
     func setClickIndex(_ index: Int, _ memoNum: Int){
@@ -139,8 +145,9 @@ extension SudokuViewController{
     
     // 숫자 클릭했을 때 notifi
     @objc func clickNumberNotification(_ noti: Notification){
+        
         guard let num = noti.userInfo?["num"] as? Int else { return }
-
+        print("----> num \(num) : \(isMemoSelected)")
         if clickIndex.count > 0 {
             let i = clickIndex[clickIndex.count-1][0]
             let j = clickIndex[clickIndex.count-1][1]
@@ -148,16 +155,15 @@ extension SudokuViewController{
             clickIndex[clickIndex.count-1][3] = num
            
             if isMemoSelected{
-                print("----> 메모")
+                
                 if sudokuViewModel.game_sudoku[i][j] != sudokuViewModel.original_sudoku[i][j]{
                     if sudokuViewModel.game_sudoku[i][j] == 0 {
                         sudokuViewModel.setMemoArr(index, num - 1, 1)
-                        print("---> memoNum : \(num)")
+                        
                         setClickIndex(index, num - 1) // memoNum을 넣어줌
                     }
                 }
             } else {
-                print("----> 메모 아니야")
                 if sudokuViewModel.game_sudoku[i][j] != sudokuViewModel.original_sudoku[i][j]{
                     sudokuViewModel.setMemoArr(index, [0,0,0,0,0,0,0,0,0]) // 일단 메모 다 지우기
                     sudokuViewModel.setGameSudoku(num, i, j)
@@ -205,8 +211,6 @@ extension SudokuViewController{
                             clickIndex.removeLast()
                         }
                     }
-                    
-                    print("---> 실행 취소 후 : \(clickIndex)")
  
                 } else if optionNum == 1{ // 지우기
                     if !isMemoSelected{
@@ -227,7 +231,6 @@ extension SudokuViewController{
                     } else {
                         isMemoSelected = true
                     }
-                    print(isMemoSelected)
                 } else { // 힌트
                     if sudokuViewModel.game_sudoku[i][j] != sudokuViewModel.original_sudoku[i][j]{
                         sudokuViewModel.setGameSudoku(sudokuViewModel.original_sudoku[i][j], i, j)

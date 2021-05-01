@@ -48,19 +48,19 @@ class GameViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        NotificationCenter.default.addObserver(self, selector: #selector(setNumberHidden(_:)), name: CheckNumCountNotification, object: nil)
-        
+
         setView()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        NotificationCenter.default.addObserver(self, selector: #selector(setNumberHidden(_:)), name: CheckNumCountNotification, object: nil)
+    }
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)
-        timer?.invalidate()
-        saveSudoku()
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(true)
+        
+        NotificationCenter.default.removeObserver(self)
+        
         timer?.invalidate()
         saveSudoku()
     }
@@ -169,11 +169,9 @@ extension GameViewController: UICollectionViewDataSource {
         
         cell.updateUI(indexPath.item + 1, sudokuViewModel.numCount[indexPath.item + 1])
         
-        
         cell.clickButtonTapHandler = {
             print("handler")
             NotificationCenter.default.post(name: self.ClickNumberNotification, object: nil, userInfo: ["num" : indexPath.item + 1])
-
         }
         
         return cell
