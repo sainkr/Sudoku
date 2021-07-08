@@ -337,7 +337,6 @@
                                             <outlet property="memoLabel8" destination="42g-sh-NYT" id="7G6-st-fjV"/>
                                             <outlet property="memoLabel9" destination="A7V-Zj-rt4" id="S5x-Dz-fqn"/>
                                             <outlet property="numLabel" destination="MZw-0F-RfJ" id="yzG-9m-PFU"/>
-                                            <outlet property="view" destination="Cmf-1s-b8B" id="ZHt-ch-IVb"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>

@@ -1,17 +1,13 @@
 //
-//  Today.swift
+//  TodayViewModel.swift
 //  Sudoku
 //
 //  Created by 홍승아 on 2021/03/22.
 //
 
 import Foundation
-import PBSudoku
 
-class TodayManager {
-    
-    static let shared = TodayManager()
-    
+class CalendarViewModel{
     var yearOfToday: Int {
         return Calendar.current.component(.year, from: Date())
     }
@@ -42,7 +38,6 @@ class TodayManager {
         let firstWeekDay = getDayOfWeek("\(currentYear)-\(currentMonth)") ?? 1
         
         // 시작하는 요일 전에 남는 공간을 0으로 채워준다
-        
         while day.count < firstWeekDay{
             day.append(0)
         }
@@ -63,5 +58,15 @@ class TodayManager {
         let weekDay = myCalendar.component(.weekday, from: todayDate)
         // Sun = 1, Mon = 2, Tue = 3 ...
         return weekDay - 1
+    }
+    
+    func setCurrentDay(_ year: Int, _ month: Int) -> [Int]{
+        if month == 0 {
+            return [year - 1, 12]
+        } else if month == 13 {
+            return [year + 1, 1]
+        }else {
+            return [year, month]
+        }
     }
 }

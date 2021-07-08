@@ -14,7 +14,7 @@ class RankViewController: UIViewController {
     
     var rankViewModel = RankViewModel()
     var profileViewModel = ProfileViewModel()
-    var todayViewModel = TodayViewModel()
+    var todayViewModel = CalendarViewModel()
     
     var rankInfo: [RankInfo] = []
     override func viewDidLoad() {
@@ -55,6 +55,7 @@ extension RankViewController: UICollectionViewDelegateFlowLayout{
         return CGSize(width: width, height: height)
     }
 }
+
 class RankCell: UICollectionViewCell{
     @IBOutlet weak var rankLabel: UILabel!
     @IBOutlet weak var nameLabel: UILabel!

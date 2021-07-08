@@ -53,7 +53,7 @@ public class InnerDB {
         
         print("---> data : \(data)")
         do {
-            let model = try decoder.decode(type , from: data)
+            let model = try decoder.decode(type, from: data)
             return model
         } catch let error {
             print("---> Failed to decode msg: \(error.localizedDescription)")

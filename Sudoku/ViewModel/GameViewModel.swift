@@ -7,7 +7,22 @@
 
 import Foundation
 
-class MyGameViewModel{
+class GameViewModel{
+    func saveGame(game: Game){
+        InnerDB.store(game, to: .documents, as: "mygame.json")
+    }
+    
+    func loadGame() -> Game?{
+        guard let game: Game = InnerDB.retrive("mygame.json", from: .documents, as: Game.self) else { return nil }
+        return game
+    }
+    
+    func clearGame(){
+        InnerDB.clear(.documents)
+    }
+}
+
+/*class MyGameViewModel{
     private let manager = MyGameManager.shared
     
     public var myGame: MyGame{
@@ -25,4 +40,4 @@ class MyGameViewModel{
     public func clearMyGame(){
         manager.clearMyGame()
     }
-}
+}*/

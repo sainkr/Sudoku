@@ -1,0 +1,18 @@
+
+/* Class = "UILabel"; text = "2021년 3월 22일"; ObjectID = "Iqi-cX-YDd"; */
+"Iqi-cX-YDd.text" = "2021년 3월 22일";
+
+/* Class = "UILabel"; text = "3월"; ObjectID = "UIU-K5-rTa"; */
+"UIU-K5-rTa.text" = "3월";
+
+/* Class = "UIButton"; normalTitle = "이어 하기"; ObjectID = "amk-KS-zS7"; */
+"amk-KS-zS7.normalTitle" = "이어 하기";
+
+/* Class = "UIButton"; normalTitle = "오늘의 게임 플레이"; ObjectID = "eRp-PF-Mza"; */
+"eRp-PF-Mza.normalTitle" = "오늘의 게임 플레이";
+
+/* Class = "UIButton"; normalTitle = "새 게임"; ObjectID = "kRR-SY-F9e"; */
+"kRR-SY-F9e.normalTitle" = "새 게임";
+
+/* Class = "UILabel"; text = "오늘의 스도쿠"; ObjectID = "vYX-BQ-oMQ"; */
+"vYX-BQ-oMQ.text" = "오늘의 스도쿠";
