@@ -8,8 +8,7 @@
 import UIKit
 import PBSudoku
 
-class MainViewController: UIViewController {
-
+class MainViewController: UIViewController{
     @IBOutlet weak var todayDateLabel: UILabel!
     @IBOutlet weak var monthLabel: UILabel!
     @IBOutlet weak var calendarView: UIView!
@@ -24,13 +23,13 @@ class MainViewController: UIViewController {
     var gameViewModel = GameViewModel()
     var sudokuViewModel = SudokuViewModel()
     var dailyGameViewModel = DailyGameViewModel()
-    var rankViewModel = RankViewModel()
-    var profileViewModel = ProfileViewModel()
     
     var currentYear: Int = 0
     var currentMonth: Int = 0
     var currentDay: Int = 0
     var currentCalendarDay: [Int] = []
+    
+    var dailygamecleardate: [DailyGameClearDate]!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -82,15 +81,15 @@ extension MainViewController{
             let actionsheetConroller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
             
             let easy = UIAlertAction(title: "쉬움", style: .default) { action in
-                self.sudokuViewModel.setLevel(level: 0)
-                self.present(gameVC, animated: true, completion: nil)
-            }
-            let medium = UIAlertAction(title: "보통", style: .default) { action in
                 self.sudokuViewModel.setLevel(level: 1)
                 self.present(gameVC, animated: true, completion: nil)
             }
-            let hard = UIAlertAction(title: "어려움", style: .default) { action in
+            let medium = UIAlertAction(title: "보통", style: .default) { action in
                 self.sudokuViewModel.setLevel(level: 2)
+                self.present(gameVC, animated: true, completion: nil)
+            }
+            let hard = UIAlertAction(title: "어려움", style: .default) { action in
+                self.sudokuViewModel.setLevel(level: 3)
                 self.present(gameVC, animated: true, completion: nil)
             }
             let actionCancel = UIAlertAction(title: "취소", style: .cancel, handler: nil)
@@ -108,15 +107,7 @@ extension MainViewController{
     }
 
     func loadData(){
-        rankViewModel.loadData()
-        profileViewModel.loadProfile()
-    }
-    
-    func presentRankVC(){
-        let rankStoryboard = UIStoryboard.init(name: "Rank", bundle: nil)
-        guard let rankVC = rankStoryboard.instantiateViewController(identifier: "RankViewConroller") as? RankViewController else { return }
-        rankVC.modalPresentationStyle = .fullScreen
-        self.present(rankVC, animated: true, completion: nil)
+        dailygamecleardate = dailyGameViewModel.loadDailyGameClear()
     }
     
     func setAlert(_ msg: String){
@@ -160,45 +151,6 @@ extension MainViewController {
     @IBAction func newGameButtonTapped(_ sender: Any) { // 새 게임 버튼
         presentGameVC(.newGame)
     }
-    
-    @IBAction func rankingButtonTapped(_ sender: Any) { // 랭킹 버튼
-        if profileViewModel.profile.name == "-"{ // 닉네임이 등록되어있지 않으면
-            let alert = UIAlertController(title: nil, message: "랭킹을 확인하려면 닉네임을 입력하세요.", preferredStyle: .alert)
-            let ok = UIAlertAction(title: "확인", style: .default){ (ok) in
-                if let name = alert.textFields?[0].text {
-                    guard name != "" else { self.setAlert("닉네임을 입력해주세요."); return }
-                    if self.rankViewModel.rank[name] == nil{ // 닉네임 중복 여부 체크
-                            self.profileViewModel.saveProfile(Profile(name: name))
-                            let clearCnt = self.dailyGameViewModel.getClearCount(year: self.calendarViewModel.yearOfToday, month: self.calendarViewModel.monthOfToday)
-                            let todayDate = "\(self.calendarViewModel.yearOfToday)\(self.calendarViewModel.monthOfToday)"
-                            if clearCnt > 0 {
-                                self.rankViewModel.addRank(alert.textFields?[0].text ?? "-", clearCnt, todayDate)
-                            }
-                            self.dismiss(animated: true, completion: nil)
-                            self.presentRankVC()
-                        }else{ // 존재하면
-                            self.setAlert("이미 존재하는 닉네임입니다. 다시 입력해주세요.")
-                        }
-                    }
-                }
-            let cancle = UIAlertAction(title: "취소", style: .cancel){ (cancle) in
-                self.dismiss(animated: true, completion: nil)
-            }
-
-            alert.addAction(cancle)
-            alert.addAction(ok)
-            alert.addTextField()
-
-            present(alert, animated: true, completion: nil)
-        }else{
-            presentRankVC()
-        }
-        rankViewModel.loadData()
-    }
-    
-    @IBAction func setupButtonTapped(_ sender: Any) { // 환경설정 버튼
-        
-    }
 }
 
 extension MainViewController: UICollectionViewDataSource{
@@ -210,10 +162,9 @@ extension MainViewController: UICollectionViewDataSource{
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CalendarCell", for: indexPath) as? CalendarCell else { return UICollectionViewCell() }
         
         var success = false
-        if dailyGameViewModel.isContain(date: DailyGameClearDate(year: currentYear, month: currentMonth, day: currentCalendarDay[indexPath.item])) {
+        if dailyGameViewModel.isContain(dailycleargame: dailygamecleardate, date: DailyGameClearDate(year: currentYear, month: currentMonth, day: currentCalendarDay[indexPath.item])) {
             success = true
         }
-        
         cell.updateUI(currentCalendarDay[indexPath.item], currentDay, success)
         
         return cell
@@ -232,29 +183,14 @@ class CalendarCell: UICollectionViewCell{
     @IBOutlet weak var view: UIView!
     
     func updateUI(_ day: Int, _ currentDay: Int, _ success: Bool){
-        if day > 0 {
-            dayLabel.text = "\(day)"
-        }else {
-            dayLabel.text = " "
-        }
-        
-        if day <= currentDay {
-            dayLabel.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-        }
-        else {
-            dayLabel.textColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
-        }
-        
+        dayLabel.text = day > 0 ? "\(day)" : " "
+        dayLabel.textColor = day <= currentDay ? #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1) : #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
+    
         if success{
-            updateBackground()
+            view.backgroundColor = #colorLiteral(red: 0.9516713023, green: 0.3511439562, blue: 0.1586719155, alpha: 1)
+            view.layer.cornerRadius = 20
         }else {
             view.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         }
-    }
-    
-    // 배경색 업데이트
-    func updateBackground(){
-        view.backgroundColor = #colorLiteral(red: 0.9516713023, green: 0.3511439562, blue: 0.1586719155, alpha: 1)
-        view.layer.cornerRadius = 20
     }
 }

@@ -17,27 +17,7 @@ class GameViewModel{
         return game
     }
     
-    func clearGame(){
-        InnerDB.clear(.documents)
+    func removeGame(){
+        InnerDB.remove("mygame.json", from: .documents)
     }
 }
-
-/*class MyGameViewModel{
-    private let manager = MyGameManager.shared
-    
-    public var myGame: MyGame{
-        return manager.myGame
-    }
-    
-    public func saveMyGame(_ myGame: MyGame){
-        manager.saveMyGame(myGame)
-    }
-    
-    public func loadMyGame(){
-        manager.loadMyGame()
-    }
-    
-    public func clearMyGame(){
-        manager.clearMyGame()
-    }
-}*/

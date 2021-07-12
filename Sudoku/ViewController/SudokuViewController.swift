@@ -15,7 +15,8 @@ class SudokuViewController: UIViewController {
     
     let ClickNumberNotification: Notification.Name = Notification.Name("ClickNumberNotification")
     let OptionNotification: Notification.Name = Notification.Name("OptionNotification")
-    let CheckNumCountNotification: Notification.Name = Notification.Name("CheckNumCountNotification")
+    
+    weak var delegate: CheckNumCountDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,7 +44,7 @@ extension SudokuViewController{
             self.collectionView.reloadData()
         }
         if !sudokuViewModel.isMemoSelected{
-            NotificationCenter.default.post(name: CheckNumCountNotification, object: nil, userInfo: nil)
+            delegate?.checkNumCount()
         }
     }
     // 옵션 클릭했을 때 notifi

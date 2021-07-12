@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		2812DF3434BFFEDC2F564C80 /* Pods_Sudoku.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C5393113314BE756A029FD8 /* Pods_Sudoku.framework */; };
-		360177392619E060005224C7 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 360177382619E060005224C7 /* Profile.swift */; };
-		3601773E2619E1D3005224C7 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3601773D2619E1D3005224C7 /* ProfileViewModel.swift */; };
 		3621AD4125FA60BD00C3E456 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3621AD4025FA60BD00C3E456 /* AppDelegate.swift */; };
 		3621AD4325FA60BD00C3E456 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3621AD4225FA60BD00C3E456 /* SceneDelegate.swift */; };
 		3621AD4825FA60BD00C3E456 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3621AD4625FA60BD00C3E456 /* Main.storyboard */; };
@@ -22,16 +20,13 @@
 		363D4B1026133419005A6E45 /* GameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363D4B0F26133419005A6E45 /* GameViewModel.swift */; };
 		3650D5FC2612F78000D88421 /* InnerDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3650D5FB2612F78000D88421 /* InnerDB.swift */; };
 		365ACF43261589F000C3BC88 /* Rank.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 365ACF42261589F000C3BC88 /* Rank.storyboard */; };
-		365ACF4826158B9200C3BC88 /* RankViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 365ACF4726158B9200C3BC88 /* RankViewController.swift */; };
-		365ACF4E2615961F00C3BC88 /* ExternelDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 365ACF4D2615961F00C3BC88 /* ExternelDB.swift */; };
 		365ACFA22615AED600C3BC88 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 365ACFA12615AED600C3BC88 /* GoogleService-Info.plist */; };
-		365ACFA72615B5F200C3BC88 /* Rank.swift in Sources */ = {isa = PBXBuildFile; fileRef = 365ACFA62615B5F200C3BC88 /* Rank.swift */; };
-		365ACFAC2615BA4000C3BC88 /* RankViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 365ACFAB2615BA4000C3BC88 /* RankViewModel.swift */; };
 		3660148E2608C32900BC8578 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3660148D2608C32900BC8578 /* MainViewController.swift */; };
 		366014A42608C66000BC8578 /* CalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366014A32608C66000BC8578 /* CalendarViewModel.swift */; };
 		36B0FE2E2609BEFB00A458FE /* Game.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 36B0FE2D2609BEFB00A458FE /* Game.storyboard */; };
 		36B0FE332609DE7000A458FE /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36B0FE322609DE7000A458FE /* GameViewController.swift */; };
 		36B4576E2630308000C33678 /* BMHANNAProOTF.otf in Resources */ = {isa = PBXBuildFile; fileRef = 36B45683262FFB4700C33678 /* BMHANNAProOTF.otf */; };
+		36CA7055269C58CC00823C70 /* CheckNumCountDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36CA7054269C58CC00823C70 /* CheckNumCountDelegate.swift */; };
 		36DF6CF42610C0C5000B9D49 /* SudokuViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36DF6CF32610C0C5000B9D49 /* SudokuViewModel.swift */; };
 		36EDAD5D269731080037862C /* ClickIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36EDAD5C269731080037862C /* ClickIndex.swift */; };
 		36EDAD622697331E0037862C /* DailyGameClearDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36EDAD612697331E0037862C /* DailyGameClearDate.swift */; };
@@ -75,8 +70,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		360177382619E060005224C7 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
-		3601773D2619E1D3005224C7 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		3620AF5E2619788300A47C28 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		3620AF602619788300A47C28 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		3621AD3D25FA60BD00C3E456 /* Sudoku.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sudoku.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -97,16 +90,13 @@
 		363D4B0F26133419005A6E45 /* GameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewModel.swift; sourceTree = "<group>"; };
 		3650D5FB2612F78000D88421 /* InnerDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InnerDB.swift; sourceTree = "<group>"; };
 		365ACF42261589F000C3BC88 /* Rank.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Rank.storyboard; sourceTree = "<group>"; };
-		365ACF4726158B9200C3BC88 /* RankViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RankViewController.swift; sourceTree = "<group>"; };
-		365ACF4D2615961F00C3BC88 /* ExternelDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExternelDB.swift; sourceTree = "<group>"; };
 		365ACFA12615AED600C3BC88 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		365ACFA62615B5F200C3BC88 /* Rank.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rank.swift; sourceTree = "<group>"; };
-		365ACFAB2615BA4000C3BC88 /* RankViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RankViewModel.swift; sourceTree = "<group>"; };
 		3660148D2608C32900BC8578 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		366014A32608C66000BC8578 /* CalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewModel.swift; sourceTree = "<group>"; };
 		36B0FE2D2609BEFB00A458FE /* Game.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Game.storyboard; sourceTree = "<group>"; };
 		36B0FE322609DE7000A458FE /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		36B45683262FFB4700C33678 /* BMHANNAProOTF.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = BMHANNAProOTF.otf; path = Sudoku/Resources/BMHANNAProOTF.otf; sourceTree = SOURCE_ROOT; };
+		36CA7054269C58CC00823C70 /* CheckNumCountDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckNumCountDelegate.swift; sourceTree = "<group>"; };
 		36DF6CF32610C0C5000B9D49 /* SudokuViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SudokuViewModel.swift; sourceTree = "<group>"; };
 		36EDAD5C269731080037862C /* ClickIndex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClickIndex.swift; sourceTree = "<group>"; };
 		36EDAD612697331E0037862C /* DailyGameClearDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyGameClearDate.swift; sourceTree = "<group>"; };
@@ -186,7 +176,7 @@
 				3621AD4025FA60BD00C3E456 /* AppDelegate.swift */,
 				3621AD4225FA60BD00C3E456 /* SceneDelegate.swift */,
 				3650D5FB2612F78000D88421 /* InnerDB.swift */,
-				365ACF4D2615961F00C3BC88 /* ExternelDB.swift */,
+				36CA7053269C58BF00823C70 /* Delegate */,
 				366014942608C51800BC8578 /* Model */,
 				366014922608C50300BC8578 /* ViewModel */,
 				366014932608C50A00BC8578 /* ViewController */,
@@ -220,8 +210,6 @@
 				36DF6CF32610C0C5000B9D49 /* SudokuViewModel.swift */,
 				363D4B0F26133419005A6E45 /* GameViewModel.swift */,
 				36F46BFA2614A7CD00DDFA82 /* DailyGameViewModel.swift */,
-				365ACFAB2615BA4000C3BC88 /* RankViewModel.swift */,
-				3601773D2619E1D3005224C7 /* ProfileViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -233,7 +221,6 @@
 				36B0FE322609DE7000A458FE /* GameViewController.swift */,
 				36F4E759260C710F00987174 /* OptionViewController.swift */,
 				36F4E75E260C711600987174 /* SudokuViewController.swift */,
-				365ACF4726158B9200C3BC88 /* RankViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -243,8 +230,6 @@
 			children = (
 				363D4B0A26133217005A6E45 /* Game.swift */,
 				36F46BF52614A79900DDFA82 /* DailyGame.swift */,
-				365ACFA62615B5F200C3BC88 /* Rank.swift */,
-				360177382619E060005224C7 /* Profile.swift */,
 				36385C102695FE5A00636C44 /* GameType.swift */,
 				36EDAD5C269731080037862C /* ClickIndex.swift */,
 				36EDAD612697331E0037862C /* DailyGameClearDate.swift */,
@@ -274,6 +259,14 @@
 				365ACF42261589F000C3BC88 /* Rank.storyboard */,
 			);
 			path = Storyboard;
+			sourceTree = "<group>";
+		};
+		36CA7053269C58BF00823C70 /* Delegate */ = {
+			isa = PBXGroup;
+			children = (
+				36CA7054269C58CC00823C70 /* CheckNumCountDelegate.swift */,
+			);
+			path = Delegate;
 			sourceTree = "<group>";
 		};
 		91315107838076CCE9FD8937 /* Pods */ = {
@@ -546,26 +539,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				365ACFA72615B5F200C3BC88 /* Rank.swift in Sources */,
-				365ACFAC2615BA4000C3BC88 /* RankViewModel.swift in Sources */,
 				363D4B0B26133217005A6E45 /* Game.swift in Sources */,
 				36EDAD622697331E0037862C /* DailyGameClearDate.swift in Sources */,
 				3660148E2608C32900BC8578 /* MainViewController.swift in Sources */,
 				3650D5FC2612F78000D88421 /* InnerDB.swift in Sources */,
 				3621AD4125FA60BD00C3E456 /* AppDelegate.swift in Sources */,
 				366014A42608C66000BC8578 /* CalendarViewModel.swift in Sources */,
-				365ACF4E2615961F00C3BC88 /* ExternelDB.swift in Sources */,
 				3621AD4325FA60BD00C3E456 /* SceneDelegate.swift in Sources */,
-				360177392619E060005224C7 /* Profile.swift in Sources */,
 				363D4B1026133419005A6E45 /* GameViewModel.swift in Sources */,
 				36F46BF62614A79900DDFA82 /* DailyGame.swift in Sources */,
 				36F4E75A260C710F00987174 /* OptionViewController.swift in Sources */,
 				36385C112695FE5A00636C44 /* GameType.swift in Sources */,
-				365ACF4826158B9200C3BC88 /* RankViewController.swift in Sources */,
+				36CA7055269C58CC00823C70 /* CheckNumCountDelegate.swift in Sources */,
 				36F46BFB2614A7CD00DDFA82 /* DailyGameViewModel.swift in Sources */,
 				36B0FE332609DE7000A458FE /* GameViewController.swift in Sources */,
 				36DF6CF42610C0C5000B9D49 /* SudokuViewModel.swift in Sources */,
-				3601773E2619E1D3005224C7 /* ProfileViewModel.swift in Sources */,
 				36EDAD5D269731080037862C /* ClickIndex.swift in Sources */,
 				36F4E75F260C711600987174 /* SudokuViewController.swift in Sources */,
 			);

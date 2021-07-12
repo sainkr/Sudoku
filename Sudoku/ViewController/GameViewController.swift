@@ -29,20 +29,20 @@ class GameViewController: UIViewController {
     var sudokuViewModel = SudokuViewModel()
     var gameViewModel = GameViewModel()
     var dailyGameViewModel = DailyGameViewModel()
-    var rankViewModel = RankViewModel()
     let calendarViewModel = CalendarViewModel()
     
     let ClickNumberNotification: Notification.Name = Notification.Name("ClickNumberNotification")
-    let CheckNumCountNotification: Notification.Name = Notification.Name("CheckNumCountNotification")
     
     var gameType: GameType = .newGame
-
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "sudoku"{
             let destinationVC = segue.destination as? SudokuViewController
+            destinationVC?.delegate = self
             sudokuViewController = destinationVC
         } else if segue.identifier == "option"{
             let destinationVC = segue.destination as? OptionViewController
+            destinationVC?.delegate = self
             optionViewController = destinationVC
         }
     }
@@ -54,18 +54,20 @@ class GameViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        NotificationCenter.default.addObserver(self, selector: #selector(setNumberHidden(_:)), name: CheckNumCountNotification, object: nil)
     }
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)
         NotificationCenter.default.removeObserver(self)
         timer?.invalidate()
-        saveSudoku()
+        if !sudokuViewModel.gameOver(){
+            saveSudoku()
+        }
     }
 }
 
-extension GameViewController{
+extension GameViewController: CheckNumCountDelegate{
     func setView(){
+        timeCount = sudokuViewModel.time
         if gameType == .continueGame{
             timeCount = gameViewModel.loadGame()?.time ?? 0
         } else if gameType == .dailyGame {
@@ -78,30 +80,25 @@ extension GameViewController{
         levelLabel.text = sudokuViewModel.getLevel()
     }
     
-    func setNumberHidden(){
+    func checkNumCount() {
         numberCollectionView.reloadData()
         
         if !sudokuViewModel.gameOver(){ return }
         // 끝내기
         timerPasue()
-        if gameType == .continueGame{
-            gameViewModel.clearGame()
-        }else if gameType == .dailyGame{
+        if gameType == .dailyGame{
             dailyGameViewModel.addDailyGameClear(date: DailyGameClearDate(year: calendarViewModel.yearOfToday, month: calendarViewModel.monthOfToday, day: calendarViewModel.dayOfToday))
+        }else{
+            gameViewModel.removeGame()
         }
         dismiss(animated: true, completion: nil)
     }
     
-    // 숫자 다썼으면 hidden 해주기, 다 채웠으면 끝내기
-    @objc func setNumberHidden(_ noti: Notification){
-        setNumberHidden()
-    }
-    
     func saveSudoku(){
-        if gameType == .continueGame || gameType == .newGame{
-            gameViewModel.saveGame(game: sudokuViewModel.getGame(time: timeCount))
-        }else if gameType == .dailyGame{
+        if gameType == .dailyGame{
             dailyGameViewModel.saveDailyGame(today: calendarViewModel.getDate(), game: sudokuViewModel.getGame(time: timeCount))
+        }else{
+            gameViewModel.saveGame(game: sudokuViewModel.getGame(time: timeCount))
         }
     }
 }
@@ -178,11 +175,7 @@ class NumberCell: UICollectionViewCell{
     
     func updateUI(_ num: Int, _ numCount: Int){
         numberButton.setTitle(String(num), for: .normal)
-        if numCount == 9 {
-            numberButton.isHidden = true
-        }else {
-            numberButton.isHidden = false
-        }
+        numberButton.isHidden = numCount == 9 ? true : false
     }
     
     @IBAction func clickButtonTapped(_ sender: Any) {

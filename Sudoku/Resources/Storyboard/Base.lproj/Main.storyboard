@@ -23,37 +23,17 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2021년 3월 22일" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Iqi-cX-YDd">
-                                <rect key="frame" x="23" y="54" width="118.5" height="17"/>
+                                <rect key="frame" x="30" y="54" width="118.5" height="17"/>
                                 <fontDescription key="fontDescription" name="BMHANNAProOTF" family="BM HANNA Pro OTF" pointSize="17"/>
                                 <color key="textColor" red="0.86191204896907214" green="0.86191204896907214" blue="0.86191204896907214" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="오늘의 스도쿠" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vYX-BQ-oMQ">
-                                <rect key="frame" x="23" y="81" width="168" height="31"/>
+                                <rect key="frame" x="30" y="81" width="168" height="31"/>
                                 <fontDescription key="fontDescription" name="BMHANNAProOTF" family="BM HANNA Pro OTF" pointSize="31"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yW3-XL-gAw">
-                                <rect key="frame" x="313" y="49" width="39" height="29"/>
-                                <color key="tintColor" systemColor="systemYellowColor"/>
-                                <state key="normal" image="crown.fill" catalog="system">
-                                    <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="26"/>
-                                </state>
-                                <connections>
-                                    <action selector="rankingButtonTapped:" destination="laR-5P-RmC" eventType="touchUpInside" id="LAr-BV-wlT"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PRb-mg-Lyh">
-                                <rect key="frame" x="362" y="49" width="32" height="31"/>
-                                <color key="tintColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <state key="normal" image="gearshape.fill" catalog="system">
-                                    <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="26"/>
-                                </state>
-                                <connections>
-                                    <action selector="setupButtonTapped:" destination="laR-5P-RmC" eventType="touchUpInside" id="vNs-vX-Brs"/>
-                                </connections>
-                            </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jrA-MS-i5h">
                                 <rect key="frame" x="23" y="127" width="368" height="501"/>
                                 <subviews>
@@ -188,24 +168,20 @@
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="MI6-DX-eqm" firstAttribute="trailing" secondItem="jrA-MS-i5h" secondAttribute="trailing" constant="23" id="D8q-Wx-kVy"/>
-                            <constraint firstItem="PRb-mg-Lyh" firstAttribute="leading" secondItem="yW3-XL-gAw" secondAttribute="trailing" constant="10" id="Klx-ch-TqX"/>
                             <constraint firstItem="amk-KS-zS7" firstAttribute="leading" secondItem="MI6-DX-eqm" secondAttribute="leading" constant="25" id="OrF-vv-tx8"/>
-                            <constraint firstItem="MI6-DX-eqm" firstAttribute="top" secondItem="PRb-mg-Lyh" secondAttribute="top" constant="-5" id="Pq8-1b-g4Y"/>
                             <constraint firstItem="kRR-SY-F9e" firstAttribute="top" secondItem="amk-KS-zS7" secondAttribute="bottom" constant="20" id="QIZ-3P-oyG"/>
-                            <constraint firstItem="Iqi-cX-YDd" firstAttribute="leading" secondItem="MI6-DX-eqm" secondAttribute="leading" constant="23" id="XqE-zm-sai"/>
-                            <constraint firstItem="MI6-DX-eqm" firstAttribute="trailing" secondItem="PRb-mg-Lyh" secondAttribute="trailing" constant="20" id="bqd-fD-GYA"/>
+                            <constraint firstItem="Iqi-cX-YDd" firstAttribute="leading" secondItem="MI6-DX-eqm" secondAttribute="leading" constant="30" id="XqE-zm-sai"/>
                             <constraint firstItem="MI6-DX-eqm" firstAttribute="trailing" secondItem="amk-KS-zS7" secondAttribute="trailing" constant="25" id="clo-ks-i6K"/>
                             <constraint firstItem="MI6-DX-eqm" firstAttribute="trailing" secondItem="eRp-PF-Mza" secondAttribute="trailing" constant="25" id="dQo-FE-eNh"/>
                             <constraint firstItem="jrA-MS-i5h" firstAttribute="top" secondItem="vYX-BQ-oMQ" secondAttribute="bottom" constant="15" id="foK-k6-Kfx"/>
                             <constraint firstItem="eRp-PF-Mza" firstAttribute="leading" secondItem="MI6-DX-eqm" secondAttribute="leading" constant="25" id="ijh-Hu-RrD"/>
-                            <constraint firstItem="MI6-DX-eqm" firstAttribute="top" secondItem="yW3-XL-gAw" secondAttribute="top" constant="-5" id="jPo-8W-NfD"/>
                             <constraint firstItem="kRR-SY-F9e" firstAttribute="leading" secondItem="MI6-DX-eqm" secondAttribute="leading" constant="25" id="lVe-Ye-cwV"/>
                             <constraint firstItem="jrA-MS-i5h" firstAttribute="leading" secondItem="MI6-DX-eqm" secondAttribute="leading" constant="23" id="lkq-mY-Qml"/>
                             <constraint firstItem="MI6-DX-eqm" firstAttribute="top" secondItem="Iqi-cX-YDd" secondAttribute="top" constant="-10" id="oD9-xS-Zam"/>
                             <constraint firstItem="MI6-DX-eqm" firstAttribute="bottom" secondItem="kRR-SY-F9e" secondAttribute="bottom" constant="10" id="qat-7k-uhd"/>
                             <constraint firstItem="MI6-DX-eqm" firstAttribute="trailing" secondItem="kRR-SY-F9e" secondAttribute="trailing" constant="25" id="rqO-bx-6hC"/>
                             <constraint firstItem="vYX-BQ-oMQ" firstAttribute="top" secondItem="Iqi-cX-YDd" secondAttribute="bottom" constant="10" id="s9f-QI-aOl"/>
-                            <constraint firstItem="vYX-BQ-oMQ" firstAttribute="leading" secondItem="MI6-DX-eqm" secondAttribute="leading" constant="23" id="yXw-Pt-ERN"/>
+                            <constraint firstItem="vYX-BQ-oMQ" firstAttribute="leading" secondItem="MI6-DX-eqm" secondAttribute="leading" constant="30" id="yXw-Pt-ERN"/>
                             <constraint firstItem="amk-KS-zS7" firstAttribute="top" secondItem="eRp-PF-Mza" secondAttribute="bottom" constant="19" id="zaT-hW-3a6"/>
                             <constraint firstItem="eRp-PF-Mza" firstAttribute="top" secondItem="jrA-MS-i5h" secondAttribute="bottom" constant="20" id="zxE-kl-8CY"/>
                         </constraints>
@@ -230,13 +206,8 @@
     <resources>
         <image name="chevron.left" catalog="system" width="96" height="128"/>
         <image name="chevron.right" catalog="system" width="96" height="128"/>
-        <image name="crown.fill" catalog="system" width="128" height="92"/>
-        <image name="gearshape.fill" catalog="system" width="128" height="121"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-        <systemColor name="systemYellowColor">
-            <color red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

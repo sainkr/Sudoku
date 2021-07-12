@@ -34,20 +34,16 @@ class DailyGameViewModel{
         return dailyGame.game
     }
     
-    func isContain(date: DailyGameClearDate) -> Bool{
-        guard let dailycleargame = loadDailyGameClear() else { return false }
+    func isContain(dailycleargame: [DailyGameClearDate], date: DailyGameClearDate) -> Bool{
         for i in 0..<dailycleargame.count{
             if dailycleargame[i] == date{
-                print("???")
-                print(dailycleargame[i], date)
                 return true
             }
         }
         return false
     }
     
-    func getClearCount(year: Int, month: Int) -> Int{
-        guard let dailycleargame = loadDailyGameClear() else { return 0 }
+    func getClearCount(dailycleargame: [DailyGameClearDate], year: Int, month: Int) -> Int{
         var cnt = 0
         for i in 0..<dailycleargame.count{
             if dailycleargame[i].year == year && dailycleargame[i].month == month{

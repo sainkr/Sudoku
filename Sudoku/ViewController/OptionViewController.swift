@@ -7,14 +7,14 @@
 
 import UIKit
 
-class OptionViewController: UIViewController {
+class OptionViewController: UIViewController{
 
     @IBOutlet weak var collectionView: UICollectionView!
     
     let OptionNotification: Notification.Name = Notification.Name("OptionNotification")
-    let CheckNumCountNotification: Notification.Name = Notification.Name("CheckNumCountNotification")
     let sudokuViewModel = SudokuViewModel()
-    var memoSelect = false
+    
+    weak var delegate: CheckNumCountDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,10 +40,9 @@ extension OptionViewController: UICollectionViewDelegate{
         sudokuViewModel.setOption(optionNum: indexPath.item)
         if indexPath.item == 2 {
             collectionView.reloadData()
-        }else if indexPath.item == 3{
-            NotificationCenter.default.post(name: CheckNumCountNotification, object: nil, userInfo: nil)
         }
         
+        delegate?.checkNumCount()
         NotificationCenter.default.post(name: OptionNotification, object: nil, userInfo: nil)
     }
 }
@@ -66,11 +65,7 @@ class OptionCell: UICollectionViewCell{
     
     func updateUI(_ i: Int, _ memoSelect: Bool){
         imageView.image = UIImage(systemName: optionImage[i])
-        if i == 2 && memoSelect{
-            imageView.tintColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
-        } else {
-            imageView.tintColor = #colorLiteral(red: 0.9516713023, green: 0.3511439562, blue: 0.1586719155, alpha: 1)
-        }
+        imageView.tintColor = i == 2 && memoSelect ? #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1) : #colorLiteral(red: 0.9516713023, green: 0.3511439562, blue: 0.1586719155, alpha: 1)
         label.text = optionLabel[i]
         label.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
     }
