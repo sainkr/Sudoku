@@ -6,283 +6,303 @@
 //
 
 import Foundation
+
 import PBSudoku
 
 public class SudokuManager{
-    static var shared = SudokuManager()
-
-    var original_sudoku: [[Int]] = []
-    var game_sudoku: [[Int]] = []
-    var numCount: [Int] = [0,0,0,0,0,0,0,0,0,0]
-    var level = -1
-    var isSelected: [Int] = Array(repeating: 0, count: 81)
-    var memoArr: [[Int]] = []
-    var time: Double = 0
-    
-    var isMemoSelected = false
-    var clickIndex: [ClickIndex] = []
-    var clickI = -1
-    var clickJ = -1
-    
-    func setSudoku(_ myGame: Game){
-        original_sudoku = myGame.original_sudoku
-        game_sudoku = myGame.game_sudoku
-        numCount = myGame.numCount
-        level = myGame.level
-        memoArr = myGame.memoArr
-        clickIndex = myGame.clickIndex
-        isSelected = Array(repeating: 0, count: 81)
-        isMemoSelected = false
-        clickI = -1
-        clickJ = -1
-        time = myGame.time
+  static var shared = SudokuManager()
+  
+  private var game = Game(
+    level: -1,
+    gameSudoku: [],
+    originalSudoku: [],
+    time: 0,
+    memo: [],
+    currectAnswerCount: [],
+    clickedCellDB: [])
+  var isMemoOptionSelected: Bool = false
+  private var isCellSelected: [ClickedCellType] = []
+  private var currentClickIndex = -1
+  
+  func setSudoku(_ myGame: Game){ // 이전 게임 데이터를 불러옴
+    game = myGame
+    isMemoOptionSelected = false
+    isCellSelected = Array(repeating: .none, count: 81)
+    currentClickIndex = -1
+  }
+  
+  func setSudoku(level : Int){ // 새로운 게임 생성
+    // PBSudoku 라이브러리 사용
+    sudoku.setLevel(level: level)
+    game =  Game(
+      level: level,
+      gameSudoku: sudoku.game_sudoku,
+      originalSudoku: sudoku.original_sudoku,
+      time: 0,
+      memo: Array(repeating: Array(repeating: false, count: 9), count: 81),
+      currectAnswerCount: Array(repeating: 0, count: 10),
+      clickedCellDB: [])
+    isMemoOptionSelected = false
+    isCellSelected = Array(repeating: .none, count: 81)
+    currentClickIndex = -1
+  }
+  
+  func currectAnswerCount(){ // 정답 숫자의 갯수를 체크함
+    game.currectAnswerCount = [0,0,0,0,0,0,0,0,0,0,0]
+    for i in game.gameSudoku.indices{
+      for j in game.gameSudoku[i].indices{
+        game.currectAnswerCount[game.gameSudoku[i][j]] += 1
+      }
     }
+  }
+  
+  func setNum(num: Int){ // 스도쿠 판 숫자 설정
+    if isCorrect(index: currentClickIndex){ return }
+    let i = currentClickIndex / 9
+    let j = currentClickIndex % 9
     
-    func setLevel(level : Int){
-        self.level = level
-        // PBSudoku 라이브러리 사용
-        sudoku.setLevel(level: level)
-        original_sudoku = sudoku.original_sudoku
-        game_sudoku = sudoku.game_sudoku
-        memoArr = Array(repeating: [0,0,0,0,0,0,0,0,0], count: 81)
-        setNumcount()
-        isSelected = Array(repeating: 0, count: 81)
-        isMemoSelected = false
-        clickIndex = []
-        clickI = -1
-        clickJ = -1
-        time = 0
-    }
-
-    func setNumcount(){
-        numCount = [0,0,0,0,0,0,0,0,0,0,0]
-        for i in game_sudoku.indices{
-            for j in game_sudoku[i].indices{
-                numCount[game_sudoku[i][j]] += 1
+    if !isMemoOptionSelected || num == 0{
+      if game.gameSudoku[i][j] != game.originalSudoku[i][j]{ // 선택한 칸이 정답 칸이 아닐 경우
+        // 메모에서 일반이면  일반에서 일반이면 game.gameSudoku[i][j]
+        var currentNum = [num]
+        var beforeNum = [game.gameSudoku[i][j]]
+        if game.memo[currentClickIndex] != Array(repeating: false, count: 9){
+          currentNum = [-1]
+          beforeNum = []
+          for i in game.memo[currentClickIndex].indices{
+            if game.memo[currentClickIndex][i]{
+              beforeNum.append(i)
             }
+          }
         }
+        if num != game.originalSudoku[i][j]{ // 선택한 숫자가 정답이 아닐 경우
+          game.clickedCellDB.append(ClickedCellDB(
+                                      clickedCellIndex: currentClickIndex,
+                                      currentNum: currentNum,
+                                      beforeNum: beforeNum,
+                                      isMemo: false))
+        }
+        // 메모 초기화
+        game.memo[currentClickIndex] = Array(repeating: false, count: 9)
+        // gameSudoku 값 변경
+        game.gameSudoku[i][j] = num
+      }
+      setisSelected(currentClickIndex)
+      currectAnswerCount()
+    }else{ // 메모 옵션을 눌렀을 시
+      // 1. 해당 숫자의 메모여부를 true로 설정
+      game.memo[currentClickIndex][num - 1] = true
+      // 2. 방문 표시
+      // 메모에서 메모이면 - 1 일반에서 메모이면 game.gameSudoku[i][j]
+      var beforeNum = -1
+      if game.clickedCellDB.last?.isMemo == false{
+        beforeNum = game.gameSudoku[i][j]
+        game.gameSudoku[i][j] = 0
+      }
+      game.clickedCellDB.append(ClickedCellDB(
+                                  clickedCellIndex: currentClickIndex,
+                                  currentNum: [num],
+                                  beforeNum: [beforeNum],
+                                  isMemo: true))
     }
-    
-    func setNum(num: Int){
-        if isMemoSelected{
-            memoArr[ clickI * 9 + clickJ % 9 ][num - 1] = 1
-            if clickIndex.last?.isMemo == false{ // 기본에서 Memo로 바뀌는 경우
-                game_sudoku[clickI][clickJ] = 0
-                clickIndex.append(ClickIndex(i: clickI, j: clickJ, currentNum: [num], beforeNum: -1, isMemo: true))
-            }else{
-                clickIndex.append(ClickIndex(i: clickI, j: clickJ, currentNum: [num], beforeNum: 0, isMemo: true))
-            }
-        }else{
-            if game_sudoku[clickI][clickJ] != original_sudoku[clickI][clickJ] {
-                // 1. 메모를 지워야 된다.
-                memoArr[clickI * 9 + clickJ % 9] = [0,0,0,0,0,0,0,0,0]
-                // 2. 방문 표시
-                if num != original_sudoku[clickI][clickJ]{
-                    clickIndex.append(ClickIndex(i: clickI, j: clickJ, currentNum: [num], beforeNum: game_sudoku[clickI][clickJ], isMemo: false))
-                }else{
-                    numCount[num - 1] -= 1
-                }
-                game_sudoku[clickI][clickJ] = num
-            }
-            setisSelected(clickI * 9 + clickJ % 9)
-            setNumcount()
-        }
+  }
+  
+  func clickIndex(index: Int){ // 클릭한 셀의 인덱스를 받아옴
+    currentClickIndex = index
+    setisSelected(index)
+  }
+  
+  func setisSelected(_ index: Int){ // 선택된 칸과 관련된 칸들의 배경색 변경을 위해 isCellSelected 설정
+    isCellSelected = Array(repeating: .none, count: 81)
+    // 선택한 칸을 포함하는 사각형
+    let rectX = index / 9 / 3 * 3
+    let rectY = index % 9 / 3 * 3
+    for i in rectX...(rectX+2){
+      for j in 0..<3{
+        isCellSelected[9 * i + rectY + j] = .rectangle
+      }
     }
-    
-    func clickIndex(index: Int){
-        clickI = index / 9
-        clickJ = index % 9
-        
-        setisSelected(index)
+    // 선택된 칸과 같은 행
+    let row = (index / 9) * 9
+    for i in row...row + 8{
+      isCellSelected[i] = .row
     }
-    
-    func setisSelected(_ index: Int){
-        isSelected = Array(repeating: 0, count: 81)
-        // isSeleted = 1 : 행, 열, 사각형
-        // 선택한 숫자의 사각형
-        let rectX = index / 9 / 3 * 3
-        let rectY = index % 9 / 3 * 3
-
-        for i in rectX...(rectX+2){
-            for j in 0..<3{
-                isSelected[9 * i + rectY + j] = 1
-            }
-        }
-        // 선택한 숫자의 행
-        let x = (index / 9) * 9
-        var y = index % 9
-        for i in x...x + 8{
-            isSelected[i] = 1
-        }
-        // 선택한 숫자의 열
-        while y < 81 {
-            isSelected[y] = 1
-            y += 9
-        }
-        // isSeleted = 2 : 같은 숫자
-        let num = game_sudoku[index / 9][index % 9]
-        if  num != 0{
-            for i in 0...8{
-                for j in 0...8{
-                    if game_sudoku[i][j] == num{
-                        isSelected[i * 9 + j] = 2
-                    }
-                }
-            }
-        }
-        // isSelected = 3 : 현재 선택된 숫자
-        isSelected[index] = 3
+    // 선택된 칸과 같은 열
+    var col = index % 9
+    for _ in 1...9 {
+      isCellSelected[col] = .col
+      col += 9
     }
-    
-    func undo(){
-        if let click = clickIndex.last{
-            if click.isMemo{
-                if click.beforeNum == -1{ // 메모에서 일반 스도쿠로 실행 취소 되는 경우
-                    // 1. 메모를 지우고
-                    memoArr[click.i * 9 + click.j % 9] = [0,0,0,0,0,0,0,0,0]
-                    // 2. 이전 데이터로 변경
-                    game_sudoku[click.i][click.j] = 0
-                }else{ // 메모에서 메모로 실행 취소 되는 경우
-                    for i in click.currentNum.indices{
-                        memoArr[click.i * 9 + click.j % 9][click.currentNum[i] - 1] = click.beforeNum
-                    }
-                }
-            }else{
-                game_sudoku[click.i][click.j] = click.beforeNum
-                setNumcount()
-            }
-            clickIndex.removeLast()
-            setisSelected(click.i * 9 + click.j % 9)
+    // 선택한 칸의 숫자와 같은 숫자
+    let num = game.gameSudoku[index / 9][index % 9]
+    if num != 0{
+      for i in 0...8{
+        for j in 0...8{
+          if game.gameSudoku[i][j] == num{
+            isCellSelected[i * 9 + j] = .sameNum
+          }
         }
+      }
     }
-    
-    func clear(){
-        if let click = clickIndex.last{
-            if isMemoSelected{
-                var currentNumArr: [Int] = []
-                for i in memoArr[click.i * 9 + click.j % 9].indices{
-                    if memoArr[click.i * 9 + click.j % 9][i] == 1{
-                        currentNumArr.append(i + 1)
-                    }
-                }
-                clickIndex.append(ClickIndex(i: click.i, j: click.j , currentNum: currentNumArr, beforeNum: 1, isMemo: isMemoSelected))
-                memoArr[click.i * 9 + click.j % 9] = [0,0,0,0,0,0,0,0,0]
-            }else{
-                setNum(num: 0)
-            }
+    // 현재 선택된 칸
+    isCellSelected[index] = .current
+  }
+  
+  func undo(){ // 실행 취소
+    guard let clickedCell = game.clickedCellDB.last else { return }
+    let i = clickedCell.clickedCellIndex / 9
+    let j = clickedCell.clickedCellIndex % 9
+    if clickedCell.isMemo{
+      game.memo[clickedCell.clickedCellIndex][clickedCell.currentNum[0] - 1] = false
+      if clickedCell.beforeNum != [-1]{ // 메모에서 일반일 경우
+        game.gameSudoku[i][j] = clickedCell.beforeNum[0]
+      }
+    }else{
+      if clickedCell.currentNum == [-1]{ // 일반에서 메모일 경우
+        game.gameSudoku[i][j] = 0
+        for num in clickedCell.beforeNum.indices{
+          game.memo[clickedCell.clickedCellIndex][clickedCell.beforeNum[num]] = true
         }
+      }else{
+        game.gameSudoku[i][j] = clickedCell.beforeNum[0]
+      }
     }
-    
-    func hint(){
-        if game_sudoku[clickI][clickJ] != original_sudoku[clickI][clickJ]{
-            if isMemoSelected{
-                var currentNumArr: [Int] = []
-                for i in memoArr[clickI * 9 + clickJ % 9].indices{
-                    if memoArr[clickI * 9 + clickJ % 9][i] == 1{
-                        currentNumArr.append(i + 1)
-                    }
-                }
-                clickIndex.append(ClickIndex(i: clickI, j: clickJ , currentNum: currentNumArr, beforeNum: 1, isMemo: false))
-                isMemoSelected = false
-                setNum(num: original_sudoku[clickI][clickJ])
-                isMemoSelected = true
-            }else{
-                clickIndex.append(ClickIndex(i: clickI, j: clickJ , currentNum: [original_sudoku[clickI][clickJ]], beforeNum: game_sudoku[clickI][clickJ], isMemo: isMemoSelected))
-                setNum(num: original_sudoku[clickI][clickJ])
-            }
-        }
-        setNumcount()
+    setisSelected(currentClickIndex)
+    game.clickedCellDB.removeLast()
+  }
+  
+  func clear(){
+    setNum(num: 0)
+  }
+  
+  func hint(){
+    let i = currentClickIndex / 9
+    let j = currentClickIndex % 9
+    if game.gameSudoku[i][j] != game.originalSudoku[i][j]{
+      let isMemo = isMemoOptionSelected
+      isMemoOptionSelected = false
+      setNum(num: game.originalSudoku[i][j])
+      isMemoOptionSelected = isMemo
     }
-    
-    func setOption(optionNum: Int){
-        if optionNum == 0 { // 실행 취소
-            undo()
-        } else if optionNum == 1{ // 지우기
-            clear()
-        } else if optionNum == 2 { // 메모
-            isMemoSelected = !isMemoSelected
-        } else { // 힌트
-            hint()
-        }
+    currectAnswerCount()
+  }
+  
+  func setOption(optionNum: Int){
+    if optionNum == 0 { // 실행 취소
+      undo()
+    } else if optionNum == 1{ // 지우기
+      clear()
+    } else if optionNum == 2 { // 메모
+      isMemoOptionSelected = !isMemoOptionSelected
+    } else { // 힌트
+      hint()
     }
-    
-    func getLevel() -> String{
-        if level == 1 {
-            return "쉬움"
-        } else if level == 2 {
-            return "보통"
-        } else {
-            return "어려움"
-        }
+  }
+  
+  func level() -> String{
+    if game.level == 1 {
+      return "쉬움"
+    } else if game.level == 2 {
+      return "보통"
+    } else {
+      return "어려움"
     }
-    
-    func gameOver() -> Bool{
-        if game_sudoku == original_sudoku{
-            return true
-        }else{
-            return false
-        }
-    }
-    
-    func getGame(time: Double) -> Game{
-        return Game(level: level, game_sudoku: game_sudoku, original_sudoku: original_sudoku, time: time, memoArr: memoArr, numCount: numCount, clickIndex: clickIndex)
-    }
+  }
+  
+  func gameOver() -> Bool{
+    return game.gameSudoku == game.originalSudoku ? true : false
+  }
+  
+  func addTimeToGame(time: Double)->Game{
+    game.time = time
+    return game
+  }
+  
+  func memo(index: Int)-> [Bool]{
+    return game.memo[index]
+  }
+  
+  func gameSudoku(index: Int)-> Int{
+    return game.gameSudoku[index / 9][index % 9]
+  }
+  
+  func isCorrect(index: Int)-> Bool{
+    return game.gameSudoku[index / 9][index % 9] == game.originalSudoku [index / 9][index % 9] ? true: false
+  }
+  
+  func selected(index: Int)-> ClickedCellType{
+    return isCellSelected[index]
+  }
+  
+  func currectAnswerCount(index: Int)-> Int{
+    return game.currectAnswerCount[index]
+  }
+  
+  func time()-> Double{
+    return game.time
+  }
 }
 
 class SudokuViewModel{
-    private let manager = SudokuManager.shared
+  private let manager = SudokuManager.shared
 
-    var game_sudoku: [[Int]]{
-        return manager.game_sudoku
-    }
-    var original_sudoku: [[Int]]{
-        return manager.original_sudoku
-    }
-    var memoArr: [[Int]]{
-        return manager.memoArr
-    }
-    var isMemoSelected: Bool{
-        return manager.isMemoSelected
-    }
-    var isSelected: [Int]{
-        return manager.isSelected
-    }
-    var numCount: [Int]{
-        return manager.numCount
-    }
-    var time: Double{
-        return manager.time
-    }
-    
-    func setLevel(level : Int){
-        manager.setLevel(level: level)
-    }
-    
-    func setSudoku(_ game: Game){
-        manager.setSudoku(game)
-    }
-    
-    func setNum(num: Int){
-        manager.setNum(num: num)
-    }
-    
-    func clickIndex(index: Int){
-        manager.clickIndex(index: index)
-    }
-    
-    func setOption(optionNum: Int){
-        manager.setOption(optionNum: optionNum)
-    }
-    
-    func getLevel() -> String{
-        return manager.getLevel()
-    }
-    
-    func gameOver() -> Bool{
-        return manager.gameOver()
-    }
-    
-    func getGame(time: Double) -> Game{
-        return manager.getGame(time: time)
-    }
+  var isMemoOptionSelected: Bool{
+    return manager.isMemoOptionSelected
+  }
+  
+  func selected(index: Int)-> ClickedCellType{
+    return manager.selected(index: index)
+  }
+  
+  func currectAnswerCount(index: Int)-> Int{
+    return manager.currectAnswerCount(index: index)
+  }
+  
+  func time()-> Double{
+    return manager.time()
+  }
+  
+  func memo(index: Int)-> [Bool]{
+    return manager.memo(index: index)
+  }
+  
+  func gameSudoku(index: Int)-> Int{
+    return manager.gameSudoku(index: index)
+  }
+  
+  func isCorrect(index: Int)-> Bool{
+    return manager.isCorrect(index: index)
+  }
+  
+  func setSudoku(level : Int){
+    manager.setSudoku(level: level)
+  }
+  
+  func setSudoku(_ game: Game){
+    manager.setSudoku(game)
+  }
+  
+  func setNum(num: Int){
+    manager.setNum(num: num)
+  }
+  
+  func clickIndex(index: Int){
+    manager.clickIndex(index: index)
+  }
+  
+  func setOption(optionNum: Int){
+    manager.setOption(optionNum: optionNum)
+  }
+  
+  func level() -> String{
+    return manager.level()
+  }
+  
+  func gameOver() -> Bool{
+    return manager.gameOver()
+  }
+  
+  func addTimeToGame(time: Double) -> Game{
+    return manager.addTimeToGame(time: time)
+  }
 }

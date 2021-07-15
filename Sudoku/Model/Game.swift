@@ -8,11 +8,11 @@
 import Foundation
 
 struct Game: Codable{
-    var level: Int
-    var game_sudoku: [[Int]]
-    var original_sudoku: [[Int]]
-    var time: Double
-    var memoArr: [[Int]]
-    var numCount: [Int]
-    var clickIndex: [ClickIndex]
+  var level: Int
+  var gameSudoku: [[Int]]
+  var originalSudoku: [[Int]]
+  var time: Double
+  var memo: [[Bool]]
+  var currectAnswerCount: [Int]
+  var clickedCellDB: [ClickedCellDB]
 }

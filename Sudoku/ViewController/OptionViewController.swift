@@ -8,7 +8,6 @@
 import UIKit
 
 class OptionViewController: UIViewController{
-
     @IBOutlet weak var collectionView: UICollectionView!
     
     let OptionNotification: Notification.Name = Notification.Name("OptionNotification")
@@ -29,7 +28,7 @@ extension OptionViewController: UICollectionViewDataSource{
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "OptionCell", for: indexPath) as? OptionCell else { return UICollectionViewCell() }
         
-        cell.updateUI(indexPath.item, sudokuViewModel.isMemoSelected)
+        cell.updateUI(indexPath.item, sudokuViewModel.isMemoOptionSelected)
         
         return cell
     }

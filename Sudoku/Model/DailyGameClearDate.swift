@@ -16,4 +16,3 @@ struct DailyGameClearDate: Codable, Equatable{
         return lhs.year == rhs.year && lhs.month == rhs.month && lhs.day == rhs.day
     }
 }
-

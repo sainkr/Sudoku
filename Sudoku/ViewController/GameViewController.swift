@@ -57,17 +57,14 @@ class GameViewController: UIViewController {
     }
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)
-        NotificationCenter.default.removeObserver(self)
         timer?.invalidate()
         if !sudokuViewModel.gameOver(){
             saveSudoku()
         }
     }
-}
-
-extension GameViewController: CheckNumCountDelegate{
+    
     func setView(){
-        timeCount = sudokuViewModel.time
+      timeCount = sudokuViewModel.time()
         if gameType == .continueGame{
             timeCount = gameViewModel.loadGame()?.time ?? 0
         } else if gameType == .dailyGame {
@@ -77,9 +74,23 @@ extension GameViewController: CheckNumCountDelegate{
         
         numberCollectionView.reloadData()
         
-        levelLabel.text = sudokuViewModel.getLevel()
+        levelLabel.text = sudokuViewModel.level()
     }
     
+    @IBAction func backButtonTapped(_ sender: Any) {
+        dismiss(animated: false, completion: nil)
+    }
+    
+    func saveSudoku(){
+        if gameType == .dailyGame{
+            dailyGameViewModel.saveDailyGame(today: calendarViewModel.getDate(), game: sudokuViewModel.addTimeToGame(time: timeCount))
+        }else{
+            gameViewModel.saveGame(game: sudokuViewModel.addTimeToGame(time: timeCount))
+        }
+    }
+}
+
+extension GameViewController: CheckNumCountDelegate{
     func checkNumCount() {
         numberCollectionView.reloadData()
         
@@ -93,17 +104,16 @@ extension GameViewController: CheckNumCountDelegate{
         }
         dismiss(animated: true, completion: nil)
     }
-    
-    func saveSudoku(){
-        if gameType == .dailyGame{
-            dailyGameViewModel.saveDailyGame(today: calendarViewModel.getDate(), game: sudokuViewModel.getGame(time: timeCount))
-        }else{
-            gameViewModel.saveGame(game: sudokuViewModel.getGame(time: timeCount))
-        }
-    }
 }
-// MARK :  Timer
+
+// MARK: - Timer
 extension GameViewController {
+    
+    @IBAction func playButtonTapped(_ sender: Any) {
+        timerPlay()
+        pauseView.isHidden = true
+    }
+    
     @IBAction func isPlayingButtonTapped(_ sender: Any) {
         if isPlaying {
             timerPasue()
@@ -112,10 +122,6 @@ extension GameViewController {
             timerPlay()
             pauseView.isHidden = true
         }
-    }
-    
-    @IBAction func backButtonTapped(_ sender: Any) {
-        dismiss(animated: false, completion: nil)
     }
     
     func timerPlay(){
@@ -153,7 +159,7 @@ extension GameViewController: UICollectionViewDataSource { // 맨 밑에 숫자 
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = numberCollectionView.dequeueReusableCell(withReuseIdentifier: "NumberCell", for: indexPath) as? NumberCell else { return UICollectionViewCell() }
-        cell.updateUI(indexPath.item + 1, sudokuViewModel.numCount[indexPath.item + 1])
+        cell.updateUI(indexPath.item + 1, sudokuViewModel.currectAnswerCount(index: indexPath.item + 1))
         cell.clickButtonTapHandler = {
             NotificationCenter.default.post(name: self.ClickNumberNotification, object: nil, userInfo: ["num" : indexPath.item + 1])
         }

@@ -81,15 +81,15 @@ extension MainViewController{
             let actionsheetConroller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
             
             let easy = UIAlertAction(title: "쉬움", style: .default) { action in
-                self.sudokuViewModel.setLevel(level: 1)
+                self.sudokuViewModel.setSudoku(level: 1)
                 self.present(gameVC, animated: true, completion: nil)
             }
             let medium = UIAlertAction(title: "보통", style: .default) { action in
-                self.sudokuViewModel.setLevel(level: 2)
+                self.sudokuViewModel.setSudoku(level: 2)
                 self.present(gameVC, animated: true, completion: nil)
             }
             let hard = UIAlertAction(title: "어려움", style: .default) { action in
-                self.sudokuViewModel.setLevel(level: 3)
+                self.sudokuViewModel.setSudoku(level: 3)
                 self.present(gameVC, animated: true, completion: nil)
             }
             let actionCancel = UIAlertAction(title: "취소", style: .cancel, handler: nil)
@@ -132,7 +132,7 @@ extension MainViewController {
         if let dailyGame = dailyGameViewModel.loadDailyGame(), dailyGame.date == calendarViewModel.getDate(){
             sudokuViewModel.setSudoku(dailyGameViewModel.dailyToGame(dailyGame))
         }else{
-            self.sudokuViewModel.setLevel(level: Int(arc4random_uniform(3)))
+            self.sudokuViewModel.setSudoku(level: Int(arc4random_uniform(3)))
         }
         
         if sudokuViewModel.gameOver(){
