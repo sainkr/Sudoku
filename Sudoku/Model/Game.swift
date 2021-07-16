@@ -14,5 +14,5 @@ struct Game: Codable{
   var time: Double
   var memo: [[Bool]]
   var currectAnswerCount: [Int]
-  var clickedCellDB: [ClickedCellDB]
+  var clickedCellDB: [ClickedCellDB] // 실행 취소를 위한 db
 }

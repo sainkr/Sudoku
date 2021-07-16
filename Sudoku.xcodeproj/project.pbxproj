@@ -24,6 +24,7 @@
 		365ACFA22615AED600C3BC88 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 365ACFA12615AED600C3BC88 /* GoogleService-Info.plist */; };
 		3660148E2608C32900BC8578 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3660148D2608C32900BC8578 /* MainViewController.swift */; };
 		366014A42608C66000BC8578 /* CalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366014A32608C66000BC8578 /* CalendarViewModel.swift */; };
+		367C60E426A15A8C008B9C38 /* UIenum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 367C60E326A15A8C008B9C38 /* UIenum.swift */; };
 		36B0FE2E2609BEFB00A458FE /* Game.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 36B0FE2D2609BEFB00A458FE /* Game.storyboard */; };
 		36B0FE332609DE7000A458FE /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36B0FE322609DE7000A458FE /* GameViewController.swift */; };
 		36B4576E2630308000C33678 /* BMHANNAProOTF.otf in Resources */ = {isa = PBXBuildFile; fileRef = 36B45683262FFB4700C33678 /* BMHANNAProOTF.otf */; };
@@ -95,6 +96,7 @@
 		365ACFA12615AED600C3BC88 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		3660148D2608C32900BC8578 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		366014A32608C66000BC8578 /* CalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewModel.swift; sourceTree = "<group>"; };
+		367C60E326A15A8C008B9C38 /* UIenum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIenum.swift; sourceTree = "<group>"; };
 		36B0FE2D2609BEFB00A458FE /* Game.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Game.storyboard; sourceTree = "<group>"; };
 		36B0FE322609DE7000A458FE /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		36B45683262FFB4700C33678 /* BMHANNAProOTF.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = BMHANNAProOTF.otf; path = Sudoku/Resources/BMHANNAProOTF.otf; sourceTree = SOURCE_ROOT; };
@@ -249,6 +251,7 @@
 				36B45683262FFB4700C33678 /* BMHANNAProOTF.otf */,
 				365ACFA12615AED600C3BC88 /* GoogleService-Info.plist */,
 				36F10EFE269573660060F3F7 /* InfoPlist.strings */,
+				367C60E326A15A8C008B9C38 /* UIenum.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -549,6 +552,7 @@
 				3621AD4125FA60BD00C3E456 /* AppDelegate.swift in Sources */,
 				366014A42608C66000BC8578 /* CalendarViewModel.swift in Sources */,
 				3621AD4325FA60BD00C3E456 /* SceneDelegate.swift in Sources */,
+				367C60E426A15A8C008B9C38 /* UIenum.swift in Sources */,
 				363D4B1026133419005A6E45 /* GameViewModel.swift in Sources */,
 				36F46BF62614A79900DDFA82 /* DailyGame.swift in Sources */,
 				36F4E75A260C710F00987174 /* OptionViewController.swift in Sources */,

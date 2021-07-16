@@ -8,6 +8,6 @@
 import Foundation
 
 struct DailyGame: Codable{
-    var date: String
-    var game: Game
+  var date: String
+  var game: Game
 }

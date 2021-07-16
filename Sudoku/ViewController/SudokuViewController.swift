@@ -16,8 +16,6 @@ class SudokuViewController: UIViewController {
   let ClickNumberNotification: Notification.Name = Notification.Name("ClickNumberNotification")
   let OptionNotification: Notification.Name = Notification.Name("OptionNotification")
   
-  weak var delegate: CheckNumCountDelegate?
-  
   override func viewDidLoad() {
     super.viewDidLoad()
   }
@@ -34,7 +32,7 @@ class SudokuViewController: UIViewController {
     NotificationCenter.default.removeObserver(self)
   }
 }
-
+// MARK:- Notification
 extension SudokuViewController{
   // 숫자 클릭했을 때 notifi
   @objc func clickNumberNotification(_ noti: Notification){
@@ -42,17 +40,11 @@ extension SudokuViewController{
     sudokuViewModel.setNum(num: num)
     DispatchQueue.main.async {
       self.collectionView.reloadData()
-      self.collectionView.reloadData()
-    }
-    
-    if !sudokuViewModel.isMemoOptionSelected{
-      delegate?.checkNumCount()
     }
   }
   // 옵션 클릭했을 때 notifi
   @objc func optionNotification(_ noti: Notification){
     DispatchQueue.main.async {
-      self.collectionView.reloadData()
       self.collectionView.reloadData()
     }
   }
@@ -101,7 +93,6 @@ class SudokuCell: UICollectionViewCell{
   @IBOutlet weak var memoLabel7: UILabel!
   @IBOutlet weak var memoLabel8: UILabel!
   @IBOutlet weak var memoLabel9: UILabel!
-  
   @IBOutlet weak var numLabel: UILabel!
   
   override func prepareForReuse() {
@@ -114,7 +105,6 @@ class SudokuCell: UICollectionViewCell{
   
   func updateMemoUI(_ memoSelect: [Bool]){
     let memoLabels: [UILabel] = [memoLabel1, memoLabel2, memoLabel3, memoLabel4, memoLabel5, memoLabel6, memoLabel7, memoLabel8, memoLabel9]
-    
     for i in 0...8{
       memoLabels[i].isHidden = memoSelect[i] ? false : true
     }
@@ -122,18 +112,9 @@ class SudokuCell: UICollectionViewCell{
   
   func updateUI(index : Int, sudokuNum: Int, cellType: ClickedCellType, isCorrect: Bool){
     numLabel.text = sudokuNum == 0 ? "" : String(sudokuNum)
-    
-    setEdge(index)
-    setTextColor(isCorrect)
+    numLabel.textColor = isCorrect ? #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1) : UIColor.red
     setBackGroundColor(cellType)
-  }
-  
-  func setTextColor(_ isCorrect: Bool){
-    if isCorrect{
-      numLabel.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-    }else{
-      numLabel.textColor = UIColor.red
-    }
+    setEdge(index)
   }
   
   func setBackGroundColor(_ type: ClickedCellType){
@@ -148,45 +129,43 @@ class SudokuCell: UICollectionViewCell{
   
   func setEdge(_ i: Int){
     // 행 비교
-    var edgeArr: [Int] = [0,0,0,0]
-    
-    if (i / 9 % 3) == 0 {
+    var edgeArr: [LayerType] = [.basic,.basic,.basic,.basic]
+    if (i / 9 % 3) == 0 { // 3 x 3 중 첫번째 줄
       if i % 3 == 0 { // 위, 왼 굵은선
-        edgeArr = [1,0,1,0]
+        edgeArr = [.bold,.basic,.bold,.basic]
       } else if i % 3 == 1 { // 위 굵은선
-        edgeArr = [1,0,0,0]
+        edgeArr = [.bold,.basic,.basic,.basic]
       } else{ // 위, 오 굵은선
-        edgeArr = [1,0,0,1]
+        edgeArr = [.bold,.basic,.basic,.bold]
       }
-    } else if (i / 9 % 3) == 1 {
+    } else if (i / 9 % 3) == 1 { // 3 x 3 중 가운데 줄
       if i % 3 == 0 { // 왼 굵은선
-        edgeArr = [0,0,1,0]
+        edgeArr = [.basic,.basic,.bold,.basic]
       } else if i % 3 == 2 { // 오 굵은선
-        edgeArr = [0,0,0,1]
+        edgeArr = [.basic,.basic,.basic,.bold]
       }
-    } else{
+    } else{ // 3 x 3 중 세번째 줄
       if i % 3 == 0 { // 왼, 아 굵은선
-        edgeArr = [0,1,1,0]
+        edgeArr = [.basic,.bold,.bold,.basic]
       } else if i % 3 == 1 { // 아 굵은선
-        edgeArr = [0,1,0,0]
+        edgeArr = [.basic,.bold,.basic,.basic]
       } else{ // 아, 오 굵은선
-        edgeArr = [0,1,0,1]
+        edgeArr = [.basic,.bold,.basic,.bold]
       }
     }
-    
     contentView.layer.addBorder(edgeArr,1,0.5)
   }
 }
 
 extension CALayer {
-  func addBorder(_ arr_edge: [Int], _ boldWidth : CGFloat, _ basicWidth: CGFloat) {
+  func addBorder(_ arr_edge: [LayerType], _ boldWidth : CGFloat, _ basicWidth: CGFloat) {
     let boldWidth: CGFloat = boldWidth // 테두리 두께
     let basicWidth: CGFloat = basicWidth // 테두리 두께
     
-    // .top : CGRect.init(x: 0, y: 0, width: frame.width, height: boldWidth)
-    // .bottom : CGRect.init(x: 0, y: frame.height - boldWidth, width: frame.width, height: boldWidth)
-    // .left : CGRect.init(x: 0, y: 0, width: boldWidth, height: frame.height)
-    // .right : CGRect.init(x: frame.width - boldWidth, y: 0, width: boldWidth, height: frame.height)
+    // .top : CGRect.init(x: 0, y: 0, width: frame.width, height: 테두리Width)
+    // .bottom : CGRect.init(x: 0, y: frame.height - 테두리Width, width: frame.width, height: 테두리Width)
+    // .left : CGRect.init(x: 0, y: 0, width: 테두리Width, height: frame.height)
+    // .right : CGRect.init(x: frame.width - 테두리Width, y: 0, width: 테두리Width, height: frame.height)
     
     // 굵은 선
     let boldCgRect: [CGRect] = [CGRect.init(x: 0, y: 0, width: frame.width, height: boldWidth), CGRect.init(x: 0, y: frame.height - boldWidth, width: frame.width, height: boldWidth), CGRect.init(x: 0, y: 0, width: boldWidth, height: frame.height), CGRect.init(x: frame.width - boldWidth, y: 0, width: boldWidth, height: frame.height)]
@@ -195,7 +174,7 @@ extension CALayer {
     
     for j in 0...3 {
       let border = CALayer()
-      if arr_edge[j] == 0 {
+      if arr_edge[j] == .basic {
         border.frame = basicCgRect[j]
         border.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
       }else{

@@ -8,7 +8,7 @@
 import Foundation
 
 enum GameType{
-    case newGame
-    case continueGame
-    case dailyGame
+  case newGame
+  case continueGame
+  case dailyGame
 }

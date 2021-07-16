@@ -22,13 +22,14 @@ public class SudokuManager{
     clickedCellDB: [])
   var isMemoOptionSelected: Bool = false
   private var isCellSelected: [ClickedCellType] = []
-  private var currentClickIndex = -1
+  private var currentClickIndex = 0
   
   func setSudoku(_ myGame: Game){ // 이전 게임 데이터를 불러옴
     game = myGame
     isMemoOptionSelected = false
     isCellSelected = Array(repeating: .none, count: 81)
-    currentClickIndex = -1
+    currentClickIndex = 0
+    setisSelected(0)
   }
   
   func setSudoku(level : Int){ // 새로운 게임 생성
@@ -44,7 +45,8 @@ public class SudokuManager{
       clickedCellDB: [])
     isMemoOptionSelected = false
     isCellSelected = Array(repeating: .none, count: 81)
-    currentClickIndex = -1
+    currentClickIndex = 0
+    setisSelected(0)
   }
   
   func currectAnswerCount(){ // 정답 숫자의 갯수를 체크함
@@ -60,41 +62,37 @@ public class SudokuManager{
     if isCorrect(index: currentClickIndex){ return }
     let i = currentClickIndex / 9
     let j = currentClickIndex % 9
-    
     if !isMemoOptionSelected || num == 0{
-      if game.gameSudoku[i][j] != game.originalSudoku[i][j]{ // 선택한 칸이 정답 칸이 아닐 경우
-        // 메모에서 일반이면  일반에서 일반이면 game.gameSudoku[i][j]
-        var currentNum = [num]
-        var beforeNum = [game.gameSudoku[i][j]]
-        if game.memo[currentClickIndex] != Array(repeating: false, count: 9){
-          currentNum = [-1]
-          beforeNum = []
-          for i in game.memo[currentClickIndex].indices{
-            if game.memo[currentClickIndex][i]{
-              beforeNum.append(i)
-            }
+      var currentNum = [num]
+      var beforeNum = [game.gameSudoku[i][j]]
+      // 메모 숫자를 띄운 상태에서 메모 옵션을 취소하고 일반 숫자를 입력하는 경우
+      if game.memo[currentClickIndex] != Array(repeating: false, count: 9){
+        currentNum = [-1]
+        beforeNum = []
+        for i in game.memo[currentClickIndex].indices{
+          if game.memo[currentClickIndex][i]{
+            beforeNum.append(i)
           }
         }
-        if num != game.originalSudoku[i][j]{ // 선택한 숫자가 정답이 아닐 경우
-          game.clickedCellDB.append(ClickedCellDB(
-                                      clickedCellIndex: currentClickIndex,
-                                      currentNum: currentNum,
-                                      beforeNum: beforeNum,
-                                      isMemo: false))
-        }
-        // 메모 초기화
-        game.memo[currentClickIndex] = Array(repeating: false, count: 9)
-        // gameSudoku 값 변경
-        game.gameSudoku[i][j] = num
       }
+      if num != game.originalSudoku[i][j]{ // 선택한 숫자가 정답이 아니면
+        game.clickedCellDB.append(ClickedCellDB(
+                                    clickedCellIndex: currentClickIndex,
+                                    currentNum: currentNum,
+                                    beforeNum: beforeNum,
+                                    isMemo: false))
+      }
+      // 메모 초기화
+      game.memo[currentClickIndex] = Array(repeating: false, count: 9)
+      // gameSudoku 값 변경
+      game.gameSudoku[i][j] = num
       setisSelected(currentClickIndex)
       currectAnswerCount()
     }else{ // 메모 옵션을 눌렀을 시
-      // 1. 해당 숫자의 메모여부를 true로 설정
+      // 해당 숫자의 메모여부를 true로 설정
       game.memo[currentClickIndex][num - 1] = true
-      // 2. 방문 표시
-      // 메모에서 메모이면 - 1 일반에서 메모이면 game.gameSudoku[i][j]
-      var beforeNum = -1
+      var beforeNum = -1 // 이 전에도 메모 옵션이였다면 -1
+      // 메모 옵션을 취소하고 일반 숫자를 누른다면 game.gameSudoku[i][j]
       if game.clickedCellDB.last?.isMemo == false{
         beforeNum = game.gameSudoku[i][j]
         game.gameSudoku[i][j] = 0
@@ -167,7 +165,7 @@ public class SudokuManager{
         game.gameSudoku[i][j] = clickedCell.beforeNum[0]
       }
     }
-    setisSelected(currentClickIndex)
+    setisSelected(clickedCell.clickedCellIndex)
     game.clickedCellDB.removeLast()
   }
   
@@ -178,7 +176,9 @@ public class SudokuManager{
   func hint(){
     let i = currentClickIndex / 9
     let j = currentClickIndex % 9
+    
     if game.gameSudoku[i][j] != game.originalSudoku[i][j]{
+      print("진입 -- ")
       let isMemo = isMemoOptionSelected
       isMemoOptionSelected = false
       setNum(num: game.originalSudoku[i][j])
@@ -245,7 +245,7 @@ public class SudokuManager{
 
 class SudokuViewModel{
   private let manager = SudokuManager.shared
-
+  
   var isMemoOptionSelected: Bool{
     return manager.isMemoOptionSelected
   }
