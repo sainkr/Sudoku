@@ -9,19 +9,19 @@ import Foundation
 
 class GameViewModel{
   func saveGame(game: Game){
-    InnerDB.store(game, to: .documents, as: "mygame.json")
+    Storage.store(game, to: .documents, as: "mygame.json")
   }
   
-  func loadGame() -> Game?{
-    guard let game: Game = InnerDB.retrive("mygame.json", from: .documents, as: Game.self) else { return nil }
+  func fetchGame() -> Game?{
+    guard let game: Game = Storage.retrive("mygame.json", from: .documents, as: Game.self) else { return nil }
     return game
   }
   
   func removeGame(){
-    InnerDB.remove("mygame.json", from: .documents)
+    Storage.remove("mygame.json", from: .documents)
   }
   
   func clearGame(){
-    InnerDB.clear(.documents)
+    Storage.clear(.documents)
   }
 }

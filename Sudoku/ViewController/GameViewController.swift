@@ -32,9 +32,7 @@ class GameViewController: UIViewController {
   var gameType: GameType = .newGame
   
   override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-    if segue.identifier == "sudoku"{
-      // let destinationVC = segue.destination as? SudokuViewController
-    } else if segue.identifier == "option"{
+    if segue.identifier == "option"{
       let destinationVC = segue.destination as? OptionViewController
       destinationVC?.delegate = self
     }
@@ -60,7 +58,7 @@ class GameViewController: UIViewController {
   
   func saveSudoku(){
     if gameType == .dailyGame{
-      dailyGameViewModel.saveDailyGame(today: calendarViewModel.getDate(), game: sudokuViewModel.addTimeToGame(time: timeCount))
+      dailyGameViewModel.saveDailyGame(today: calendarViewModel.date(), game: sudokuViewModel.addTimeToGame(time: timeCount))
     }else{
       if !sudokuViewModel.gameOver(){
         gameViewModel.saveGame(game: sudokuViewModel.addTimeToGame(time: timeCount))
@@ -156,19 +154,5 @@ extension GameViewController: UICollectionViewDelegateFlowLayout{
     let margin: CGFloat = 10
     let width: CGFloat = (collectionView.bounds.width - margin) / 9
     return CGSize(width: width, height: width)
-  }
-}
-
-class NumberCell: UICollectionViewCell{
-  @IBOutlet weak var numberButton: UIButton!
-  var clickButtonTapHandler: (() -> Void)?
-  
-  func updateUI(_ num: Int, _ numCount: Int){
-    numberButton.setTitle(String(num), for: .normal)
-    numberButton.isHidden = numCount == 9 ? true : false
-  }
-  
-  @IBAction func clickButtonTapped(_ sender: Any) {
-    clickButtonTapHandler?()
   }
 }

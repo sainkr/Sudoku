@@ -10,22 +10,22 @@ import Foundation
 class DailyGameViewModel{
   func saveDailyGame(today: String, game: Game){
     let dailyGame = DailyGame(date: today, game: game)
-    InnerDB.store(dailyGame, to: .documents, as: "dailygame.json")
+    Storage.store(dailyGame, to: .documents, as: "dailygame.json")
   }
   
-  func loadDailyGame() -> DailyGame? {
-    guard let dailyGame = InnerDB.retrive("dailygame.json", from: .documents, as: DailyGame.self) else { return nil }
+  func fetchDailyGame() -> DailyGame? {
+    guard let dailyGame = Storage.retrive("dailygame.json", from: .documents, as: DailyGame.self) else { return nil }
     return dailyGame
   }
   
   func addDailyGameClear(date: DailyGameClearDate){
-    var dailycleargame = loadDailyGameClear()
+    var dailycleargame = fetchDailyGameClear()
     dailycleargame?.append(date)
-    InnerDB.store(dailycleargame, to: .documents, as: "dailygamecleardate.json")
+    Storage.store(dailycleargame, to: .documents, as: "dailygamecleardate.json")
   }
   
-  func loadDailyGameClear() -> [DailyGameClearDate]?{
-    guard let date = InnerDB.retrive("dailygamecleardate.json", from: .documents, as: [DailyGameClearDate].self) else { return [] }
+  func fetchDailyGameClear() -> [DailyGameClearDate]?{
+    guard let date = Storage.retrive("dailygamecleardate.json", from: .documents, as: [DailyGameClearDate].self) else { return [] }
     return date
   }
   
@@ -33,7 +33,7 @@ class DailyGameViewModel{
     return dailyGame.game
   }
   
-  func isContain(dailycleargame: [DailyGameClearDate], date: DailyGameClearDate) -> Bool{
+  func checkClearDate(dailycleargame: [DailyGameClearDate], date: DailyGameClearDate) -> Bool{
     for i in 0..<dailycleargame.count{
       if dailycleargame[i] == date{
         return true
@@ -50,5 +50,10 @@ class DailyGameViewModel{
       }
     }
     return cnt
+  }
+  
+  func existTodayDailyGame(dailyGame: DailyGame, date: String) -> Bool{
+    guard dailyGame.date == date else { return false }
+    return true
   }
 }

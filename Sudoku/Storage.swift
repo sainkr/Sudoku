@@ -7,10 +7,7 @@
 
 import Foundation
 
-public class InnerDB {
-  
-  private init() { }
-  
+public class Storage{
   enum Directory {
     case documents
     case caches

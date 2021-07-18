@@ -24,7 +24,7 @@ public class SudokuManager{
   private var isCellSelected: [ClickedCellType] = []
   private var currentClickIndex = 0
   
-  func setSudoku(_ myGame: Game){ // 이전 게임 데이터를 불러옴
+  func setOldGameSudoku(_ myGame: Game){
     game = myGame
     isMemoOptionSelected = false
     isCellSelected = Array(repeating: .none, count: 81)
@@ -32,7 +32,7 @@ public class SudokuManager{
     setisSelected(0)
   }
   
-  func setSudoku(level : Int){ // 새로운 게임 생성
+  func setNewGameSudoku(level : Int){
     // PBSudoku 라이브러리 사용
     sudoku.setLevel(level: level)
     game =  Game(
@@ -49,7 +49,7 @@ public class SudokuManager{
     setisSelected(0)
   }
   
-  func currectAnswerCount(){ // 정답 숫자의 갯수를 체크함
+  func currectAnswerCount(){
     game.currectAnswerCount = [0,0,0,0,0,0,0,0,0,0,0]
     for i in game.gameSudoku.indices{
       for j in game.gameSudoku[i].indices{
@@ -58,7 +58,7 @@ public class SudokuManager{
     }
   }
   
-  func setNum(num: Int){ // 스도쿠 판 숫자 설정
+  func setNum(num: Int){ 
     if isCorrect(index: currentClickIndex){ return }
     let i = currentClickIndex / 9
     let j = currentClickIndex % 9
@@ -274,12 +274,12 @@ class SudokuViewModel{
     return manager.isCorrect(index: index)
   }
   
-  func setSudoku(level : Int){
-    manager.setSudoku(level: level)
+  func setNewGameSudoku(level : Int){
+    manager.setNewGameSudoku(level: level)
   }
   
-  func setSudoku(_ game: Game){
-    manager.setSudoku(game)
+  func setOldGameSudoku(game: Game){
+    manager.setOldGameSudoku(game)
   }
   
   func setNum(num: Int){
