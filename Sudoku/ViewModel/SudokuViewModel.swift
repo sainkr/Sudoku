@@ -58,6 +58,10 @@ public class SudokuManager{
     }
   }
   
+  func existMemo()-> Bool{
+     return game.memo[currentClickIndex] != Array(repeating: false, count: 9)
+  }
+  
   func setNum(num: Int){ 
     if isCorrect(index: currentClickIndex){ return }
     let i = currentClickIndex / 9
@@ -65,8 +69,7 @@ public class SudokuManager{
     if !isMemoOptionSelected || num == 0{
       var currentNum = [num]
       var beforeNum = [game.gameSudoku[i][j]]
-      // 메모 숫자를 띄운 상태에서 메모 옵션을 취소하고 일반 숫자를 입력하는 경우
-      if game.memo[currentClickIndex] != Array(repeating: false, count: 9){
+      if existMemo(){
         currentNum = [-1]
         beforeNum = []
         for i in game.memo[currentClickIndex].indices{
@@ -75,24 +78,20 @@ public class SudokuManager{
           }
         }
       }
-      if num != game.originalSudoku[i][j]{ // 선택한 숫자가 정답이 아니면
+      if num != game.originalSudoku[i][j]{
         game.clickedCellDB.append(ClickedCellDB(
                                     clickedCellIndex: currentClickIndex,
                                     currentNum: currentNum,
                                     beforeNum: beforeNum,
                                     isMemo: false))
       }
-      // 메모 초기화
       game.memo[currentClickIndex] = Array(repeating: false, count: 9)
-      // gameSudoku 값 변경
       game.gameSudoku[i][j] = num
       setisSelected(currentClickIndex)
       currectAnswerCount()
     }else{ // 메모 옵션을 눌렀을 시
-      // 해당 숫자의 메모여부를 true로 설정
       game.memo[currentClickIndex][num - 1] = true
-      var beforeNum = -1 // 이 전에도 메모 옵션이였다면 -1
-      // 메모 옵션을 취소하고 일반 숫자를 누른다면 game.gameSudoku[i][j]
+      var beforeNum = -1
       if game.clickedCellDB.last?.isMemo == false{
         beforeNum = game.gameSudoku[i][j]
         game.gameSudoku[i][j] = 0
@@ -176,9 +175,7 @@ public class SudokuManager{
   func hint(){
     let i = currentClickIndex / 9
     let j = currentClickIndex % 9
-    
     if game.gameSudoku[i][j] != game.originalSudoku[i][j]{
-      print("진입 -- ")
       let isMemo = isMemoOptionSelected
       isMemoOptionSelected = false
       setNum(num: game.originalSudoku[i][j])

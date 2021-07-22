@@ -8,14 +8,14 @@
 import UIKit
 
 class GameViewController: UIViewController {
-  
   @IBOutlet weak var levelLabel: UILabel!
   @IBOutlet weak var pauseButton: UIButton!
   @IBOutlet weak var timerLabel: UILabel!
   @IBOutlet weak var isPlayingButton: UIButton!
   @IBOutlet weak var pauseView: UIView!
-  @IBOutlet weak var missCountLabel: UILabel!
   
+  @IBOutlet weak var sudokuCollectionView: UICollectionView!
+  @IBOutlet weak var optionCollectionView: UICollectionView!
   @IBOutlet weak var numberCollectionView: UICollectionView!
   
   var timer: Timer?
@@ -31,15 +31,13 @@ class GameViewController: UIViewController {
   
   var gameType: GameType = .newGame
   
-  override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-    if segue.identifier == "option"{
-      let destinationVC = segue.destination as? OptionViewController
-      destinationVC?.delegate = self
-    }
-  }
-  
   override func viewDidLoad() {
     super.viewDidLoad()
+    
+    sudokuCollectionView.tag = 1
+    optionCollectionView.tag = 2
+    numberCollectionView.tag = 3
+    
     setView()
   }
 
@@ -47,6 +45,12 @@ class GameViewController: UIViewController {
     super.viewWillDisappear(true)
     timer?.invalidate()
     saveSudoku()
+  }
+}
+
+extension GameViewController{
+  @IBAction func backButtonTapped(_ sender: Any) {
+    dismiss(animated: false, completion: nil)
   }
   
   func setView(){
@@ -58,7 +62,9 @@ class GameViewController: UIViewController {
   
   func saveSudoku(){
     if gameType == .dailyGame{
-      dailyGameViewModel.saveDailyGame(today: calendarViewModel.date(), game: sudokuViewModel.addTimeToGame(time: timeCount))
+      dailyGameViewModel.saveDailyGame(
+        today: calendarViewModel.date(),
+        game: sudokuViewModel.addTimeToGame(time: timeCount))
     }else{
       if !sudokuViewModel.gameOver(){
         gameViewModel.saveGame(game: sudokuViewModel.addTimeToGame(time: timeCount))
@@ -66,19 +72,24 @@ class GameViewController: UIViewController {
     }
   }
   
-  @IBAction func backButtonTapped(_ sender: Any) {
-    dismiss(animated: false, completion: nil)
-  }
-}
-// MARK:- 숫자들이 다 써졌는지 확인
-extension GameViewController: CheckNumCountDelegate{
-  func checkNumCount() {
+  func numberButtonTapped(_ index: Int){
+    sudokuViewModel.setNum(num: index)
     numberCollectionView.reloadData()
-    if !sudokuViewModel.gameOver(){ return }
-    // 끝내기
+    sudokuCollectionView.reloadData()
+    if sudokuViewModel.gameOver(){
+      endGame()
+    }
+  }
+  
+  func endGame() {
     timerPasue()
     if gameType == .dailyGame{
-      dailyGameViewModel.addDailyGameClear(date: DailyGameClearDate(year: calendarViewModel.yearOfToday, month: calendarViewModel.monthOfToday, day: calendarViewModel.dayOfToday))
+      dailyGameViewModel.addDailyGameClear(
+        date: DailyGameClearDate(
+          year: calendarViewModel.yearOfToday,
+          month: calendarViewModel.monthOfToday,
+          day: calendarViewModel.dayOfToday)
+      )
     }else{
       gameViewModel.removeGame()
     }
@@ -131,28 +142,72 @@ extension GameViewController {
   }
 }
 
-extension GameViewController: UICollectionViewDataSource { // 스도쿠 판에 입력할 숫자
+// MARK: - CollectionView
+extension GameViewController: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return 9
+    guard let collectionView = CollectionViewType(collectionViewTag: collectionView.tag) else { return 0 }
+    return collectionView.cellCount
   }
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    guard let cell = numberCollectionView.dequeueReusableCell(withReuseIdentifier: "NumberCell", for: indexPath) as? NumberCell else { return UICollectionViewCell() }
-    cell.updateUI(indexPath.item + 1, sudokuViewModel.currectAnswerCount(index: indexPath.item + 1))
-    cell.clickButtonTapHandler = {
-      NotificationCenter.default.post(name: self.ClickNumberNotification, object: nil, userInfo: ["num" : indexPath.item + 1])
-      if !self.sudokuViewModel.isMemoOptionSelected{
-        self.checkNumCount()
-      }
+    guard let collectionView = CollectionViewType(collectionViewTag: collectionView.tag) else { return UICollectionViewCell() }
+    
+    switch collectionView {
+    case .sudoku:
+      guard let cell = sudokuCollectionView.dequeueReusableCell(withReuseIdentifier: SudokuCollectionViewCell.identifier, for: indexPath) as? SudokuCollectionViewCell else { return UICollectionViewCell() }
+      cell.updateMemoUI(sudokuViewModel.memo(index: indexPath.item))
+      cell.updateUI(
+        index: indexPath.item,
+        sudokuNum: sudokuViewModel.gameSudoku(index: indexPath.item),
+        cellType: sudokuViewModel.selected(index: indexPath.item),
+        isCorrect: sudokuViewModel.isCorrect(index: indexPath.item))
+      return cell
+    case .option:
+      guard let cell = optionCollectionView.dequeueReusableCell(withReuseIdentifier: OptionCollectionViewCell.identifier, for: indexPath) as? OptionCollectionViewCell else { return UICollectionViewCell() }
+      cell.updateUI(indexPath.item, sudokuViewModel.isMemoOptionSelected)
+      return cell
+    case .number:
+      guard let cell = numberCollectionView.dequeueReusableCell(withReuseIdentifier: NumberCollectionViewCell.identifier, for: indexPath) as? NumberCollectionViewCell else { return UICollectionViewCell() }
+      cell.updateUI(indexPath.item + 1, sudokuViewModel.currectAnswerCount(index: indexPath.item + 1))
+      cell.clickButtonTapHandler = { self.numberButtonTapped(indexPath.item + 1) }
+      return cell
     }
-    return cell
+  }
+}
+
+extension GameViewController: UICollectionViewDelegate{
+  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    guard let collectionView = CollectionViewType(collectionViewTag: collectionView.tag) else { return}
+    switch collectionView{
+    case .sudoku:
+      sudokuViewModel.clickIndex(index: indexPath.item)
+    case .option:
+      sudokuViewModel.setOption(optionNum: indexPath.item)
+      if indexPath.item == 2{ optionCollectionView.reloadData() }
+      else{ numberCollectionView.reloadData() }
+    case .number: break
+    }
+    sudokuCollectionView.reloadData()
   }
 }
 
 extension GameViewController: UICollectionViewDelegateFlowLayout{
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-    let margin: CGFloat = 10
-    let width: CGFloat = (collectionView.bounds.width - margin) / 9
-    return CGSize(width: width, height: width)
+    let collectionViewWidth = collectionView.bounds.width
+    guard let collectionView = CollectionViewType(collectionViewTag: collectionView.tag) else { return CGSize() }
+    
+    switch collectionView{
+    case .sudoku:
+      let width: CGFloat =  collectionViewWidth / 9
+      return CGSize(width: width , height: width)
+    case .option:
+      let width: CGFloat = collectionViewWidth / 4
+      let height: CGFloat = width * 1.2
+      return CGSize(width: width, height: height)
+    case .number:
+      let margin: CGFloat = 10
+      let width: CGFloat = (collectionViewWidth - margin) / 9
+      return CGSize(width: width, height: width)
+    }
   }
 }

@@ -7,7 +7,10 @@
 
 import UIKit
 
-class SudokuCell: UICollectionViewCell{
+class SudokuCollectionViewCell: UICollectionViewCell{
+  static let identifier = "SudokuCollectionViewCell"
+  static let count = 81
+  
   @IBOutlet weak var memoLabel1: UILabel!
   @IBOutlet weak var memoLabel2: UILabel!
   @IBOutlet weak var memoLabel3: UILabel!
@@ -44,10 +47,12 @@ class SudokuCell: UICollectionViewCell{
   func setBackGroundColor(_ type: ClickedCellType){
     if type == .none{
       contentView.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-    }else if type == .col || type == .row || type == .rectangle || type == .sameNum{
+    }else if type == .col || type == .row || type == .rectangle{
       contentView.backgroundColor = #colorLiteral(red: 1, green: 0.4607823897, blue: 0.08191460459, alpha: 0.4498033588)
-    }else{
-      contentView.backgroundColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 0.3357780612)
+    }else if type == .sameNum {
+      contentView.backgroundColor = #colorLiteral(red: 1, green: 0.4607823897, blue: 0.08191460459, alpha: 0.6607408588)
+    }else if type == .current{
+      contentView.backgroundColor = #colorLiteral(red: 0.7222955823, green: 0.7224185467, blue: 0.7222794294, alpha: 0.3357780612)
     }
   }
   

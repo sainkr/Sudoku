@@ -20,12 +20,11 @@
 		363D4B0B26133217005A6E45 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363D4B0A26133217005A6E45 /* Game.swift */; };
 		363D4B1026133419005A6E45 /* GameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363D4B0F26133419005A6E45 /* GameViewModel.swift */; };
 		3650D5FC2612F78000D88421 /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3650D5FB2612F78000D88421 /* Storage.swift */; };
-		365ACF43261589F000C3BC88 /* Rank.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 365ACF42261589F000C3BC88 /* Rank.storyboard */; };
 		365ACFA22615AED600C3BC88 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 365ACFA12615AED600C3BC88 /* GoogleService-Info.plist */; };
-		365E998A26A17D8400401A64 /* CalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 365E998926A17D8400401A64 /* CalendarCell.swift */; };
-		365E999526A17DE200401A64 /* NumberCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 365E999426A17DE200401A64 /* NumberCell.swift */; };
-		365E999A26A17E0700401A64 /* OptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 365E999926A17E0700401A64 /* OptionCell.swift */; };
-		365E999F26A17E2E00401A64 /* SudokuCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 365E999E26A17E2E00401A64 /* SudokuCell.swift */; };
+		365E998A26A17D8400401A64 /* CalendarCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 365E998926A17D8400401A64 /* CalendarCollectionViewCell.swift */; };
+		365E999526A17DE200401A64 /* NumberCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 365E999426A17DE200401A64 /* NumberCollectionViewCell.swift */; };
+		365E999A26A17E0700401A64 /* OptionCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 365E999926A17E0700401A64 /* OptionCollectionViewCell.swift */; };
+		365E999F26A17E2E00401A64 /* SudokuCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 365E999E26A17E2E00401A64 /* SudokuCollectionViewCell.swift */; };
 		365E99A526A17E8000401A64 /* CALayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 365E99A426A17E8000401A64 /* CALayer.swift */; };
 		3660148E2608C32900BC8578 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3660148D2608C32900BC8578 /* MainViewController.swift */; };
 		366014A42608C66000BC8578 /* CalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366014A32608C66000BC8578 /* CalendarViewModel.swift */; };
@@ -35,14 +34,13 @@
 		36B4576E2630308000C33678 /* BMHANNAProOTF.otf in Resources */ = {isa = PBXBuildFile; fileRef = 36B45683262FFB4700C33678 /* BMHANNAProOTF.otf */; };
 		36B5D62526A41C3F00144AE7 /* CurrentCalendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36B5D62426A41C3F00144AE7 /* CurrentCalendar.swift */; };
 		36CA7055269C58CC00823C70 /* CheckNumCountDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36CA7054269C58CC00823C70 /* CheckNumCountDelegate.swift */; };
+		36CC102A26A93B8F00AF533A /* CollectionVIewType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36CC102926A93B8F00AF533A /* CollectionVIewType.swift */; };
 		36DF6CF42610C0C5000B9D49 /* SudokuViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36DF6CF32610C0C5000B9D49 /* SudokuViewModel.swift */; };
 		36EDAD5D269731080037862C /* ClickedCellDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36EDAD5C269731080037862C /* ClickedCellDB.swift */; };
 		36EDAD622697331E0037862C /* DailyGameClearDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36EDAD612697331E0037862C /* DailyGameClearDate.swift */; };
 		36F10EFC269573660060F3F7 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 36F10EFE269573660060F3F7 /* InfoPlist.strings */; };
 		36F46BF62614A79900DDFA82 /* DailyGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36F46BF52614A79900DDFA82 /* DailyGame.swift */; };
 		36F46BFB2614A7CD00DDFA82 /* DailyGameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36F46BFA2614A7CD00DDFA82 /* DailyGameViewModel.swift */; };
-		36F4E75A260C710F00987174 /* OptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36F4E759260C710F00987174 /* OptionViewController.swift */; };
-		36F4E75F260C711600987174 /* SudokuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36F4E75E260C711600987174 /* SudokuViewController.swift */; };
 		862FEB53720FBF1D4D3F6479 /* Pods_Sudoku_SudokuUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4ADF725D144599AE69CEB93 /* Pods_Sudoku_SudokuUITests.framework */; };
 		D512DCBED6F8FDB276B831D8 /* Pods_SudokuTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAB63BB8F24AB078D850C72B /* Pods_SudokuTests.framework */; };
 /* End PBXBuildFile section */
@@ -98,12 +96,11 @@
 		363D4B0A26133217005A6E45 /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Game.swift; path = Sudoku/Model/Game.swift; sourceTree = SOURCE_ROOT; };
 		363D4B0F26133419005A6E45 /* GameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewModel.swift; sourceTree = "<group>"; };
 		3650D5FB2612F78000D88421 /* Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
-		365ACF42261589F000C3BC88 /* Rank.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Rank.storyboard; sourceTree = "<group>"; };
 		365ACFA12615AED600C3BC88 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		365E998926A17D8400401A64 /* CalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCell.swift; sourceTree = "<group>"; };
-		365E999426A17DE200401A64 /* NumberCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberCell.swift; sourceTree = "<group>"; };
-		365E999926A17E0700401A64 /* OptionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionCell.swift; sourceTree = "<group>"; };
-		365E999E26A17E2E00401A64 /* SudokuCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SudokuCell.swift; sourceTree = "<group>"; };
+		365E998926A17D8400401A64 /* CalendarCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCollectionViewCell.swift; sourceTree = "<group>"; };
+		365E999426A17DE200401A64 /* NumberCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberCollectionViewCell.swift; sourceTree = "<group>"; };
+		365E999926A17E0700401A64 /* OptionCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionCollectionViewCell.swift; sourceTree = "<group>"; };
+		365E999E26A17E2E00401A64 /* SudokuCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SudokuCollectionViewCell.swift; sourceTree = "<group>"; };
 		365E99A426A17E8000401A64 /* CALayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CALayer.swift; sourceTree = "<group>"; };
 		3660148D2608C32900BC8578 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		366014A32608C66000BC8578 /* CalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewModel.swift; sourceTree = "<group>"; };
@@ -113,6 +110,7 @@
 		36B45683262FFB4700C33678 /* BMHANNAProOTF.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = BMHANNAProOTF.otf; path = Sudoku/Resources/BMHANNAProOTF.otf; sourceTree = SOURCE_ROOT; };
 		36B5D62426A41C3F00144AE7 /* CurrentCalendar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentCalendar.swift; sourceTree = "<group>"; };
 		36CA7054269C58CC00823C70 /* CheckNumCountDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckNumCountDelegate.swift; sourceTree = "<group>"; };
+		36CC102926A93B8F00AF533A /* CollectionVIewType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionVIewType.swift; sourceTree = "<group>"; };
 		36DF6CF32610C0C5000B9D49 /* SudokuViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SudokuViewModel.swift; sourceTree = "<group>"; };
 		36EDAD5C269731080037862C /* ClickedCellDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClickedCellDB.swift; sourceTree = "<group>"; };
 		36EDAD612697331E0037862C /* DailyGameClearDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyGameClearDate.swift; sourceTree = "<group>"; };
@@ -122,8 +120,6 @@
 		36F10F022695736B0060F3F7 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		36F46BF52614A79900DDFA82 /* DailyGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyGame.swift; sourceTree = "<group>"; };
 		36F46BFA2614A7CD00DDFA82 /* DailyGameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyGameViewModel.swift; sourceTree = "<group>"; };
-		36F4E759260C710F00987174 /* OptionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionViewController.swift; sourceTree = "<group>"; };
-		36F4E75E260C711600987174 /* SudokuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SudokuViewController.swift; sourceTree = "<group>"; };
 		3C5393113314BE756A029FD8 /* Pods_Sudoku.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Sudoku.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		77DB52FC171233DA9D1EB227 /* Pods-Sudoku.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sudoku.release.xcconfig"; path = "Target Support Files/Pods-Sudoku/Pods-Sudoku.release.xcconfig"; sourceTree = "<group>"; };
 		7B832250E5DCD6CD0645C982 /* Pods-Sudoku.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sudoku.debug.xcconfig"; path = "Target Support Files/Pods-Sudoku/Pods-Sudoku.debug.xcconfig"; sourceTree = "<group>"; };
@@ -223,10 +219,11 @@
 		365E998826A17D7200401A64 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
-				365E998926A17D8400401A64 /* CalendarCell.swift */,
-				365E999426A17DE200401A64 /* NumberCell.swift */,
-				365E999926A17E0700401A64 /* OptionCell.swift */,
-				365E999E26A17E2E00401A64 /* SudokuCell.swift */,
+				365E998926A17D8400401A64 /* CalendarCollectionViewCell.swift */,
+				365E999426A17DE200401A64 /* NumberCollectionViewCell.swift */,
+				365E999926A17E0700401A64 /* OptionCollectionViewCell.swift */,
+				365E999E26A17E2E00401A64 /* SudokuCollectionViewCell.swift */,
+				36CC102926A93B8F00AF533A /* CollectionVIewType.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -255,8 +252,6 @@
 			children = (
 				3660148D2608C32900BC8578 /* MainViewController.swift */,
 				36B0FE322609DE7000A458FE /* GameViewController.swift */,
-				36F4E759260C710F00987174 /* OptionViewController.swift */,
-				36F4E75E260C711600987174 /* SudokuViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -296,7 +291,6 @@
 				3621AD4B25FA60BD00C3E456 /* LaunchScreen.storyboard */,
 				3621AD4625FA60BD00C3E456 /* Main.storyboard */,
 				36B0FE2D2609BEFB00A458FE /* Game.storyboard */,
-				365ACF42261589F000C3BC88 /* Rank.storyboard */,
 			);
 			path = Storyboard;
 			sourceTree = "<group>";
@@ -446,7 +440,6 @@
 			files = (
 				36B4576E2630308000C33678 /* BMHANNAProOTF.otf in Resources */,
 				36F10EFC269573660060F3F7 /* InfoPlist.strings in Resources */,
-				365ACF43261589F000C3BC88 /* Rank.storyboard in Resources */,
 				3621AD4D25FA60BD00C3E456 /* LaunchScreen.storyboard in Resources */,
 				36B0FE2E2609BEFB00A458FE /* Game.storyboard in Resources */,
 				3621AD4A25FA60BD00C3E456 /* Assets.xcassets in Resources */,
@@ -585,25 +578,24 @@
 				3650D5FC2612F78000D88421 /* Storage.swift in Sources */,
 				3621AD4125FA60BD00C3E456 /* AppDelegate.swift in Sources */,
 				366014A42608C66000BC8578 /* CalendarViewModel.swift in Sources */,
-				365E999A26A17E0700401A64 /* OptionCell.swift in Sources */,
+				365E999A26A17E0700401A64 /* OptionCollectionViewCell.swift in Sources */,
 				3621AD4325FA60BD00C3E456 /* SceneDelegate.swift in Sources */,
 				36B5D62526A41C3F00144AE7 /* CurrentCalendar.swift in Sources */,
 				367C60E426A15A8C008B9C38 /* UIenum.swift in Sources */,
 				365E99A526A17E8000401A64 /* CALayer.swift in Sources */,
 				363D4B1026133419005A6E45 /* GameViewModel.swift in Sources */,
 				36F46BF62614A79900DDFA82 /* DailyGame.swift in Sources */,
-				36F4E75A260C710F00987174 /* OptionViewController.swift in Sources */,
+				36CC102A26A93B8F00AF533A /* CollectionVIewType.swift in Sources */,
 				36385C112695FE5A00636C44 /* GameType.swift in Sources */,
 				36CA7055269C58CC00823C70 /* CheckNumCountDelegate.swift in Sources */,
 				36F46BFB2614A7CD00DDFA82 /* DailyGameViewModel.swift in Sources */,
-				365E999F26A17E2E00401A64 /* SudokuCell.swift in Sources */,
+				365E999F26A17E2E00401A64 /* SudokuCollectionViewCell.swift in Sources */,
 				36B0FE332609DE7000A458FE /* GameViewController.swift in Sources */,
 				36DF6CF42610C0C5000B9D49 /* SudokuViewModel.swift in Sources */,
 				3632D5DF26A06551000DB63D /* ClickedCellType.swift in Sources */,
 				36EDAD5D269731080037862C /* ClickedCellDB.swift in Sources */,
-				36F4E75F260C711600987174 /* SudokuViewController.swift in Sources */,
-				365E998A26A17D8400401A64 /* CalendarCell.swift in Sources */,
-				365E999526A17DE200401A64 /* NumberCell.swift in Sources */,
+				365E998A26A17D8400401A64 /* CalendarCollectionViewCell.swift in Sources */,
+				365E999526A17DE200401A64 /* NumberCollectionViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -65,7 +65,8 @@ extension MainViewController{
   }
   
   func loadData(){
-    dailygamecleardate = dailyGameViewModel.fetchDailyGameClear()
+    // dailygamecleardate = dailyGameViewModel.fetchDailyGameClear()
+    dailygamecleardate = [DailyGameClearDate(year: 2021, month: 07, day: 5),DailyGameClearDate(year: 2021, month: 07, day: 6), DailyGameClearDate(year: 2021, month: 07, day: 16),DailyGameClearDate(year: 2021, month: 07, day: 11), DailyGameClearDate(year: 2021, month: 07, day: 12), DailyGameClearDate(year: 2021, month: 07, day: 03), DailyGameClearDate(year: 2021, month: 07, day: 19)]
   }
   
   func presentGameVC(_ gameType: GameType){
@@ -147,7 +148,7 @@ extension MainViewController: UICollectionViewDataSource{
   }
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CalendarCell", for: indexPath) as? CalendarCell else { return UICollectionViewCell() }
+    guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CalendarCollectionViewCell.identifier, for: indexPath) as? CalendarCollectionViewCell else { return UICollectionViewCell() }
     var success = false
     if dailyGameViewModel.checkClearDate(dailycleargame: dailygamecleardate,
                                     date: DailyGameClearDate(

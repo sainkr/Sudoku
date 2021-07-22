@@ -7,7 +7,10 @@
 
 import UIKit
 
-class NumberCell: UICollectionViewCell{
+class NumberCollectionViewCell: UICollectionViewCell{
+  static let identifier = "NumberCollectionViewCell"
+  static let count = 9
+  
   @IBOutlet weak var numberButton: UIButton!
   var clickButtonTapHandler: (() -> Void)?
   
