@@ -1,13 +1,13 @@
 //
-//  OptionCell.swift
+//  OptionCollectionViewCell.swift
 //  Sudoku
 //
-//  Created by 홍승아 on 2021/07/16.
+//  Created by 홍승아 on 2021/09/08.
 //
 
 import UIKit
 
-class OptionCollectionViewCell: UICollectionViewCell{
+class OptionCollectionViewCell: UICollectionViewCell {
   static let identifier = "OptionCollectionViewCell"
   static let count = 4
   
@@ -16,6 +16,11 @@ class OptionCollectionViewCell: UICollectionViewCell{
   
   let optionImage: [String] = ["arrow.counterclockwise","trash", "highlighter", "lightbulb"]
   let optionLabel: [String] = ["실행 취소", "지우기", "메모", "힌트"]
+  
+  override func awakeFromNib() {
+      super.awakeFromNib()
+      // Initialization code
+  }
   
   func updateUI(_ i: Int, _ memoSelect: Bool){
     imageView.image = UIImage(systemName: optionImage[i])

@@ -1,13 +1,13 @@
 //
-//  SudokuCell.swift
+//  SudokuCollectionViewCell.swift
 //  Sudoku
 //
-//  Created by 홍승아 on 2021/07/16.
+//  Created by 홍승아 on 2021/09/08.
 //
 
 import UIKit
 
-class SudokuCollectionViewCell: UICollectionViewCell{
+class SudokuCollectionViewCell: UICollectionViewCell {
   static let identifier = "SudokuCollectionViewCell"
   static let count = 81
   
@@ -28,6 +28,11 @@ class SudokuCollectionViewCell: UICollectionViewCell{
     for _ in 1...4{
       contentView.layer.sublayers?.removeLast()
     }
+  }
+  
+  override func awakeFromNib() {
+    super.awakeFromNib()
+    // Initialization code
   }
   
   func updateMemoUI(_ memoSelect: [Bool]){

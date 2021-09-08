@@ -18,9 +18,15 @@ extension CALayer{
     // .right : CGRect.init(x: frame.width - 테두리Width, y: 0, width: 테두리Width, height: frame.height)
     
     // 굵은 선
-    let boldCgRect: [CGRect] = [CGRect.init(x: 0, y: 0, width: frame.width, height: boldWidth), CGRect.init(x: 0, y: frame.height - boldWidth, width: frame.width, height: boldWidth), CGRect.init(x: 0, y: 0, width: boldWidth, height: frame.height), CGRect.init(x: frame.width - boldWidth, y: 0, width: boldWidth, height: frame.height)]
+    let boldCgRect: [CGRect] = [CGRect.init(x: 0, y: 0, width: frame.width, height: boldWidth),
+                                CGRect.init(x: 0, y: frame.height - boldWidth, width: frame.width, height: boldWidth),
+                                CGRect.init(x: 0, y: 0, width: boldWidth, height: frame.height),
+                                CGRect.init(x: frame.width - boldWidth, y: 0, width: boldWidth, height: frame.height)]
     // 회색 선
-    let basicCgRect: [CGRect] = [CGRect.init(x: 0, y: 0, width: frame.width, height: basicWidth), CGRect.init(x: 0, y: frame.height - basicWidth, width: frame.width, height: basicWidth), CGRect.init(x: 0, y: 0, width: basicWidth, height: frame.height), CGRect.init(x: frame.width - basicWidth, y: 0, width: basicWidth, height: frame.height)]
+    let basicCgRect: [CGRect] = [CGRect.init(x: 0, y: 0, width: frame.width, height: basicWidth),
+                                 CGRect.init(x: 0, y: frame.height - basicWidth, width: frame.width, height: basicWidth),
+                                 CGRect.init(x: 0, y: 0, width: basicWidth, height: frame.height),
+                                 CGRect.init(x: frame.width - basicWidth, y: 0, width: basicWidth, height: frame.height)]
     
     for j in 0...3 {
       let border = CALayer()

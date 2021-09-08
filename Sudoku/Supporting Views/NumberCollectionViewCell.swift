@@ -1,18 +1,24 @@
 //
-//  NumberCell.swift
+//  NumberCollectionViewCell.swift
 //  Sudoku
 //
-//  Created by 홍승아 on 2021/07/16.
+//  Created by 홍승아 on 2021/09/08.
 //
 
 import UIKit
 
-class NumberCollectionViewCell: UICollectionViewCell{
+class NumberCollectionViewCell: UICollectionViewCell {
   static let identifier = "NumberCollectionViewCell"
   static let count = 9
   
   @IBOutlet weak var numberButton: UIButton!
+  
   var clickButtonTapHandler: (() -> Void)?
+  
+  override func awakeFromNib() {
+    super.awakeFromNib()
+    // Initialization code
+  }
   
   func updateUI(_ num: Int, _ numCount: Int){
     numberButton.setTitle(String(num), for: .normal)

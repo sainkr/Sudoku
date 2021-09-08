@@ -17,20 +17,18 @@ class CalendarViewModel{
   var dayOfToday: Int {
     return Calendar.current.component(.day, from: Date())
   }
-  private var numOfDaysInMonth: [Int] = [0, 31, 30, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+  private var numOfDaysInMonth: [Int] = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
   
   func date() -> String {
     return "\(yearOfToday)년 \(monthOfToday)월 \(dayOfToday)일"
   }
   
-  func setDays(_ currentYear: Int, _ currentMonth: Int) -> [Int]{
+  private func setDays(_ currentYear: Int, _ currentMonth: Int)-> [Int]{
     let currentMonthIndex = currentMonth
-    // 윤년 체크
-    if currentYear % 4 == 0 {
-      numOfDaysInMonth[currentMonthIndex] = 29
-    }
     var day: [Int] = []
-    let firstWeekDay = dayOfWeek("\(currentYear)-\(currentMonth)")
+    // 윤년 체크
+    numOfDaysInMonth[2] = checkLeapYear(currentYear) ? 29 : 28
+    guard let firstWeekDay = dayOfWeek("\(currentYear)-\(currentMonth)") else { return [] }
     // 시작하는 요일 전에 남는 공간을 0으로 채워준다
     while day.count < firstWeekDay{
       day.append(0)
@@ -39,14 +37,17 @@ class CalendarViewModel{
     for i in 1...numOfDaysInMonth[currentMonthIndex]{
       day.append(i)
     }
-    
     return day
   }
-  
-  func dayOfWeek(_ today:String) -> Int{
+
+  private func checkLeapYear(_ year: Int)-> Bool{
+    return year % 4 == 0 && year % 100 != 0 || year % 400 == 0
+  }
+
+  func dayOfWeek(_ today:String) -> Int?{
     let formatter  = DateFormatter()
     formatter.dateFormat = "yyyy-MM"
-    guard let todayDate = formatter.date(from: today) else { return 0 }
+    guard let todayDate = formatter.date(from: today) else { return nil }
     let myCalendar = Calendar(identifier: .gregorian)
     let weekDay = myCalendar.component(.weekday, from: todayDate)
     // Sun = 1, Mon = 2, Tue = 3 ...

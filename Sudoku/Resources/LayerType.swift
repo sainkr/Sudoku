@@ -1,8 +1,8 @@
 //
-//  UIenum.swift
+//  LayerType.swift
 //  Sudoku
 //
-//  Created by 홍승아 on 2021/07/16.
+//  Created by 홍승아 on 2021/08/19.
 //
 
 import Foundation

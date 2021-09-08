@@ -18,42 +18,41 @@ class MainViewController: UIViewController{
   @IBOutlet weak var nextMonthButton: UIButton!
   @IBOutlet weak var beforeMonthButton: UIButton!
   
-  var calendarViewModel = CalendarViewModel()
-  var gameViewModel = GameViewModel()
-  var sudokuViewModel = SudokuViewModel()
-  var dailyGameViewModel = DailyGameViewModel()
+  private var calendarViewModel = CalendarViewModel()
+  private  var gameViewModel = GameViewModel()
+  private var sudokuViewModel = SudokuViewModel()
+  private var dailyGameViewModel = DailyGameViewModel()
   
-  var currentYear: Int = 0
-  var currentMonth: Int = 0
-  var currentDay: Int = 0
-  var currentCalendarDay: [Int] = []
+  private var currentYear: Int = 0
+  private var currentMonth: Int = 0
+  private var currentDay: Int = 0
+  private var currentCalendarDay: [Int] = []
   
-  var dailygamecleardate: [DailyGameClearDate]!
+  private var dailyGameClearDate: [DailyGameClearDate] = []
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    setView()
-    // gameViewModel.clearGame()
+    configureView()
+    registerCalendarCollectionViewCell()
   }
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(true)
     loadData()
-    collectionView.reloadData()
   }
 }
 
 extension MainViewController{
-  func setView(){
+  private func configureView(){
     todayDateLabel.text = calendarViewModel.date() // 오늘 날짜 설정
     calendarView.layer.cornerRadius = 17
     todayGameButton.layer.cornerRadius = 17
     continueButton.layer.cornerRadius = 17
     newGameButton.layer.cornerRadius = 17
-    setCurrentCalendar(calendarViewModel.yearOfToday, calendarViewModel.monthOfToday)
+    configureCurrentCalendar(calendarViewModel.yearOfToday, calendarViewModel.monthOfToday)
   }
   
-  func setCurrentCalendar(_ year : Int, _ month: Int){
+  private func configureCurrentCalendar(_ year : Int, _ month: Int){
     let calendar = calendarViewModel.setCalendar(year, month)
     currentYear = calendar.year
     currentMonth = calendar.month
@@ -64,12 +63,17 @@ extension MainViewController{
     collectionView.reloadData()
   }
   
-  func loadData(){
-    // dailygamecleardate = dailyGameViewModel.fetchDailyGameClear()
-    dailygamecleardate = [DailyGameClearDate(year: 2021, month: 07, day: 5),DailyGameClearDate(year: 2021, month: 07, day: 6), DailyGameClearDate(year: 2021, month: 07, day: 16),DailyGameClearDate(year: 2021, month: 07, day: 11), DailyGameClearDate(year: 2021, month: 07, day: 12), DailyGameClearDate(year: 2021, month: 07, day: 03), DailyGameClearDate(year: 2021, month: 07, day: 19)]
+  private func loadData(){
+    dailyGameClearDate = dailyGameViewModel.fetchDailyGameClear() ?? []
+    collectionView.reloadData()
   }
   
-  func presentGameVC(_ gameType: GameType){
+  private func registerCalendarCollectionViewCell(){
+    let calendarCollectionViewCellNib = UINib(nibName: CalendarCollectionViewCell.identifier, bundle: nil)
+    collectionView.register(calendarCollectionViewCellNib, forCellWithReuseIdentifier: CalendarCollectionViewCell.identifier)
+  }
+
+  private func presentGameVC(_ gameType: GameType){
     let gameStoryboard = UIStoryboard.init(name: "Game", bundle: nil)
     guard let gameVC = gameStoryboard.instantiateViewController(identifier: "GameViewController") as? GameViewController else { return }
     gameVC.modalPresentationStyle = .fullScreen
@@ -78,7 +82,7 @@ extension MainViewController{
     present(gameVC, animated: true, completion: nil)
   }
   
-  func presentNewGame(_ gameVC: GameViewController){
+  private func presentNewGame(_ gameVC: GameViewController){
     let actionsheetConroller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
     let easy = uiAlertAction(title: "쉬움", level: 1, gameVC: gameVC)
     let medium = uiAlertAction(title: "보통", level: 2, gameVC: gameVC)
@@ -93,14 +97,14 @@ extension MainViewController{
     present(actionsheetConroller, animated: true)
   }
   
-  func uiAlertAction(title: String, level: Int, gameVC: GameViewController) -> UIAlertAction{
+  private func uiAlertAction(title: String, level: Int, gameVC: GameViewController) -> UIAlertAction{
     return UIAlertAction(title: title, style: .default) { action in
       self.sudokuViewModel.setNewGameSudoku(level: level)
       self.present(gameVC, animated: true, completion: nil)
     }
   }
   
-  func alert(_ msg: String){
+  private func alert(_ msg: String){
     let nameAlert = UIAlertController(title: nil, message: msg, preferredStyle: .alert)
     let nameOK = UIAlertAction(title: "확인", style: .default ){ (ok) in
       self.dismiss(animated: true, completion: nil)
@@ -113,11 +117,11 @@ extension MainViewController{
 // MARK:- Action
 extension MainViewController {
   @IBAction func backCalendarButtonTapped(_ sender: Any) {  // 저번달 버튼
-    setCurrentCalendar(currentYear, currentMonth - 1)
+    configureCurrentCalendar(currentYear, currentMonth - 1)
   }
   
   @IBAction func nextCalendarButtonTapped(_ sender: Any) { // 다음달 버튼
-    setCurrentCalendar(currentYear, currentMonth + 1)
+    configureCurrentCalendar(currentYear, currentMonth + 1)
   }
   
   @IBAction func todayGameButtonTapped(_ sender: Any) { // 오늘의 게임 버튼
@@ -142,6 +146,7 @@ extension MainViewController {
   }
 }
 
+// MARK: - UICollectionViewDataSource
 extension MainViewController: UICollectionViewDataSource{
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     return currentCalendarDay.count
@@ -149,20 +154,17 @@ extension MainViewController: UICollectionViewDataSource{
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CalendarCollectionViewCell.identifier, for: indexPath) as? CalendarCollectionViewCell else { return UICollectionViewCell() }
-    var success = false
-    if dailyGameViewModel.checkClearDate(dailycleargame: dailygamecleardate,
+    let success = dailyGameViewModel.checkClearDate(dailycleargame: dailyGameClearDate,
                                     date: DailyGameClearDate(
                                       year: currentYear,
                                       month: currentMonth,
-                                      day: currentCalendarDay[indexPath.item])) {
-      success = true
-    }
+                                      day: currentCalendarDay[indexPath.item]))
     cell.updateUI(currentCalendarDay[indexPath.item], currentDay, success)
-    
     return cell
   }
 }
 
+// MARK: - UICollectionViewDelegateFlowLayout
 extension MainViewController: UICollectionViewDelegateFlowLayout{
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
     let width: CGFloat = (collectionView.bounds.width - 30) / 7

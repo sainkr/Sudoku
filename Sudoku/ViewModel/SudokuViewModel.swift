@@ -9,7 +9,7 @@ import Foundation
 
 import PBSudoku
 
-public class SudokuManager{
+class SudokuManager{
   static var shared = SudokuManager()
   
   private var game = Game(

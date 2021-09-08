@@ -116,23 +116,8 @@
                                                 <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" insetsLayoutMarginsFromSafeArea="NO" id="9wU-MC-56e">
                                                     <rect key="frame" x="0.0" y="0.0" width="30" height="30"/>
                                                     <autoresizingMask key="autoresizingMask"/>
-                                                    <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k8W-Im-Xs8">
-                                                            <rect key="frame" x="0.0" y="0.0" width="30" height="30"/>
-                                                            <fontDescription key="fontDescription" name="AppleSDGothicNeo-Bold" family="Apple SD Gothic Neo" pointSize="20"/>
-                                                            <nil key="textColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                    </subviews>
-                                                    <constraints>
-                                                        <constraint firstItem="k8W-Im-Xs8" firstAttribute="leading" secondItem="9wU-MC-56e" secondAttribute="leading" id="3JN-gO-nwi"/>
-                                                        <constraint firstAttribute="trailing" secondItem="k8W-Im-Xs8" secondAttribute="trailing" id="Jb4-v0-nKZ"/>
-                                                        <constraint firstItem="k8W-Im-Xs8" firstAttribute="top" secondItem="9wU-MC-56e" secondAttribute="top" id="Qxo-M8-5hT"/>
-                                                        <constraint firstAttribute="bottom" secondItem="k8W-Im-Xs8" secondAttribute="bottom" id="uBz-kE-Bh0"/>
-                                                    </constraints>
                                                 </collectionViewCellContentView>
                                                 <connections>
-                                                    <outlet property="dayLabel" destination="k8W-Im-Xs8" id="kSl-TJ-onO"/>
                                                     <outlet property="view" destination="9wU-MC-56e" id="KpY-31-Ar8"/>
                                                 </connections>
                                             </collectionViewCell>

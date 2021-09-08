@@ -13,32 +13,30 @@ class GameViewController: UIViewController {
   @IBOutlet weak var timerLabel: UILabel!
   @IBOutlet weak var isPlayingButton: UIButton!
   @IBOutlet weak var pauseView: UIView!
-  
   @IBOutlet weak var sudokuCollectionView: UICollectionView!
   @IBOutlet weak var optionCollectionView: UICollectionView!
   @IBOutlet weak var numberCollectionView: UICollectionView!
   
-  var timer: Timer?
-  var timeCount: Double = 0
-  var isPlaying: Bool = true
+  private var timer: Timer?
+  private var timeCount: Double = 0
+  private var isPlaying: Bool = true
   
-  var sudokuViewModel = SudokuViewModel()
-  var gameViewModel = GameViewModel()
-  var dailyGameViewModel = DailyGameViewModel()
-  let calendarViewModel = CalendarViewModel()
+  private var sudokuViewModel = SudokuViewModel()
+  private var gameViewModel = GameViewModel()
+  private var dailyGameViewModel = DailyGameViewModel()
+  private let calendarViewModel = CalendarViewModel()
   
-  let ClickNumberNotification: Notification.Name = Notification.Name("ClickNumberNotification")
+  private let ClickNumberNotification: Notification.Name = Notification.Name("ClickNumberNotification")
   
   var gameType: GameType = .newGame
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    
-    sudokuCollectionView.tag = 1
-    optionCollectionView.tag = 2
-    numberCollectionView.tag = 3
-    
-    setView()
+    setCollectionViewTag()
+    configureView()
+    registerSudokuCollectionViewCell()
+    registerOptionCollectionViewCell()
+    registerNumberCollectionViewCell()
   }
 
   override func viewWillDisappear(_ animated: Bool) {
@@ -46,21 +44,42 @@ class GameViewController: UIViewController {
     timer?.invalidate()
     saveSudoku()
   }
-}
-
-extension GameViewController{
+  
   @IBAction func backButtonTapped(_ sender: Any) {
     dismiss(animated: false, completion: nil)
   }
-  
-  func setView(){
+}
+
+extension GameViewController{
+  private func configureView(){
     timeCount = sudokuViewModel.time()
     timerPlay()
     numberCollectionView.reloadData()
     levelLabel.text = sudokuViewModel.level()
   }
   
-  func saveSudoku(){
+  private func setCollectionViewTag(){
+    sudokuCollectionView.tag = 1
+    optionCollectionView.tag = 2
+    numberCollectionView.tag = 3
+  }
+  
+  private func registerSudokuCollectionViewCell(){
+    let sudokuCollectionViewCellNib = UINib(nibName: SudokuCollectionViewCell.identifier, bundle: nil)
+    sudokuCollectionView.register(sudokuCollectionViewCellNib, forCellWithReuseIdentifier: SudokuCollectionViewCell.identifier)
+  }
+  
+  private func registerOptionCollectionViewCell(){
+    let optionCollectionViewCellNib = UINib(nibName: OptionCollectionViewCell.identifier, bundle: nil)
+    optionCollectionView.register(optionCollectionViewCellNib, forCellWithReuseIdentifier: OptionCollectionViewCell.identifier)
+  }
+  
+  private func registerNumberCollectionViewCell(){
+    let numberCollectionViewCellNib = UINib(nibName: NumberCollectionViewCell.identifier, bundle: nil)
+    numberCollectionView.register(numberCollectionViewCellNib, forCellWithReuseIdentifier: NumberCollectionViewCell.identifier)
+  }
+  
+  private func saveSudoku(){
     if gameType == .dailyGame{
       dailyGameViewModel.saveDailyGame(
         today: calendarViewModel.date(),
@@ -72,7 +91,7 @@ extension GameViewController{
     }
   }
   
-  func numberButtonTapped(_ index: Int){
+  private func numberButtonTapped(_ index: Int){
     sudokuViewModel.setNum(num: index)
     numberCollectionView.reloadData()
     sudokuCollectionView.reloadData()
@@ -81,7 +100,7 @@ extension GameViewController{
     }
   }
   
-  func endGame() {
+  private func endGame() {
     timerPasue()
     if gameType == .dailyGame{
       dailyGameViewModel.addDailyGameClear(
@@ -99,7 +118,6 @@ extension GameViewController{
 
 // MARK: - Timer
 extension GameViewController {
-  
   @IBAction func playButtonTapped(_ sender: Any) {
     timerPlay()
     pauseView.isHidden = true
@@ -115,34 +133,39 @@ extension GameViewController {
     }
   }
   
-  func timerPlay(){
+  private func timerPlay(){
     isPlayingButton.setImage(UIImage(systemName: "pause.fill"), for: .normal)
     isPlaying = true
     // timeInterval : 간격, target : 동작될 View, selector : 실행할 함수, userInfo : 사용자 정보, repeates : 반복
-    timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(setTime), userInfo: nil, repeats: true)
+    timer = Timer.scheduledTimer(
+      timeInterval: 1.0,
+      target: self,
+      selector: #selector(setTime),
+      userInfo: nil,
+      repeats: true)
   }
-  
-  func timerPasue(){
+
+  private func timerPasue(){
     isPlayingButton.setImage(UIImage(systemName: "play.fill"), for: .normal)
     isPlaying = false
     timer?.invalidate()
   }
-  
+
   @objc func setTime(){
     timerLabel.text = secondsToString(sec: timeCount)
     timeCount += 1
   }
-  
-  func secondsToString(sec: Double) -> String {
+
+  private func secondsToString(sec: Double) -> String {
     guard sec != 0 else { return "00 : 00" }
     let totalSeconds = Int(sec)
-    let min = totalSeconds / 60
+    let minute = totalSeconds / 60
     let seconds = totalSeconds % 60
-    return String(format: "%02d : %02d", min, seconds)
+    return String(format: "%02d : %02d", minute, seconds)
   }
 }
 
-// MARK: - CollectionView
+// MARK: - UICollectionViewDataSource
 extension GameViewController: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     guard let collectionView = CollectionViewType(collectionViewTag: collectionView.tag) else { return 0 }
@@ -175,6 +198,7 @@ extension GameViewController: UICollectionViewDataSource {
   }
 }
 
+// MARK: - UICollectionViewDelegate
 extension GameViewController: UICollectionViewDelegate{
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     guard let collectionView = CollectionViewType(collectionViewTag: collectionView.tag) else { return}
@@ -195,7 +219,6 @@ extension GameViewController: UICollectionViewDelegateFlowLayout{
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
     let collectionViewWidth = collectionView.bounds.width
     guard let collectionView = CollectionViewType(collectionViewTag: collectionView.tag) else { return CGSize() }
-    
     switch collectionView{
     case .sudoku:
       let width: CGFloat =  collectionViewWidth / 9
