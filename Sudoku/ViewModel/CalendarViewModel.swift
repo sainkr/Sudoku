@@ -44,7 +44,7 @@ class CalendarViewModel{
     return year % 4 == 0 && year % 100 != 0 || year % 400 == 0
   }
 
-  func dayOfWeek(_ today:String) -> Int?{
+  private func dayOfWeek(_ today:String) -> Int?{
     let formatter  = DateFormatter()
     formatter.dateFormat = "yyyy-MM"
     guard let todayDate = formatter.date(from: today) else { return nil }
